@@ -109,7 +109,7 @@ class Common(Configuration):
 
     # DATABASE CONFIGURATION
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
-    DATABASES = values.DatabaseURLValue('postgres://localhost/SatNOGS')
+    DATABASES = values.DatabaseURLValue('sqlite:///satnogs.db')
     # END DATABASE CONFIGURATION
 
     # CACHING
