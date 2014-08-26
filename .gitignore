@@ -12,21 +12,10 @@ pip-log.txt
 .tox
 nosetests.xml
 
-# Translations
-*.mo
-*.pot
-
-# Pycharm
-.idea
-
 # Vim
 
 *~
 *.swp
 *.swo
 
-# npm
-node_modules/
-
-# Campass
-.sass-cache
+satnogs.db
