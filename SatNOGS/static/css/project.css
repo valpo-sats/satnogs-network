@@ -32,3 +32,16 @@
   background-color: #f2dede;
   border-color: #eed3d7;
 }
+
+.img-avatar {
+  border: 2px solid white;
+  border-radius: 50px;
+  float: left;
+  margin: 0 auto;
+  margin-top: -7px;
+  margin-right: 5px;
+}
+
+#main-navbar {
+  margin-top: 2%;
+}
