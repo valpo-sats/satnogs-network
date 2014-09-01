@@ -46,6 +46,7 @@ class Common(Configuration):
     LOCAL_APPS = (
         'users',  # custom users app
         'base',
+        'django_extensions',
     )
 
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
