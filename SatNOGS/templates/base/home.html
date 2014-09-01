@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load staticfiles i18n %}
+
 {% block title %}Home{% endblock %}
 
 {% block css %}
@@ -28,36 +30,36 @@
         </div>
         <div class="panel-body">
             <div class="text-center">
-              <img src="static/images/ground_station_test.jpg" class="img-gs-front" alt="...">
-              <h3>Acropolis 1</h3>
+              <img src="" class="img-gs-front" alt="">
+              <h3></h3>
             </div>
             <div class="caption">
               <div class="gs-front-line">
                 <span class="label label-info">Owner</span>
-                <span class="gs-front-data"><a href="#">John Giannelos (nemo)</a></span>
+                <span class="gs-front-data"><a href="#"></a></span>
               </div>
               <div class="gs-front-line">
                 <span class="label label-info">Location</span> 
-                <span class="gs-front-data">Athens, Greece</span>
+                <span class="gs-front-data"></span>
               </div>
               <div class="gs-front-line">
                 <span class="label label-info">Coordinates</span>
-                <span class="gs-front-data">38.2N 23.1E</span>
+                <span class="gs-front-data"></span>
               </div>
               <div class="gs-front-line">
                 <span class="label label-info">Antennas</span>
-                <span class="gs-front-data">VHF & UHF</span>
+                <span class="gs-front-data"></span>
               </div>
               <div class="gs-front-line">
                 <span class="label label-info">Success Rate</span>
 
                 <span class="gs-front-data">
                   <div class="progress">
-                    <div class="progress-bar progress-bar-success" style="width: 85%">
-                      <span class="sr-only">35% Complete (success)</span>
+                    <div class="progress-bar progress-bar-success" style="width: 0%">
+                      <span class="sr-only">0% Complete (success)</span>
                     </div>
-                    <div class="progress-bar progress-bar-danger" style="width: 15%">
-                      <span class="sr-only">10% Complete (danger)</span>
+                    <div class="progress-bar progress-bar-danger" style="width: 0%">
+                      <span class="sr-only">0% Complete (danger)</span>
                     </div>
                   </div>
                 </span>
@@ -84,64 +86,6 @@
               <th>Timeframe</th>
               <th>Observer</th>
             </thead>
-            <tbody>
-              <tr>
-                <td><span class="label label-success">04424</span></td>
-                <td><a href="#">40092 2011-043G HAIYANG 2A</a></td>
-                <td>144.800 Mhz</td>
-                <td>AFSK</td>
-                <td>2014-08-23 22:00 </br> 2014-08-24 03:00</td>
-                <td><a href="#">nemo</a></td>
-              </tr>
-              <tr>
-                <td><span class="label label-success">04436</span></td>
-                <td><a href="#">40088 2014-040C ORBCOMM FM 106</a></td>
-                <td>433.950 Mhz</td>
-                <td>CW</td>
-                <td>2014-08-25 22:00 </br> 2014-08-26 03:00</td>
-                <td><a href="#">pierros</a></td>
-              </tr>
-              <tr>
-                <td><span class="label label-danger">04524</span></td>
-                <td><a href="#">40092 2011-043G HAIYANG 2A</a></td>
-                <td>430.600 Mhz</td>
-                <td>FM Voice</td>
-                <td>2014-08-23 22:00 </br> 2014-08-24 03:00</td>
-                <td><a href="#">mathos</a></td>
-              </tr>
-              <tr>
-                <td><span class="label label-success">04444</span></td>
-                <td><a href="#">39092 2013-009G BRITE-U UNIBRITE</a></td>
-                <td>145.800 Mhz</td>
-                <td>AFSK</td>
-                <td>2014-08-27 22:00 </br> 2014-08-28 03:00</td>
-                <td><a href="#">acinonyx</a></td>
-              </tr>
-              <tr>
-                <td><span class="label label-danger">04234</span></td>
-                <td><a href="#">40092 2011-043G HAIYANG 2A</a></td>
-                <td>145.825 Mhz</td>
-                <td>SSTV</td>
-                <td>2014-08-23 22:00 </br> 2014-08-24 03:00</td>
-                <td><a href="#">ododos</a></td>
-              </tr>
-              <tr>
-                <td><span class="label label-success">04465</span></td>
-                <td><a href="#">40092 2011-043G HAIYANG 2A</a></td>
-                <td>145.200 Mhz</td>
-                <td>FM Voice</td>
-                <td>2014-08-23 22:00 </br> 2014-08-24 03:00</td>
-                <td><a href="#">azisi</a></td>
-              </tr>
-              <tr>
-                <td><span class="label label-success">04424</span></td>
-                <td><a href="#">40092 2011-043G HAIYANG 2A</a></td>
-                <td>144.800 Mhz</td>
-                <td>AFSK</td>
-                <td>2014-08-23 22:00 </br> 2014-08-24 03:00</td>
-                <td><a href="#">nemo</a></td>
-              </tr>
-            </tbody>
           </table>
         </div>
         <div class="tab-pane" id="scheduled">
@@ -154,56 +98,6 @@
               <th>Timeframe</th>
               <th>Observer</th>
             </thead>
-            <tbody>
-              <tr>
-                <td><span class="label label-primary">04234</span></td>
-                <td><a href="#">40092 2011-043G HAIYANG 2A</a></td>
-                <td>145.825 Mhz</td>
-                <td>SSTV</td>
-                <td>2014-08-23 22:00 </br> 2014-08-24 03:00</td>
-                <td><a href="#">ododos</a></td>
-              </tr>
-              <tr>
-                <td><span class="label label-primary">04424</span></td>
-                <td><a href="#">40092 2011-043G HAIYANG 2A</a></td>
-                <td>144.800 Mhz</td>
-                <td>AFSK</td>
-                <td>2014-08-23 22:00 </br> 2014-08-24 03:00</td>
-                <td><a href="#">nemo</a></td>
-              </tr>
-              <tr>
-                <td><span class="label label-primary">04436</span></td>
-                <td><a href="#">40088 2014-040C ORBCOMM FM 106</a></td>
-                <td>433.950 Mhz</td>
-                <td>CW</td>
-                <td>2014-08-25 22:00 </br> 2014-08-26 03:00</td>
-                <td><a href="#">pierros</a></td>
-              </tr>
-              <tr>
-                <td><span class="label label-primary">04524</span></td>
-                <td><a href="#">40092 2011-043G HAIYANG 2A</a></td>
-                <td>430.600 Mhz</td>
-                <td>FM Voice</td>
-                <td>2014-08-23 22:00 </br> 2014-08-24 03:00</td>
-                <td><a href="#">mathos</a></td>
-              </tr>
-              <tr>
-                <td><span class="label label-primary">04444</span></td>
-                <td><a href="#">39092 2013-009G BRITE-U UNIBRITE</a></td>
-                <td>145.800 Mhz</td>
-                <td>AFSK</td>
-                <td>2014-08-27 22:00 </br> 2014-08-28 03:00</td>
-                <td><a href="#">acinonyx</a></td>
-              </tr>
-              <tr>
-                <td><span class="label label-primary">04465</span></td>
-                <td><a href="#">40092 2011-043G HAIYANG 2A</a></td>
-                <td>145.200 Mhz</td>
-                <td>FM Voice</td>
-                <td>2014-08-23 22:00 </br> 2014-08-24 03:00</td>
-                <td><a href="#">azisi</a></td>
-              </tr>
-            </tbody>
           </table>
         </div>
       </div>
@@ -212,13 +106,5 @@
 {% endblock content %}
 
 {% block javascript %}
-  <script>
-  L.mapbox.accessToken = 'pk.eyJ1IjoicGllcnJvcyIsImEiOiJhTVZyWmE4In0.kl2j9fi24LDXfB3MNdN76w';
-  var map = L.mapbox.map('map', 'pierros.jbf6la1j')
-  .setView([40, 0], 3);
-  $('#successful a').click(function (e) {
-  e.preventDefault()
-  $(this).tab('show')
-  })
-  </script>
+  <script type="text/javascript" src="{% static 'js/home.js' %}">
 {% endblock %}
