@@ -27,6 +27,7 @@ class Transponder(models.Model):
     invert = models.BooleanField()
     baud = models.FloatField(validators=[MinValueValidator(0)])
 
+
 class Antenna(models.Model):
     """Model for antennas tracked with SatNOGS."""
     frequency = models.FloatField(validators=[MinValueValidator(0)])

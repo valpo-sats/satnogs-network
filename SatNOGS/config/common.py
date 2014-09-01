@@ -218,7 +218,7 @@ class Common(Configuration):
     ACCOUNT_EMAIL_REQUIRED = True
     ACCOUNT_EMAIL_VERIFICATION = "mandatory"
     # END AUTHENTICATION CONFIGURATION
-    
+
     # Custom user app defaults
     # Select the correct user model
     AUTH_USER_MODEL = "users.User"
