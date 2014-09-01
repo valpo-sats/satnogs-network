@@ -11,11 +11,17 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$',  # noqa
-        TemplateView.as_view(template_name='pages/home.html'),
+        TemplateView.as_view(template_name='base/home.html'),
         name="home"),
     url(r'^about/$',
-        TemplateView.as_view(template_name='pages/about.html'),
+        TemplateView.as_view(template_name='base/about.html'),
         name="about"),
+    url(r'^observations/$',
+        TemplateView.as_view(template_name='base/observations.html'),
+        name="observations"),
+    url(r'^stations/$',
+        TemplateView.as_view(template_name='base/stations.html'),
+        name="stations"),
 
     url(r'^admin/', include(admin.site.urls)),
 

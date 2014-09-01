@@ -1,10 +1,12 @@
 {% load staticfiles i18n %}
 {% load avatar_tags %}
+{% load tags %}
+
 <!DOCTYPE html>
 <html lang="en" ng-app>
   <head>
     <meta charset="utf-8">
-    <title>{% block title %}SatNOGS - Network{% endblock title %}</title>
+    <title>SatNOGS - Network - {% block title %}{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -14,7 +16,6 @@
       <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    {% block css %}
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
@@ -25,15 +26,15 @@
 
     <!-- This file store project specific CSS -->
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
+    {% block css %}
     {% endblock %}
 
-    {% block angular %}
-      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
-    {% endblock %}
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
 
   </head>
 
   <body>
+    {% block prenav-content %}{% endblock %}
     <div class="container">
       <nav class="navbar navbar-default" role="navigation" id="main-navbar">
         <div class="container-fluid">
@@ -45,14 +46,18 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">SatNOGS net</a>
+            <a class="navbar-brand" href="#">
+              <img id="navbar-logo" src="{% static 'images/satnogs_net.png' %}" alt="SatNOGS net">
+            </a>
           </div>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-              <li class="{% ifequal request.path '/' %}active{% endifequal %}"><a href="{% url 'home' %}">Home</a></li>
-              <li class="{% ifequal request.path '/about/' %}active{% endifequal %}"><a href="{% url 'about' %}">About</a></li>
+              <li class="{% active request '^/$' %}"><a href="{% url 'home' %}">Home</a></li>
+              <li class="{% active request '^/observations/$' %}"><a href="{% url 'observations' %}">Observations</a></li>
+              <li class="{% active request '^/stations/$' %}"><a href="{% url 'stations' %}">Ground Stations</a></li>
+              <li class="{% active request '^/about/$' %}"><a href="{% url 'about' %}">About</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               {% if request.user.is_authenticated %}
@@ -105,18 +110,18 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+    <!-- Latest JQuery -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <!-- Your stuff: Third-party javascript libraries go here -->
+
+    <!-- place project specific Javascript in this file -->
+    <script src="{% static 'js/project.js' %}"></script>
     {% block javascript %}
-      <!-- Latest JQuery -->
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
-      <!-- Latest compiled and minified JavaScript -->
-      <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-
-      <!-- Your stuff: Third-party javascript libraries go here -->
-
-      <!-- place project specific Javascript in this file -->
-      <script src="{% static 'js/project.js' %}"></script>
     {% endblock javascript %}
-  </body>
+</body>
 </html>
  
