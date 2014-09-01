@@ -1,0 +1,1 @@
+SatNOGS/manage.py
