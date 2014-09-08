@@ -15,12 +15,15 @@
 
 {% block content %}
   <div class="row" id="call2action">
-    <div class="col-md-8 col-md-offset-2 panel panel-default">
-      <h3 class="text-center">
-      Ground stations swarm control, at your fingertips.
-      <button type="button" class="btn btn-primary btn-lg">Join us!</button>
-      </h3>
-    </div>
+    {% if request.user.is_authenticated %}
+    {% else %}
+      <div class="col-md-8 col-md-offset-2 panel panel-default">
+        <h3 class="text-center">
+        Ground stations swarm control, at your fingertips.
+        <button type="button" class="btn btn-primary btn-lg">Join us!</button>
+        </h3>
+      </div>
+    {% endif %}
   </div>
   <div class="row">
     <div class="col-md-4">
