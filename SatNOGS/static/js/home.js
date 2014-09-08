@@ -3,7 +3,32 @@ var map = L.mapbox.map('map', 'pierros.jbf6la1j',{
     zoomControl: false
 }).setView([40, 0], 3);
 
-$('#successful a').click(function (e) {
-e.preventDefault()
-$(this).tab('show')
-})
+$(document).ready(function() {
+
+    $('#successful a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
+
+    $.ajax({
+        url: "/stations/json"
+        }).done(function(data) {
+            data.forEach(function(m) {
+                L.mapbox.featureLayer({
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [
+                          parseFloat(m.fields.lat),
+                          parseFloat(m.fields.lng)
+                        ]
+                    },
+                    properties: {
+                        title: m.fields.name,
+                        'marker-size': 'large',
+                        'marker-color': '#666',
+                    }
+                }).addTo(map);
+            });
+        });
+});
