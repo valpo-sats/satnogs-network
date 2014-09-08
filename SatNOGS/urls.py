@@ -10,22 +10,21 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$',  # noqa
-        TemplateView.as_view(template_name='base/home.html'),
-        name="home"),
+    url(r'^$', 'base.views.index', name='home'),
+
     url(r'^about/$',
         TemplateView.as_view(template_name='base/about.html'),
-        name="about"),
+        name='about'),
     url(r'^observations/$',
         TemplateView.as_view(template_name='base/observations.html'),
-        name="observations"),
+        name='observations'),
     url(r'^stations/$',
         TemplateView.as_view(template_name='base/stations.html'),
-        name="stations"),
+        name='stations'),
 
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^users/', include("users.urls", namespace="users")),
+    url(r'^users/', include('users.urls', namespace='users')),
     url(r'^accounts/', include('allauth.urls')),
 
     url(r'^avatar/', include('avatar.urls')),

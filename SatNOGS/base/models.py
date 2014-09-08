@@ -1,5 +1,6 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.utils.timezone import now
 
 from users.models import User
 
@@ -47,6 +48,7 @@ class Station(models.Model):
     lng = models.FloatField(validators=[MaxValueValidator(180),
                                         MinValueValidator(-180)])
     antenna = models.ManyToManyField(Antenna)
+    featured = models.BooleanField(default=False)
 
 
 class Satellite(models.Model):
@@ -63,8 +65,17 @@ class Observation(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
 
+    @property
+    def is_past(self):
+        return self.end < now()
+
+    @property
+    def is_future(self):
+        return self.end > now()
+
 
 class Data(models.Model):
+    """Model for observation data."""
     url = models.URLField()
     start = models.DateTimeField()
     end = models.DateTimeField()
