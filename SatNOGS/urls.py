@@ -9,8 +9,10 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     url(r'^$', 'base.views.index', name='home'),
+    url(r'^stations/json/$', 'base.views.stations_json', name='stations_json'),
 
     url(r'^about/$',
         TemplateView.as_view(template_name='base/about.html'),
