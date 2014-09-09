@@ -12,7 +12,7 @@ Requirements: You ‘ll need python, virtualenv, pip and git
 ```
 $ git clone https://github.com/satnogs/satnogs-network.git
 ```
-2 - Set up the virtual environment
+2 - Set up the virtual environment.You will need to have a folder for your virtual envs. Create outside your project folder an "env" folder or fix the following commands to match your setup.
 ```
 $ cd satnogs-network/
 $ virtualenv --no-site-packages ../env/satnogs
@@ -27,9 +27,7 @@ $ source ../env/satnogs/bin/activate
 ```
 5 - Create and setup the database
 ```
-(satnogs)$ touch satnogs.db
 (satnogs)$ export DATABASE_URL='sqlite:///satnogs.db'
-(satnogs)$ cd SatNOGS
 (satnogs)$ ./manage.py syncdb && ./manage.py migrate
 ```
 6 - Create a superuser
