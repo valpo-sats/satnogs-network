@@ -13,13 +13,13 @@ class TransponderFactory(factory.django.DjangoModelFactory):
     """Transponder model factory."""
     description = fuzzy.FuzzyText()
     alive = fuzzy.FuzzyChoice(choices=[True, False])
-    uplink_low = fuzzy.FuzzyInteger(0, 100)
-    uplink_high = fuzzy.FuzzyInteger(0, 100)
-    downlink_low = fuzzy.FuzzyInteger(0, 100)
-    downlink_high = fuzzy.FuzzyInteger(0, 100)
+    uplink_low = fuzzy.FuzzyInteger(200, 500)
+    uplink_high = fuzzy.FuzzyInteger(200, 500)
+    downlink_low = fuzzy.FuzzyInteger(200, 500)
+    downlink_high = fuzzy.FuzzyInteger(200, 500)
     mode = fuzzy.FuzzyChoice(choices=MODE_CHOICES)
     invert = fuzzy.FuzzyChoice(choices=[True, False])
-    baud = fuzzy.FuzzyFloat(0, 100)
+    baud = fuzzy.FuzzyFloat(4000, 22000, step=1000)
 
     class Meta:
         model = Transponder
@@ -27,7 +27,7 @@ class TransponderFactory(factory.django.DjangoModelFactory):
 
 class AntennaFactory(factory.django.DjangoModelFactory):
     """Antenna model factory."""
-    frequency = fuzzy.FuzzyFloat(0, 100)
+    frequency = fuzzy.FuzzyFloat(200, 500)
     band = fuzzy.FuzzyChoice(choices=ANTENNA_BANDS)
     antenna_type = fuzzy.FuzzyChoice(choices=ANTENNA_TYPES)
 
@@ -37,11 +37,11 @@ class AntennaFactory(factory.django.DjangoModelFactory):
 
 class StationFactory(factory.django.DjangoModelFactory):
     """Station model factory."""
-    owner = factory.SubFactory(UserFactory)
+    owner = factory.SubFactory(UserFactory)p
     name = fuzzy.FuzzyText()
     image = factory.django.ImageField()
-    alt = fuzzy.FuzzyInteger(0, 100)
-    lat = fuzzy.FuzzyFloat(-90, 90)
+    alt = fuzzy.FuzzyInteger(0, 800)
+    lat = fuzzy.FuzzyFloat(-20, 70)
     lng = fuzzy.FuzzyFloat(-180, 180)
     featured = fuzzy.FuzzyChoice(choices=[True, False])
 
@@ -60,7 +60,7 @@ class StationFactory(factory.django.DjangoModelFactory):
 
 class SatelliteFactory(factory.django.DjangoModelFactory):
     """Sattelite model factory."""
-    norad_cat_id = fuzzy.FuzzyInteger(1, 4000)
+    norad_cat_id = fuzzy.FuzzyInteger(1000, 8000)
     name = fuzzy.FuzzyText()
 
     @factory.post_generation
