@@ -15,20 +15,6 @@ ANTENNA_TYPES = (
 MODE_CHOICES = ['FM', 'AFSK', 'APRS', 'SSTV', 'CW', 'FMN']
 
 
-class Transponder(models.Model):
-    """Model for antennas transponders."""
-    description = models.TextField()
-    alive = models.BooleanField()
-    uplink_low = models.PositiveIntegerField()
-    uplink_high = models.PositiveIntegerField()
-    downlink_low = models.PositiveIntegerField()
-    downlink_high = models.PositiveIntegerField()
-    mode = models.CharField(choices=zip(MODE_CHOICES, MODE_CHOICES),
-                            max_length=10)
-    invert = models.BooleanField()
-    baud = models.FloatField(validators=[MinValueValidator(0)])
-
-
 class Antenna(models.Model):
     """Model for antennas tracked with SatNOGS."""
     frequency = models.FloatField(validators=[MinValueValidator(0)])
@@ -55,7 +41,22 @@ class Satellite(models.Model):
     """Model for SatNOGS satellites."""
     norad_cat_id = models.PositiveIntegerField()
     name = models.CharField(max_length=45)
-    transponders = models.ManyToManyField(Transponder)
+
+
+class Transponder(models.Model):
+    """Model for antennas transponders."""
+    description = models.TextField()
+    alive = models.BooleanField()
+    uplink_low = models.PositiveIntegerField()
+    uplink_high = models.PositiveIntegerField()
+    downlink_low = models.PositiveIntegerField()
+    downlink_high = models.PositiveIntegerField()
+    mode = models.CharField(choices=zip(MODE_CHOICES, MODE_CHOICES),
+                            max_length=10)
+    invert = models.BooleanField()
+    baud = models.FloatField(validators=[MinValueValidator(0)])
+    satellite = models.ForeignKey(Satellite, related_name='transponder',
+                                  null=True)
 
 
 class Observation(models.Model):
