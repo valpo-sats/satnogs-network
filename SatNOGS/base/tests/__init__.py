@@ -9,22 +9,6 @@ from base.models import (ANTENNA_BANDS, ANTENNA_TYPES, MODE_CHOICES,
 from users.tests import UserFactory
 
 
-class TransponderFactory(factory.django.DjangoModelFactory):
-    """Transponder model factory."""
-    description = fuzzy.FuzzyText()
-    alive = fuzzy.FuzzyChoice(choices=[True, False])
-    uplink_low = fuzzy.FuzzyInteger(200, 500)
-    uplink_high = fuzzy.FuzzyInteger(200, 500)
-    downlink_low = fuzzy.FuzzyInteger(200, 500)
-    downlink_high = fuzzy.FuzzyInteger(200, 500)
-    mode = fuzzy.FuzzyChoice(choices=MODE_CHOICES)
-    invert = fuzzy.FuzzyChoice(choices=[True, False])
-    baud = fuzzy.FuzzyFloat(4000, 22000, step=1000)
-
-    class Meta:
-        model = Transponder
-
-
 class AntennaFactory(factory.django.DjangoModelFactory):
     """Antenna model factory."""
     frequency = fuzzy.FuzzyFloat(200, 500)
@@ -37,7 +21,7 @@ class AntennaFactory(factory.django.DjangoModelFactory):
 
 class StationFactory(factory.django.DjangoModelFactory):
     """Station model factory."""
-    owner = factory.SubFactory(UserFactory)p
+    owner = factory.SubFactory(UserFactory)
     name = fuzzy.FuzzyText()
     image = factory.django.ImageField()
     alt = fuzzy.FuzzyInteger(0, 800)
@@ -63,17 +47,25 @@ class SatelliteFactory(factory.django.DjangoModelFactory):
     norad_cat_id = fuzzy.FuzzyInteger(1000, 8000)
     name = fuzzy.FuzzyText()
 
-    @factory.post_generation
-    def transponders(self, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if extracted:
-            for transponder in extracted:
-                self.transponders.add(transponder)
-
     class Meta:
         model = Satellite
+
+
+class TransponderFactory(factory.django.DjangoModelFactory):
+    """Transponder model factory."""
+    description = fuzzy.FuzzyText()
+    alive = fuzzy.FuzzyChoice(choices=[True, False])
+    uplink_low = fuzzy.FuzzyInteger(200, 500)
+    uplink_high = fuzzy.FuzzyInteger(200, 500)
+    downlink_low = fuzzy.FuzzyInteger(200, 500)
+    downlink_high = fuzzy.FuzzyInteger(200, 500)
+    mode = fuzzy.FuzzyChoice(choices=MODE_CHOICES)
+    invert = fuzzy.FuzzyChoice(choices=[True, False])
+    baud = fuzzy.FuzzyInteger(4000, 22000, step=1000)
+    satellite = factory.SubFactory(SatelliteFactory)
+
+    class Meta:
+        model = Transponder
 
 
 class ObservationFactory(factory.django.DjangoModelFactory):
