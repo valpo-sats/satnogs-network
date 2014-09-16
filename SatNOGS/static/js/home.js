@@ -19,8 +19,8 @@ $(document).ready(function() {
                     geometry: {
                         type: 'Point',
                         coordinates: [
-                          parseFloat(m.fields.lat),
-                          parseFloat(m.fields.lng)
+                          parseFloat(m.fields.lng),
+                          parseFloat(m.fields.lat)
                         ]
                     },
                     properties: {
