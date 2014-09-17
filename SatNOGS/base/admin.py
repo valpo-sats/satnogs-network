@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 
-from base.models import Antenna, Satellite, Station, Transponder, Observation
+from base.models import Antenna, Satellite, Station, Transponder, Observation, Data
 
 
 class AntennaAdmin(admin.ModelAdmin):
@@ -19,8 +19,17 @@ class SatelliteAdmin(admin.ModelAdmin):
 class TransponderAdmin(admin.ModelAdmin):
     list_display = ('satellite', 'description', 'uplink_low', 'uplink_high', 'downlink_low', 'downlink_high')
 
+
+class ObservasionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'satellite', 'start', 'end')
+
+
+class DataAdmin(admin.ModelAdmin):
+    list_display = ('id', 'start', 'end', 'observation')
+
 admin.site.register(Antenna, AntennaAdmin)
 admin.site.register(Satellite, SatelliteAdmin)
 admin.site.register(Station, StationAdmin)
 admin.site.register(Transponder, TransponderAdmin)
-admin.site.register(Observation)
+admin.site.register(Observation, ObservasionAdmin)
+admin.site.register(Data, DataAdmin)
