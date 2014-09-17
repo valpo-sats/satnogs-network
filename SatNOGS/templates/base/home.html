@@ -33,36 +33,43 @@
         </div>
         <div class="panel-body">
             <div class="text-center">
-              <img src="" class="img-gs-front" alt="">
-              <h3></h3>
+              <img src="{{ MEDIA_URL }}{{ featured_station.image }}"
+                   class="img-gs-front"
+                   alt="{{ featured_station.name }}"
+                   title="{{ featured_station.name }}">
+              <h3>{{ featured_station.name }}</h3>
             </div>
             <div class="caption">
               <div class="gs-front-line">
                 <span class="label label-info">Owner</span>
-                <span class="gs-front-data"><a href="#"></a></span>
-              </div>
-              <div class="gs-front-line">
-                <span class="label label-info">Location</span> 
-                <span class="gs-front-data"></span>
+                <span class="gs-front-data">
+                  <a href="#">{{ featured_station.owner.get_full_name }}</a>
+                </span>
               </div>
               <div class="gs-front-line">
                 <span class="label label-info">Coordinates</span>
-                <span class="gs-front-data"></span>
+                <span class="gs-front-data">
+                  {{ featured_station.lng|floatformat:2 }}°,
+                  {{ featured_station.lat|floatformat:2 }}°
+                </span>
               </div>
               <div class="gs-front-line">
                 <span class="label label-info">Antennas</span>
-                <span class="gs-front-data"></span>
+                <span class="gs-front-data">
+                  {% for antenna in featured_station.antenna.all %}
+                    {{antenna.band}} {{ antenna.antenna_type }}{% if forloop.last %}{% else %},{% endif %}
+                  {% endfor %}
+                </span>
               </div>
               <div class="gs-front-line">
                 <span class="label label-info">Success Rate</span>
-
                 <span class="gs-front-data">
                   <div class="progress">
-                    <div class="progress-bar progress-bar-success" style="width: 0%">
-                      <span class="sr-only">0% Complete (success)</span>
+                    <div class="progress-bar progress-bar-success" style="width: 88%">
+                      <span class="sr-only">88% Complete (success)</span>
                     </div>
-                    <div class="progress-bar progress-bar-danger" style="width: 0%">
-                      <span class="sr-only">0% Complete (danger)</span>
+                    <div class="progress-bar progress-bar-danger" style="width: 12%">
+                      <span class="sr-only">12% Complete (danger)</span>
                     </div>
                   </div>
                 </span>
@@ -89,6 +96,27 @@
               <th>Timeframe</th>
               <th>Observer</th>
             </thead>
+            <tbody>
+              {% for observation in latest_observations.all %}
+                <tr>
+                  <td>
+                    <span class="label
+                                 {% if not observation.data_set.all %}
+                                  label-danger
+                                 {% else %}
+                                  label-success
+                                 {% endif %}">
+                      {{ observation.id }}
+                    </span>
+                  </td>
+                  <td>{{ observation.satellite.name }}</td>
+                  <td>{{ observation.transponder.downlink_low }}</td>
+                  <td>{{ observation.transponder.mode }}</td>
+                  <td>{{ observation.start|date:"Y-m-d H:i:s" }}</br>{{ observation.end|date:"Y-m-d H:i:s" }}</td>
+                  <td>{{ observation.author.get_full_name }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
           </table>
         </div>
         <div class="tab-pane" id="scheduled">
@@ -101,6 +129,22 @@
               <th>Timeframe</th>
               <th>Observer</th>
             </thead>
+            <tbody>
+              {% for observation in scheduled_observations.all %}
+                <tr>
+                  <td>
+                    <span class="label label-info">
+                      {{ observation.id }}
+                    </span>
+                  </td>
+                  <td>{{ observation.satellite.name }}</td>
+                  <td>{{ observation.transponder.downlink_low }}</td>
+                  <td>{{ observation.transponder.mode }}</td>
+                  <td>{{ observation.start|date:"Y-m-d H:i:s" }}</br>{{ observation.end|date:"Y-m-d H:i:s" }}</td>
+                  <td>{{ observation.author.get_full_name }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
           </table>
         </div>
       </div>

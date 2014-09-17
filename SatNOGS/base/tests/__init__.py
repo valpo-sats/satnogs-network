@@ -1,4 +1,5 @@
 import factory
+import random
 
 from datetime import timedelta
 from django.utils.timezone import now
@@ -72,8 +73,11 @@ class ObservationFactory(factory.django.DjangoModelFactory):
     """Observation model factory."""
     satellite = factory.SubFactory(SatelliteFactory)
     author = factory.SubFactory(UserFactory)
-    start = fuzzy.FuzzyDateTime(now() - timedelta(days=3), now())
-    end = fuzzy.FuzzyDateTime(now(), now() + timedelta(days=3))
+    start = fuzzy.FuzzyDateTime(now() - timedelta(days=3),
+                                now() + timedelta(days=3))
+    end = factory.LazyAttribute(
+        lambda x: x.start + timedelta(hours=random.randint(1, 8))
+    )
     transponder = factory.SubFactory(TransponderFactory)
 
     class Meta:

@@ -11,12 +11,12 @@ from base.models import Station, Observation
 def index(request):
     """View to render index page."""
     observations = Observation.objects.all()
-    stations = Station.objects.all()
+    featured_stations = Station.objects.filter(featured=True)
 
     ctx = {
         'latest_observations': observations.filter(end__lt=now()),
         'scheduled_observations': observations.filter(end__gte=now()),
-        'stations': stations
+        'featured_station': featured_stations.latest('featured_date')
     }
 
     return render(request, 'base/home.html', ctx)
