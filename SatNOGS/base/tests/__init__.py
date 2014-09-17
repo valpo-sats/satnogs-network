@@ -74,6 +74,7 @@ class ObservationFactory(factory.django.DjangoModelFactory):
     author = factory.SubFactory(UserFactory)
     start = fuzzy.FuzzyDateTime(now() - timedelta(days=3), now())
     end = fuzzy.FuzzyDateTime(now(), now() + timedelta(days=3))
+    transponder = factory.SubFactory(TransponderFactory)
 
     class Meta:
         model = Observation
