@@ -42,6 +42,9 @@ class Satellite(models.Model):
     norad_cat_id = models.PositiveIntegerField()
     name = models.CharField(max_length=45)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Transponder(models.Model):
     """Model for antennas transponders."""
