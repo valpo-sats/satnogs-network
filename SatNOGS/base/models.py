@@ -35,6 +35,18 @@ class Station(models.Model):
                                         MinValueValidator(-180)])
     antenna = models.ManyToManyField(Antenna)
     featured = models.BooleanField(default=False)
+    featured_date = models.DateField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        # Set featured_date when featured bit is flipped
+        if self.pk is None:
+            if self.featured:
+                self.featured_date = now().date()
+        else:
+            former = Station.objects.get(pk=self.pk)
+            if (not former.featured) and self.featured:
+                self.featured_date = now().date()
+        super(Station, self).save(*args, **kwargs)
 
 
 class Satellite(models.Model):
