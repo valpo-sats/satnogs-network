@@ -62,6 +62,7 @@ class Transponder(models.Model):
 class Observation(models.Model):
     """Model for SatNOGS observations."""
     satellite = models.ForeignKey(Satellite)
+    transponder = models.ForeignKey(Transponder, null=True)
     author = models.ForeignKey(User)
     start = models.DateTimeField()
     end = models.DateTimeField()
