@@ -27,7 +27,6 @@ $ source ../env/satnogs/bin/activate
 ```
 5 - Create and setup the database
 ```
-(satnogs)$ export DATABASE_URL='sqlite:///satnogs.db'
 (satnogs)$ ./manage.py syncdb && ./manage.py migrate
 ```
 6 - Create a superuser
