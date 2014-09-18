@@ -22,6 +22,13 @@ def index(request):
     return render(request, 'base/home.html', ctx)
 
 
+def observations_list(request):
+    """View to render Observations page."""
+    observations = Observation.objects.all()
+
+    return render(request, 'base/observations.html', {'observations': observations})
+
+
 def stations_json(request):
     data = serializers.serialize('json', Station.objects.all())
 
