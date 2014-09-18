@@ -19,8 +19,13 @@
     {% else %}
       <div class="col-md-8 col-md-offset-2 panel panel-default">
         <h3 class="text-center">
-        Ground stations swarm control, at your fingertips.
-        <button type="button" class="btn btn-primary btn-lg">Join us!</button>
+          Ground stations swarm control, at your fingertips.
+          <button type="button"
+                  class="btn btn-primary btn-lg"
+                  data-toggle="modal"
+                  data-target="#joinModal">
+            Join us!
+          </button>
         </h3>
       </div>
     {% endif %}
@@ -146,6 +151,38 @@
               {% endfor %}
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Join Modal -->
+  <div class="modal fade" id="joinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Join SatNGOS Network</h4>
+        </div>
+        <div class="modal-body">
+          SatNOGS network is under active development and not fully
+          operational for Ground Station operators yet. Meanwhile you can join us by:
+          <h3>Building a ground station</h3>
+          Whether you own satellite ground station equipment or you want
+          to build one you can head to
+          <a href="https://satnogs.org" target="_blank">SatNOGS Project site</a>
+          to get up to date documentation and info on how to build a SatNOGS ground station (still under development).
+          <h3>Coding</h3>
+          Fluent in Python and/or JS? We need you to help with satnogs-network Django application. Visit
+          <a href="https://github.com/satnogs/satnogs-network/issues" target="_blank">our Github issues page</a> to
+          start filling issues or code fixes for existing ones. Detailed contribution and development documentation
+          is also availble <a href="https://github.com/satnogs/satnogs-network" target="_blank">here</a>.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
