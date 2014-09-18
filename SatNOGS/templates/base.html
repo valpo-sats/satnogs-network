@@ -16,6 +16,11 @@
       <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
+    {% if GOOGLE_ANALYTICS_PROPERTY_ID %}
+      <!-- GA code -->
+      {% include "includes/google_analytics.html" %}
+    {% endif %}
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
@@ -62,8 +67,8 @@
             <ul class="nav navbar-nav navbar-right">
               {% if request.user.is_authenticated %}
               <li class="dropdown">
-                <a href="#" 
-                   class="dropdown-toggle" 
+                <a href="#"
+                   class="dropdown-toggle"
                    data-toggle="dropdown">{% avatar user 35 %} {{ request.user.username }}
                    <span class="caret"></span>
                 </a>
@@ -83,7 +88,7 @@
     </div>
 
     <div class="container">
-        
+
       {% if messages %}
           {% for message in messages %}
               <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
@@ -93,7 +98,7 @@
       {% block content %}{% endblock content %}
 
     </div> <!-- /container -->
-    
+
     {% block modal %}{% endblock modal %}
 
     <footer>
@@ -124,4 +129,3 @@
     {% endblock javascript %}
 </body>
 </html>
- 

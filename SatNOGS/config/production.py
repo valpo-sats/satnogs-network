@@ -43,3 +43,7 @@ class Production(Common):
         )),
     )
     # END TEMPLATE CONFIGURATION
+
+    # GA configuration
+    GOOGLE_ANALYTICS_PROPERTY_ID = values.Value()
+    GOOGLE_ANALYTICS_DOMAIN = values.Value()
