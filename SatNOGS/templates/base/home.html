@@ -88,8 +88,12 @@
     <div class="col-md-8">
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
-        <li class="active"><a href="#successful" role="tab" data-toggle="tab">Latest Observations</a></li>
-        <li><a href="#scheduled" role="tab" data-toggle="tab">Scheduled Observations</a></li>
+        <li class="active">
+          <a href="#successful" class="toggle" role="tab" data-toggle="tab">Latest Observations</a>
+        </li>
+        <li>
+          <a href="#scheduled" class="toggle" role="tab" data-toggle="tab">Scheduled Observations</a>
+        </li>
       </ul>
       <!-- Tab panes -->
       <div class="tab-content">
@@ -107,14 +111,16 @@
               {% for observation in latest_observations.all %}
                 <tr>
                   <td>
-                    <span class="label
-                                 {% if not observation.data_set.all %}
-                                  label-danger
-                                 {% else %}
-                                  label-success
-                                 {% endif %}">
-                      {{ observation.id }}
-                    </span>
+                    <a href="{% url 'base.views.view_observation' id=observation.id %}">
+                      <span class="label
+                                   {% if not observation.data_set.all %}
+                                    label-danger
+                                   {% else %}
+                                    label-success
+                                   {% endif %}">
+                        {{ observation.id }}
+                      </span>
+                    </a>
                   </td>
                   <td>{{ observation.satellite.name }}</td>
                   <td>{{ observation.transponder.downlink_low }}</td>
@@ -144,9 +150,11 @@
               {% for observation in scheduled_observations.all %}
                 <tr>
                   <td>
-                    <span class="label label-info">
-                      {{ observation.id }}
-                    </span>
+                    <a href="{% url 'base.views.view_observation' id=observation.id %}">
+                      <span class="label label-info">
+                        {{ observation.id }}
+                      </span>
+                    </a>
                   </td>
                   <td>{{ observation.satellite.name }}</td>
                   <td>{{ observation.transponder.downlink_low }}</td>

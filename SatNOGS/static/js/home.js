@@ -5,7 +5,7 @@ var map = L.mapbox.map('map', 'pierros.jbf6la1j',{
 
 $(document).ready(function() {
 
-    $('#successful a').click(function (e) {
+    $('#successful a.toggle').click(function (e) {
         e.preventDefault()
         $(this).tab('show')
     })
