@@ -21,11 +21,11 @@ class TransponderAdmin(admin.ModelAdmin):
 
 
 class ObservasionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'satellite', 'start', 'end')
+    list_display = ('id', 'author', 'satellite', 'transponder', 'start', 'end')
 
 
 class DataAdmin(admin.ModelAdmin):
-    list_display = ('id', 'start', 'end', 'observation')
+    list_display = ('id', 'start', 'end', 'observation', 'ground_station')
 
 admin.site.register(Antenna, AntennaAdmin)
 admin.site.register(Satellite, SatelliteAdmin)

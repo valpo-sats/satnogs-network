@@ -48,6 +48,9 @@ class Station(models.Model):
                 self.featured_date = now().date()
         super(Station, self).save(*args, **kwargs)
 
+    def __unicode__(self):
+        return "%d - %s" % (self.pk, self.name)
+
 
 class Satellite(models.Model):
     """Model for SatNOGS satellites."""
@@ -73,6 +76,9 @@ class Transponder(models.Model):
     satellite = models.ForeignKey(Satellite, related_name='transponder',
                                   null=True)
 
+    def __unicode__(self):
+        return self.description
+
 
 class Observation(models.Model):
     """Model for SatNOGS observations."""
@@ -89,6 +95,9 @@ class Observation(models.Model):
     @property
     def is_future(self):
         return self.end > now()
+
+    def __unicode__(self):
+        return "%d" % self.id
 
 
 class Data(models.Model):
