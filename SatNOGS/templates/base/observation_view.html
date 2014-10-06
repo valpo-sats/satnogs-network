@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}Observations{% endblock %}
+{% block title %}Observation {{ observation.id }}{% endblock %}
 
 {% block content %}
-<h1>Observations</h1>
+<h1>Observation #{{ observation.id }}</h1>
 
 <div class="row">
   <div class="col-md-12">
@@ -17,19 +17,16 @@
         <th>Observer</th>
       </thead>
       <tbody>
-        {% for observation in observations.all %}
           <tr>
             <td>
-              <a href="{% url 'base.views.view_observation' id=observation.id %}">
-                <span class="label
-                             {% if not observation.data_set.all %}
-                              label-danger
-                             {% else %}
-                              label-success
-                             {% endif %}">
-                  {{ observation.id }}
-                </span>
-              </a>
+              <span class="label
+                           {% if not observation.data_set.all %}
+                            label-danger
+                           {% else %}
+                            label-success
+                           {% endif %}">
+                {{ observation.id }}
+              </span>
             </td>
             <td>{{ observation.satellite.name }}</td>
             <td>{{ observation.transponder.downlink_low }}</td>
@@ -37,7 +34,6 @@
             <td>{{ observation.start|date:"Y-m-d H:i:s" }}</br>{{ observation.end|date:"Y-m-d H:i:s" }}</td>
             <td>{{ observation.author.get_full_name }}</td>
           </tr>
-        {% endfor %}
       </tbody>
     </table>
   </div>

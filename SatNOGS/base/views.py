@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.utils.timezone import now
 from django.core import serializers
 
@@ -33,3 +33,10 @@ def stations_json(request):
     data = serializers.serialize('json', Station.objects.all())
 
     return HttpResponse(data, content_type='application/json')
+
+
+def view_observation(request, id):
+    """View for single observation page."""
+    observation = get_object_or_404(Observation, id=id)
+
+    return render(request, 'base/observation_view.html', {'observation': observation})

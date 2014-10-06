@@ -13,6 +13,10 @@ urlpatterns = patterns(
     '',
     url(r'^$', 'base.views.index', name='home'),
     url(r'^stations/json/$', 'base.views.stations_json', name='stations_json'),
+
+    # Observations
+    url(r'^o/(?P<id>[0-9]+)/$',
+        'base.views.view_observation', name='observations_view_observation'),
     url(r'^observations/$', 'base.views.observations_list', name='observations'),
 
     url(r'^about/$',
