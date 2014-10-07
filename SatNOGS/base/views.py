@@ -5,7 +5,7 @@ from django.core import serializers
 from django.http import HttpResponse
 
 
-from base.models import Station, Observation
+from base.models import Station, Observation, Data
 
 
 def index(request):
@@ -38,5 +38,6 @@ def stations_json(request):
 def view_observation(request, id):
     """View for single observation page."""
     observation = get_object_or_404(Observation, id=id)
+    data = Data.objects.filter(observation=observation)
 
-    return render(request, 'base/observation_view.html', {'observation': observation})
+    return render(request, 'base/observation_view.html', {'observation': observation, 'data': data})
