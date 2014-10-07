@@ -1,3 +1,5 @@
+// Timeline loading
+
 observation_start = 1000 * $('#observation-info').data('start');
 observation_end = 1000 * $('#observation-info').data('end');
 
@@ -29,3 +31,22 @@ var chart = d3.timeline()
 
 var svg = d3.select("#timeline").append("svg").attr("width", 1140)
   .datum(observation_data).call(chart);
+
+// Waveform loading
+$('.observation-data').each(function( index ){
+  var wavesurfer = Object.create(WaveSurfer);
+  var data_payload_url = $(this).data('payload');
+  var container_el = '#data-' + $(this).data('id');
+
+  wavesurfer.init({
+    container: container_el,
+    waveColor: '#bf7fbf',
+    progressColor: 'purple'
+  });
+
+  $(this).find('.playpause').click( function(){
+    wavesurfer.playPause();
+  });
+
+  wavesurfer.load(data_payload_url);
+});

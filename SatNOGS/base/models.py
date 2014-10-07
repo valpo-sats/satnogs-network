@@ -102,8 +102,8 @@ class Observation(models.Model):
 
 class Data(models.Model):
     """Model for observation data."""
-    url = models.URLField()
     start = models.DateTimeField()
     end = models.DateTimeField()
     observation = models.ForeignKey(Observation)
     ground_station = models.ForeignKey(Station)
+    payload = models.FileField(upload_to='data_payloads')
