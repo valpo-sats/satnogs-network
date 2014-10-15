@@ -64,14 +64,14 @@ class Satellite(models.Model):
 class Transponder(models.Model):
     """Model for antennas transponders."""
     description = models.TextField()
-    alive = models.BooleanField()
+    alive = models.BooleanField(default=False)
     uplink_low = models.PositiveIntegerField()
     uplink_high = models.PositiveIntegerField()
     downlink_low = models.PositiveIntegerField()
     downlink_high = models.PositiveIntegerField()
     mode = models.CharField(choices=zip(MODE_CHOICES, MODE_CHOICES),
                             max_length=10)
-    invert = models.BooleanField()
+    invert = models.BooleanField(default=False)
     baud = models.FloatField(validators=[MinValueValidator(0)])
     satellite = models.ForeignKey(Satellite, related_name='transponder',
                                   null=True)
