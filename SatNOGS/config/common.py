@@ -39,6 +39,7 @@ class Common(Configuration):
     THIRD_PARTY_APPS = (
         'crispy_forms',  # Form layouts
         'avatar',  # for user avatars
+        'rest_framework'
     )
 
     # Apps specific for this project go here.
