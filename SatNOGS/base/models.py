@@ -64,7 +64,7 @@ class Satellite(models.Model):
 class Transponder(models.Model):
     """Model for antennas transponders."""
     description = models.TextField()
-    alive = models.BooleanField(default=False)
+    alive = models.BooleanField(default=True)
     uplink_low = models.PositiveIntegerField()
     uplink_high = models.PositiveIntegerField()
     downlink_low = models.PositiveIntegerField()
