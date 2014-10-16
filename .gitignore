@@ -13,10 +13,13 @@ pip-log.txt
 nosetests.xml
 
 # Vim
-
 *~
 *.swp
 *.swo
 
-satnogs.db
+# Sqlite
+*.db
+*.sqlite
+
+# Media
 media

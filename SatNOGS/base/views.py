@@ -40,4 +40,5 @@ def view_observation(request, id):
     observation = get_object_or_404(Observation, id=id)
     data = Data.objects.filter(observation=observation)
 
-    return render(request, 'base/observation_view.html', {'observation': observation, 'data': data})
+    return render(request, 'base/observation_view.html',
+                  {'observation': observation, 'data': data})
