@@ -25,3 +25,6 @@ django-autoslug==1.7.2
 
 # Useful things
 -e git+https://github.com/comzeradd/django-avatar.git@gravatar_https#egg=avatar
+
+# Astronomy
+orbit==0.2
