@@ -48,6 +48,8 @@ class SatelliteFactory(factory.django.DjangoModelFactory):
     norad_cat_id = fuzzy.FuzzyInteger(1000, 8000)
     name = fuzzy.FuzzyText()
     tle = fuzzy.FuzzyText()
+    updated = fuzzy.FuzzyDateTime(now() - timedelta(days=3),
+                                now() + timedelta(days=3))
 
     class Meta:
         model = Satellite

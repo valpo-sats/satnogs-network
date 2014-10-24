@@ -57,6 +57,7 @@ class Satellite(models.Model):
     norad_cat_id = models.PositiveIntegerField()
     name = models.CharField(max_length=45)
     tle = models.CharField(max_length=500, null=True)
+    updated = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __unicode__(self):
         return self.name
