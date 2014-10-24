@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse
+from django.shortcuts import render
 
 from django.views.generic import DetailView
 from django.views.generic import RedirectView
@@ -12,6 +13,8 @@ from .forms import UserForm
 
 from .models import User
 
+from base.models import Station, Observation
+
 
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
@@ -23,7 +26,7 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
     permanent = False
 
     def get_redirect_url(self):
-        return reverse("users:detail",
+        return reverse("users:view_user",
                        kwargs={"username": self.request.user.username})
 
 
@@ -34,7 +37,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = User
 
     def get_success_url(self):
-        return reverse("users:detail",
+        return reverse("users:view_user",
                        kwargs={"username": self.request.user.username})
 
     def get_object(self):
@@ -45,3 +48,15 @@ class UserListView(LoginRequiredMixin, ListView):
     model = User
     slug_field = "username"
     slug_url_kwarg = "username"
+
+
+def view_user(request, username):
+    """View for user page."""
+    user = User.objects.get(username=username)
+    observations = Observation.objects.filter(author=user)[0:10]
+    stations = Station.objects.filter(owner=user)
+
+    return render(request, 'users/user_detail.html',
+                  {'user': user,
+                   'observations': observations,
+                   'stations': stations})

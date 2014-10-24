@@ -28,7 +28,7 @@
             <td>{{ observation.transponder.mode }}</td>
             <td>{{ observation.start|date:"Y-m-d H:i:s" }}</br>{{ observation.end|date:"Y-m-d H:i:s" }}</td>
             <td>
-              <a href="{% url 'users:detail' observation.author.username %}">
+              <a href="{% url 'users:view_user' observation.author.username %}">
                 {{ observation.author.get_full_name }}
               </a>
             </td>
