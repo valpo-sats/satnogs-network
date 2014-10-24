@@ -25,7 +25,7 @@ class Antenna(models.Model):
 
 class Station(models.Model):
     """Model for SatNOGS ground stations."""
-    owner = models.ForeignKey(User)
+    owner = models.ForeignKey(User, null=True)
     name = models.CharField(max_length=45)
     image = models.ImageField(upload_to='ground_stations')
     alt = models.PositiveIntegerField()
@@ -57,7 +57,7 @@ class Satellite(models.Model):
     norad_cat_id = models.PositiveIntegerField()
     name = models.CharField(max_length=45)
     tle = models.CharField(max_length=500, null=True)
-    updated = models.DateTimeField(auto_now_add=True, blank=True)
+    updated = models.DateTimeField(auto_now_add=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -84,9 +84,9 @@ class Transponder(models.Model):
 
 class Observation(models.Model):
     """Model for SatNOGS observations."""
-    satellite = models.ForeignKey(Satellite)
+    satellite = models.ForeignKey(Satellite, null=True)
     transponder = models.ForeignKey(Transponder, null=True)
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, null=True)
     start = models.DateTimeField()
     end = models.DateTimeField()
 
@@ -106,6 +106,6 @@ class Data(models.Model):
     """Model for observation data."""
     start = models.DateTimeField()
     end = models.DateTimeField()
-    observation = models.ForeignKey(Observation)
-    ground_station = models.ForeignKey(Station)
+    observation = models.ForeignKey(Observation, null=True)
+    ground_station = models.ForeignKey(Station, null=True)
     payload = models.FileField(upload_to='data_payloads')
