@@ -18,8 +18,8 @@
     <div class="col-lg-12">
       <div class="list-group">
           {% for user in user_list %}
-            <a href="{% url 'users:detail' user.username %}" class="list-group-item">
-              <h4 class="list-group-item-heading">{% avatar user %} {{ user.username }}</h4>
+            <a href="{% url 'users:view_user' user.username %}" class="list-group-item">
+              <h4 class="list-group-item-heading">{% avatar user 35 %} {{ user.username }}</h4>
               <p class="list-group-item-text">{{ maker.tagline }}</p>
             </a>
           {% endfor %}

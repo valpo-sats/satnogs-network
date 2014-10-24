@@ -2,32 +2,126 @@
 {% load avatar_tags %}
 {% load static %}
 
-{% block title %}User: {{ object.username }}{% endblock %}
+{% block title %}User: {{ user.username }}{% endblock %}
 
 {% block content %}
 <div class="container">
 
   <div class="row">
     <div class="col-sm-12">
+      <h2>{% avatar user 50 %} {{ user.get_full_name }} ({{ user.username }})
+        {% if user == request.user %}
+          <div class="pull-right edit-profile-buttons">
+            <a class="btn btn-primary" href="{% url 'users:update' %}">My Info</a>
+            <a class="btn btn-primary" href="{% url 'account_email' %}">E-Mail</a>
+            <a class="btn btn-info" href="{% url 'avatar_change' %}">Avatar</a>
+          </div>
+        {% endif %}
+      </h2>
 
-      <h2>{{ object.username }}</h2>
     </div>
   </div>
 
-{% if object == request.user %}
-<!-- Action buttons -->     
-<div class="row">
-
-  <div class="col-sm-12 ">
-    <a class="btn btn-primary" href="{% url 'users:update' %}">My Info</a>
-    <a class="btn btn-primary" href="{% url 'account_email' %}">E-Mail</a>
-    <a class="btn btn-info" href="{% url 'avatar_change' %}">Avatar</a>
-    <!-- Your Stuff: Custom user template urls -->
+  <div class="row">
+    <div class="col-sm-12">
+      <h3>Ground Stations</h3>
+    </div>
   </div>
 
-</div>
-<!-- End Action buttons -->
-{% endif %}
+  {% if stations %}
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-hover">
+          <thead>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Altitude</th>
+            <th>Antenna</th>
+          </thead>
+          <tbody>
+            {% for station in stations.all %}
+              <tr>
+                <td>
+                  <a href="#">
+                    <span class="label label-default">
+                      {{ station.id }}
+                    </span>
+                  </a>
+                </td>
+                <td>{{ station.name }}</td>
+                <td>{{ station.lat }}, {{ station.lng }}</td>
+                <td>{{ station.alt}} m</td>
+                <td>
+                  {% for antenna in station.antenna.all %}
+                    {{ antenna.antenna_type}} on {{ antenna.frequency }} ({{ antenna.band}})<br>
+                  {% endfor %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    <div class="row">
+      <div class="col-md-12 notice">
+        <p>{{ user.get_full_name }} is not an owner of any ground stations.</p>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h3>Observations</h3>
+    </div>
+  </div>
+
+  {% if observations %}
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-hover">
+          <thead>
+            <th>ID</th>
+            <th>Satellite</th>
+            <th>Frequency</th>
+            <th>Encoding</th>
+            <th>Timeframe</th>
+            <th>Observer</th>
+          </thead>
+          <tbody>
+            {% for observation in observations.all %}
+              <tr>
+                <td>
+                  <a href="{% url 'base.views.view_observation' id=observation.id %}">
+                    <span class="label
+                                 {% if not observation.data_set.all %}
+                                  label-danger
+                                 {% else %}
+                                  label-success
+                                 {% endif %}">
+                      {{ observation.id }}
+                    </span>
+                  </a>
+                </td>
+                <td>{{ observation.satellite.name }}</td>
+                <td>{{ observation.transponder.downlink_low }}</td>
+                <td>{{ observation.transponder.mode }}</td>
+                <td>{{ observation.start|date:"Y-m-d H:i:s" }}</br>{{ observation.end|date:"Y-m-d H:i:s" }}</td>
+                <td>{{ observation.author.get_full_name }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    <div class="row">
+      <div class="col-md-12 notice">
+        <p>{{ user.get_full_name }} is not an author of any observations.</p>
+      </div>
+    </div>
+  {% endif %}
 
 
 </div>
