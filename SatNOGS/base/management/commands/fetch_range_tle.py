@@ -55,6 +55,7 @@ class Command(BaseCommand):
                 obj = Satellite(norad_cat_id=item)
 
             obj.name = sat.name()
+            obj.tle = str(sat.tle())
             obj.save()
 
             self.stdout.write('fetched data for {}: {}'.format(obj.norad_cat_id, obj.name))
