@@ -11,7 +11,7 @@ $(document).ready(function() {
     })
 
     $.ajax({
-        url: "/stations/json"
+        url: "/api/stations/?format=json"
         }).done(function(data) {
             data.forEach(function(m) {
                 L.mapbox.featureLayer({
@@ -19,12 +19,12 @@ $(document).ready(function() {
                     geometry: {
                         type: 'Point',
                         coordinates: [
-                          parseFloat(m.fields.lng),
-                          parseFloat(m.fields.lat)
+                          parseFloat(m.lng),
+                          parseFloat(m.lat)
                         ]
                     },
                     properties: {
-                        title: m.fields.name,
+                        title: m.name,
                         'marker-size': 'large',
                         'marker-color': '#666',
                     }

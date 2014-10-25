@@ -1,8 +1,5 @@
 from django.shortcuts import get_object_or_404, render
 from django.utils.timezone import now
-from django.core import serializers
-
-from django.http import HttpResponse
 
 
 from base.models import Station, Observation, Data
@@ -27,12 +24,6 @@ def observations_list(request):
     observations = Observation.objects.all()
 
     return render(request, 'base/observations.html', {'observations': observations})
-
-
-def stations_json(request):
-    data = serializers.serialize('json', Station.objects.all())
-
-    return HttpResponse(data, content_type='application/json')
 
 
 def view_observation(request, id):
