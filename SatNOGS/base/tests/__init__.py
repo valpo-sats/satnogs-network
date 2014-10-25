@@ -49,7 +49,7 @@ class SatelliteFactory(factory.django.DjangoModelFactory):
     name = fuzzy.FuzzyText()
     tle = fuzzy.FuzzyText()
     updated = fuzzy.FuzzyDateTime(now() - timedelta(days=3),
-                                now() + timedelta(days=3))
+                                  now() + timedelta(days=3))
 
     class Meta:
         model = Satellite

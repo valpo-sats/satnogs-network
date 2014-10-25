@@ -13,7 +13,6 @@ admin.autodiscover()
 urlpatterns = patterns(
     '',
     url(r'^$', 'base.views.index', name='home'),
-    url(r'^stations/json/$', 'base.views.stations_json', name='stations_json'),
 
     # Observations
     url(r'^o/(?P<id>[0-9]+)/$',
