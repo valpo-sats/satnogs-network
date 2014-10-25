@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.contrib.sites.models import Site
 from rest_framework import serializers
 
 from base.models import (Antenna, Data, Observation, Satellite, Station,
@@ -15,6 +17,12 @@ class StationSerializer(serializers.ModelSerializer):
         model = Station
         fields = ('owner', 'name', 'image', 'alt', 'lat', 'lng',
                   'antenna', 'featured', 'featured_date')
+
+    image = serializers.SerializerMethodField('image_url')
+
+    def image_url(self, obj):
+        site = Site.objects.get_current()
+        return '{}{}{}'.format(site, settings.MEDIA_URL, obj.image)
 
 
 class SatelliteSerializer(serializers.ModelSerializer):
