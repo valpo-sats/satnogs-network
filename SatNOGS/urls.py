@@ -25,6 +25,8 @@ urlpatterns = patterns(
     url(r'^stations/$',
         TemplateView.as_view(template_name='base/stations.html'),
         name='stations'),
+    url(r'^prediction_windows/(?P<sat_id>[\w.@+-]+)/$', 'base.views.prediction_windows',
+        name='prediction_windows'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^users/', include('users.urls', namespace='users')),
     url(r'^accounts/', include('allauth.urls')),
