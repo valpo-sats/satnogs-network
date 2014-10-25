@@ -39,6 +39,7 @@ class Common(Configuration):
     THIRD_PARTY_APPS = (
         'crispy_forms',  # Form layouts
         'avatar',  # for user avatars
+        'rest_framework'
     )
 
     # Apps specific for this project go here.
@@ -264,4 +265,10 @@ class Common(Configuration):
     }
     # END LOGGING CONFIGURATION
 
-    # Your common stuff: Below this line define 3rd party libary settings
+    REST_FRAMEWORK = {
+        # Use Django's standard `django.contrib.auth` permissions,
+        # or allow read-only access for unauthenticated users.
+        'DEFAULT_PERMISSION_CLASSES': [
+            'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        ]
+    }

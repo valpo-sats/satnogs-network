@@ -28,3 +28,8 @@ django-autoslug==1.7.2
 
 # Astronomy
 orbit==0.2
+
+# Django REST framework
+djangorestframework
+markdown
+django-filter
