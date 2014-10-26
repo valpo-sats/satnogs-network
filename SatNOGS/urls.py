@@ -19,6 +19,7 @@ urlpatterns = patterns(
         'base.views.view_observation', name='observations_view_observation'),
     url(r'^observations/$', 'base.views.observations_list',
         name='observations'),
+    url(r'^observations/new/$', 'base.views.observation_new', name='observation_new'),
     url(r'^about/$',
         TemplateView.as_view(template_name='base/about.html'),
         name='about'),

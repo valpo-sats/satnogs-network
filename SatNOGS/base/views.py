@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render
 from django.utils.timezone import now
 from django.http import JsonResponse
 
-from .models import Station, Observation, Data, Satellite
+from .models import Station, Transponder, Observation, Data, Satellite
 
 
 def index(request):
@@ -29,13 +29,22 @@ def observations_list(request):
     return render(request, 'base/observations.html', {'observations': observations})
 
 
+def observation_new(request):
+    """View for new observation"""
+    satellites = Satellite.objects.all()
+    transponders = Transponder.objects.filter(alive=True)
+
+    return render(request, 'base/observation_new.html', {'satellites': satellites,
+                                                         'transponders': transponders})
+
+
 def prediction_windows(request, sat_id, start_date, end_date):
     sat = get_object_or_404(Satellite, norad_cat_id=sat_id)
     satellite = ephem.readtle(str(sat.tle0), str(sat.tle1), str(sat.tle2))
 
     end_date = datetime.strptime(end_date, '%Y-%m-%d %H:%M')
 
-    data = {'windows': []}
+    data = []
 
     stations = Station.objects.all()
     for station in stations:
@@ -45,58 +54,41 @@ def prediction_windows(request, sat_id, start_date, end_date):
         observer.elevation = station.alt
         observer.date = str(start_date)
         station_match = False
-        while True:
-            satellite.compute(observer)
-            window = observer.next_pass(satellite)
+        keep_digging = True
+        while keep_digging:
+            tr, azr, tt, altt, ts, azs = observer.next_pass(satellite)
 
-            if not _check_window_sanity(window):
-                window_new = list(window)
-                window_new[0] = window[4]  # replace 0 with 4
-                window_new[1] = window[1]
-                window_new[2] = window[2]
-                window_new[3] = window[3]
-                window_new[4] = window[0]  # replace 4 with 0
-                window_new[5] = window[5]
-                window = window_new
-
-            if ephem.Date(window[0]).datetime() < end_date:
+            if ephem.Date(tr).datetime() < end_date:
                 if not station_match:
                     station_windows = {
-                        'station_id': station.id,
-                        'station_name': station.name,
+                        'id': station.id,
+                        'name': station.name,
                         'window': []
                     }
                     station_match = True
+
+                if ephem.Date(ts).datetime() > end_date:
+                    ts = end_date
+                    keep_digging = False
+                else:
+                    time_start_new = ephem.Date(ts).datetime() + timedelta(minutes=1)
+                    observer.date = time_start_new.strftime("%Y-%m-%d %H:%M:%S.%f")
+
                 station_windows['window'].append(
                     {
-                        'start': ephem.Date(window[0]).datetime().strftime("%Y-%m-%d %H:%M:%S.%f"),
-                        'end': ephem.Date(window[4]).datetime().strftime("%Y-%m-%d %H:%M:%S.%f"),
-                        'az_start': window[1]
+                        'start': ephem.Date(tr).datetime().strftime("%Y-%m-%d %H:%M:%S.%f"),
+                        'end': ephem.Date(ts).datetime().strftime("%Y-%m-%d %H:%M:%S.%f"),
+                        'az_start': azr
                     })
-                if ephem.Date(window[4]).datetime() > end_date:
-                    # window end outside of window bounds; break
-                    break
-                else:
-                    time_start_new = ephem.Date(window[4]).datetime() + timedelta(seconds=1)
-                    observer.date = time_start_new.strftime("%Y-%m-%d %H:%M:%S.%f")
+
             else:
                 # window start outside of window bounds
                 break
 
         if station_match:
-            data['windows'].append(station_windows)
+            data.append(station_windows)
 
-    return JsonResponse(data)
-
-
-def _check_window_sanity(window):
-    """
-    Weird bug in ephem library's next_pass function
-    returns set time earlier than rise time, leads to infinite loop
-    """
-    if ephem.Date(window[0]).datetime() > ephem.Date(window[4]).datetime():
-        return False
-    return True
+    return JsonResponse(data, safe=False)
 
 
 def view_observation(request, id):
