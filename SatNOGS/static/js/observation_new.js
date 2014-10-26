@@ -1,6 +1,11 @@
 $(function () {
   $('#datetimepicker-start').datetimepicker();
+  $('#datetimepicker-start').data("DateTimePicker").setMinDate(moment().add(1,'h'));
   $('#datetimepicker-end').datetimepicker();
+  $("#datetimepicker-start").on("dp.change",function (e) {
+     $('#datetimepicker-end').data("DateTimePicker").setMinDate(e.date);
+     $('#datetimepicker-end').data("DateTimePicker").setMaxDate(moment(e.date).add(24, 'h'));
+  });
 
   $('#satellite-selection').change( function() {
     var norad = $(this).find(':selected').data("norad");
@@ -16,6 +21,7 @@ $(function () {
 
 $( document ).ready( function(){
   $('#calculate-observation').click( function(){
+    $('.calculation-result').show();
     var satellite = $('#satellite-selection').val();
     var start_time = $('#datetimepicker-start input').val();
     var end_time = $('#datetimepicker-end input').val();
@@ -27,7 +33,7 @@ $( document ).ready( function(){
         $.each(data, function( i,k ){
           label = k.id + " - " + k.name;
           var times = [];
-          console.log(k);
+          //console.log(k);
           $.each(k.window, function( m,n ){
             var starting_time = moment(n.start).valueOf();
             var ending_time = moment(n.end).valueOf();

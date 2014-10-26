@@ -119,3 +119,7 @@
   text-align: center;
   color: #888;
 }
+
+.calculation-result {
+  display: none;
+}
