@@ -29,12 +29,11 @@ def observations_list(request):
     return render(request, 'base/observations.html', {'observations': observations})
 
 
-def prediction_windows(request, sat_id):
+def prediction_windows(request, sat_id, start_date, end_date):
     sat = get_object_or_404(Satellite, norad_cat_id=sat_id)
     satellite = ephem.readtle(str(sat.tle0), str(sat.tle1), str(sat.tle2))
 
-    time_start = datetime.now()
-    time_end = datetime.now() + timedelta(hours=5)
+    end_date = datetime.strptime(end_date, '%Y-%m-%d %H:%M')
 
     data = {'windows': []}
 
@@ -44,7 +43,7 @@ def prediction_windows(request, sat_id):
         observer.lon = str(station.lng)
         observer.lat = str(station.lat)
         observer.elevation = station.alt
-        observer.date = time_start.strftime("%Y-%m-%d %H:%M:%S.%f")
+        observer.date = str(start_date)
         station_match = False
         while True:
             satellite.compute(observer)
@@ -60,7 +59,7 @@ def prediction_windows(request, sat_id):
                 window_new[5] = window[5]
                 window = window_new
 
-            if ephem.Date(window[0]).datetime() < time_end:
+            if ephem.Date(window[0]).datetime() < end_date:
                 if not station_match:
                     station_windows = {
                         'station_id': station.id,
@@ -74,7 +73,7 @@ def prediction_windows(request, sat_id):
                         'end': ephem.Date(window[4]).datetime().strftime("%Y-%m-%d %H:%M:%S.%f"),
                         'az_start': window[1]
                     })
-                if ephem.Date(window[4]).datetime() > time_end:
+                if ephem.Date(window[4]).datetime() > end_date:
                     # window end outside of window bounds; break
                     break
                 else:
