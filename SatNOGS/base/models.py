@@ -12,7 +12,7 @@ ANTENNA_TYPES = (
     ('helical', 'Helical'),
     ('parabolic', 'Parabolic'),
 )
-MODE_CHOICES = ['FM', 'AFSK', 'APRS', 'SSTV', 'CW', 'FMN']
+MODE_CHOICES = ['FM', 'AFSK', 'BFSK', 'APRS', 'SSTV', 'CW', 'FMN']
 
 
 class Antenna(models.Model):
@@ -69,10 +69,10 @@ class Transponder(models.Model):
     """Model for antennas transponders."""
     description = models.TextField()
     alive = models.BooleanField(default=True)
-    uplink_low = models.PositiveIntegerField()
-    uplink_high = models.PositiveIntegerField()
-    downlink_low = models.PositiveIntegerField()
-    downlink_high = models.PositiveIntegerField()
+    uplink_low = models.PositiveIntegerField(blank=True, null=True)
+    uplink_high = models.PositiveIntegerField(blank=True, null=True)
+    downlink_low = models.PositiveIntegerField(blank=True, null=True)
+    downlink_high = models.PositiveIntegerField(blank=True, null=True)
     mode = models.CharField(choices=zip(MODE_CHOICES, MODE_CHOICES),
                             max_length=10)
     invert = models.BooleanField(default=False)
