@@ -38,7 +38,10 @@ class Command(BaseCommand):
                 obj = Satellite(norad_cat_id=item)
 
             obj.name = sat.name()
-            obj.tle = str(sat.tle())
+            tle = sat.tle()
+            obj.tle0 = tle[0]
+            obj.tle1 = tle[1]
+            obj.tle2 = tle[2]
             obj.save()
 
             self.stdout.write('fetched data for {}: {}'.format(obj.norad_cat_id, obj.name))

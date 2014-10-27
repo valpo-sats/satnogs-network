@@ -56,7 +56,9 @@ class Satellite(models.Model):
     """Model for SatNOGS satellites."""
     norad_cat_id = models.PositiveIntegerField()
     name = models.CharField(max_length=45)
-    tle = models.CharField(max_length=500, null=True)
+    tle0 = models.CharField(max_length=100, null=True)
+    tle1 = models.CharField(max_length=200, null=True)
+    tle2 = models.CharField(max_length=200, null=True)
     updated = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __unicode__(self):
@@ -108,4 +110,4 @@ class Data(models.Model):
     end = models.DateTimeField()
     observation = models.ForeignKey(Observation)
     ground_station = models.ForeignKey(Station)
-    payload = models.FileField(upload_to='data_payloads')
+    payload = models.FileField(upload_to='data_payloads', blank=True, null=True)

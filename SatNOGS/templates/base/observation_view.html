@@ -38,53 +38,70 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-12">
-    <h3>Timeline</h3>
-    <div id="timeline"></div>
-    <div id="hoverRes">
-      <div class="coloredDiv"></div>
-      <div id="name"></div>
-      <div id="scrolled_date"></div>
+{% if not observation.data_set.all %}
+  <div class="row">
+    <div class="col-md-12">
+      <p class="notice">
+        No data associated with this observation.
+      </p>
     </div>
   </div>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
-    <h3>Data</h3>
-    {% for data in data %}
-      <div class="panel panel-default observation-data"
-           data-id="{{ data.id }}"
-           data-payload="{{ MEDIA_URL }}{{ data.payload }}"
-           data-start="{{ data.start|date:"U" }}"
-           data-end="{{ data.end|date:"U" }}"
-           data-groundstation="{{ data.ground_station }}">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            Data payload #{{ data.id }} from {{ data.ground_station }}
-          </h3>
-        </div>
-        <div class="panel-body">
-          <div class="wave" id="data-{{ data.id }}"></div>
-        </div>
-        <div class="panel-footer">
-          <span class="label label-default">Timeframe</span>
-          {{ data.start|date:"Y-m-d H:i:s" }} ~ {{ data.end|date:"Y-m-d H:i:s" }}
-          <a href="{{ MEDIA_URL }}{{ data.payload }}" target="_blank" class="pull-right">
-            <button type="button" class="btn btn-default btn-xs">
-              <span class="glyphicon glyphicon-download"></span> Data
-            </button>
-          </a>
-          <button type="button" class="btn btn-primary btn-xs pull-right playpause">
-            <span class="glyphicon glyphicon-play"></span>
-            <span class="glyphicon glyphicon-pause"></span>
-          </button>
-        </div>
+{% else %}
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Timeline</h3>
+      <div id="timeline"></div>
+      <div id="hoverRes">
+        <div class="coloredDiv"></div>
+        <div id="name"></div>
+        <div id="scrolled_date"></div>
       </div>
-    {% endfor %}
+    </div>
   </div>
-</div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Data</h3>
+      {% for data in data %}
+        <div class="panel panel-default observation-data"
+             data-id="{{ data.id }}"
+             data-payload="{{ MEDIA_URL }}{{ data.payload }}"
+             data-start="{{ data.start|date:"U" }}"
+             data-end="{{ data.end|date:"U" }}"
+             data-groundstation="{{ data.ground_station }}">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              Data payload #{{ data.id }} from {{ data.ground_station }}
+            </h3>
+          </div>
+          <div class="panel-body">
+            {% if data.payload %}
+              <div class="wave" id="data-{{ data.id }}"></div>
+            {% else %}
+              <div class="notice">
+                Waiting for data
+              </div>
+            {% endif %}
+          </div>
+          <div class="panel-footer">
+            <span class="label label-default">Timeframe</span>
+            {{ data.start|date:"Y-m-d H:i:s" }} ~ {{ data.end|date:"Y-m-d H:i:s" }}
+            <a href="{{ MEDIA_URL }}{{ data.payload }}" target="_blank" class="pull-right">
+              <button type="button" class="btn btn-default btn-xs">
+                <span class="glyphicon glyphicon-download"></span> Data
+              </button>
+            </a>
+            <button type="button" class="btn btn-primary btn-xs pull-right playpause">
+              <span class="glyphicon glyphicon-play"></span>
+              <span class="glyphicon glyphicon-pause"></span>
+            </button>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
 {% endblock content %}
 
 {% block javascript %}
