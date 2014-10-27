@@ -36,24 +36,25 @@ def observation_new(request):
     """View for new observation"""
     me = request.user
     if request.method == 'POST':
-        sat_id = request.POST.get('sat_id')
-        trans_id = request.POST.get('trans_id')
-        start = request.POST.get('start')
-        end = request.POST.get('end')
-        sat = Satellite.objects.get(id=sat_id)
+        sat_id = request.POST.get('satellite')
+        trans_id = request.POST.get('transponder')
+        start = request.POST.get('start-time')
+        end = request.POST.get('end-time')
+        sat = Satellite.objects.get(norad_cat_id=sat_id)
         trans = Transponder.objects.get(id=trans_id)
         obs = Observation(satellite=sat, transponder=trans,
                           author=me, start=start, end=end)
         obs.save()
         total = int(request.POST.get('total'))
-        for item in total:
-            start = request.POST.get('d-start')
-            end = request.POST.get('d-end')
-            station_id = request.POST.get('d-station_id')
+        for item in range(total):
+            start = request.POST.get('{}-starting_time'.format(item))
+            end = request.POST.get('{}-ending_time'.format(item))
+            station_id = request.POST.get('{}-station'.format(item))
             ground_station = Station.objects.get(id=station_id)
             Data.objects.create(start=start, end=end, ground_station=ground_station,
                                 observation=obs)
-            return redirect(reverse('observations_view_observation', kwargs={'id': obs.id}))
+
+        return redirect(reverse('observations_view_observation', kwargs={'id': obs.id}))
 
     satellites = Satellite.objects.all()
     transponders = Transponder.objects.filter(alive=True)

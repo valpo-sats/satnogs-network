@@ -3,8 +3,9 @@ $(function () {
   $('#datetimepicker-start').data("DateTimePicker").setMinDate(moment().add(1,'h'));
   $('#datetimepicker-end').datetimepicker();
   $("#datetimepicker-start").on("dp.change",function (e) {
-     $('#datetimepicker-end').data("DateTimePicker").setMinDate(e.date);
-     $('#datetimepicker-end').data("DateTimePicker").setMaxDate(moment(e.date).add(24, 'h'));
+    //Setting minimum and maximum for end
+    $('#datetimepicker-end').data("DateTimePicker").setMinDate(e.date);
+    $('#datetimepicker-end').data("DateTimePicker").setMaxDate(moment(e.date).add(24, 'h'));
   });
 
   $('#satellite-selection').change( function() {
@@ -29,6 +30,7 @@ $( document ).ready( function(){
     $.ajax({
       url: '/prediction_windows/'+satellite+'/'+start_time+'/'+end_time
       }).done(function(data) {
+        var dc = 0; //Data counter
         var suggested_data = [];
         $.each(data, function( i,k ){
           label = k.id + " - " + k.name;
@@ -37,13 +39,18 @@ $( document ).ready( function(){
           $.each(k.window, function( m,n ){
             var starting_time = moment(n.start).valueOf();
             var ending_time = moment(n.end).valueOf();
+            $('#windows-data').append('<input type="hidden" name="'+dc+'-starting_time" value="'+n.start+'">');
+            $('#windows-data').append('<input type="hidden" name="'+dc+'-ending_time" value="'+n.end+'">');
+            $('#windows-data').append('<input type="hidden" name="'+dc+'-station" value="'+k.id+'">');
             times.push({starting_time: starting_time, ending_time: ending_time})
+            dc = dc +1;
           });
           suggested_data.push({label : label, times : times});
           //console.log(k);
           //console.log(k.name);
         });
         
+        $('#windows-data').append('<input type="hidden" name="total" value="'+dc+'">');
         /*data.each(function( index ){
           var data_groundstation = $(this).data('groundstation');
           var data_time_start = 1000 * $(this).data('start');

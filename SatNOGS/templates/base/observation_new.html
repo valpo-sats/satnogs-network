@@ -39,7 +39,7 @@
           <option id="no-transponder" value="" disabled selected>No transponder available</option>
           {% for transponder in transponders %}
             <option data-satellite="{{ transponder.satellite.norad_cat_id }}"
-                    value="{{ transponder.satellite.norad_cat_id }}">
+                    value="{{ transponder.id }}">
               {{ transponder.description }} - {{ transponder.downlink_low }} - {{ transponder.mode }}
             </option>
           {% endfor %}
@@ -94,6 +94,7 @@
       <div id="name"></div>
       <div id="scrolled_date"></div>
     </div>
+    <div id="windows-data"></div>
   </div>
 </div>
 

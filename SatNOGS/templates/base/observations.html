@@ -3,7 +3,12 @@
 {% block title %}Observations{% endblock %}
 
 {% block content %}
-<h1>Observations</h1>
+<h1>
+  Observations
+  {% if user.is_authenticated == 1 %}
+    <a class="btn btn-primary pull-right" href="{% url 'observation_new' %}">New Observation</a>
+  {% endif %}
+</h1>
 
 <div class="row">
   <div class="col-md-12">

@@ -110,4 +110,4 @@ class Data(models.Model):
     end = models.DateTimeField()
     observation = models.ForeignKey(Observation)
     ground_station = models.ForeignKey(Station)
-    payload = models.FileField(upload_to='data_payloads', null=True)
+    payload = models.FileField(upload_to='data_payloads', blank=True, null=True)
