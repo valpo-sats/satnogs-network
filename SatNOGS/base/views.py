@@ -1,9 +1,11 @@
 import ephem
 from datetime import datetime, timedelta
 
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
+from django.core.urlresolvers import reverse
 from django.utils.timezone import now
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 from .models import Station, Transponder, Observation, Data, Satellite
 
@@ -29,8 +31,30 @@ def observations_list(request):
     return render(request, 'base/observations.html', {'observations': observations})
 
 
+@login_required
 def observation_new(request):
     """View for new observation"""
+    me = request.user
+    if request.method == 'POST':
+        sat_id = request.POST.get('sat_id')
+        trans_id = request.POST.get('trans_id')
+        start = request.POST.get('start')
+        end = request.POST.get('end')
+        sat = Satellite.objects.get(id=sat_id)
+        trans = Transponder.objects.get(id=trans_id)
+        obs = Observation(satellite=sat, transponder=trans,
+                          author=me, start=start, end=end)
+        obs.save()
+        total = int(request.POST.get('total'))
+        for item in total:
+            start = request.POST.get('d-start')
+            end = request.POST.get('d-end')
+            station_id = request.POST.get('d-station_id')
+            ground_station = Station.objects.get(id=station_id)
+            Data.objects.create(start=start, end=end, ground_station=ground_station,
+                                observation=obs)
+            return redirect(reverse('observations_view_observation', kwargs={'id': obs.id}))
+
     satellites = Satellite.objects.all()
     transponders = Transponder.objects.filter(alive=True)
 
