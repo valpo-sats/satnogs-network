@@ -1,6 +1,7 @@
-SatNOGS Network
-==============================
-SatNOGS Network is a Django based application, implementing a global scheduling and monitoring network for ground station operations. It features multiple observers to multiple intrumentation functionality and manages observation jobs and results.
+# SatNOGS Network
+
+SatNOGS Network is a Django based application, implementing a global scheduling and monitoring network for ground station operations.
+It features multiple observers to multiple intrumentation functionality and manages observation jobs and results.
 
 ## Installation
 
@@ -27,7 +28,7 @@ $ source ../env/satnogs/bin/activate
 ```
 5 - Create and setup the database
 ```
-(satnogs)$ ./manage.py syncdb && ./manage.py migrate
+(satnogs)$ ./manage.py migrate
 ```
 6 - Create a superuser
 ```
@@ -39,4 +40,4 @@ $ source ../env/satnogs/bin/activate
 ```
 Your satnogs-network development instance is available in localhost:8000 . Go hack!
 
-LICENSE: MPL-2.0
+LICENSE: [MPL-2.0](LICENSE)
