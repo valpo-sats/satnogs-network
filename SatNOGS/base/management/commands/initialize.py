@@ -10,8 +10,8 @@ class Command(BaseCommand):
     help = 'Create initial fixtures'
 
     def handle(self, *args, **options):
-        ObservationFactory.create_batch(20)
-        StationFactory.create_batch(20)
+        ObservationFactory.create_batch(200)
+        StationFactory.create_batch(200)
 
         satellites = Satellite.objects.all()
 
