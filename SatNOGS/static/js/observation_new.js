@@ -28,7 +28,7 @@ $( document ).ready( function(){
     var end_time = $('#datetimepicker-end input').val();
 
     $.ajax({
-      url: '/prediction_windows/'+satellite+'/'+start_time+'/'+end_time
+      url: '/prediction_windows/'+satellite+'/'+start_time+'/'+end_time+'/'
       }).done(function(data) {
         var dc = 0; //Data counter
         var suggested_data = [];
