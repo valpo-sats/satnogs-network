@@ -87,7 +87,10 @@
           <div class="panel-footer">
             <span class="label label-default">Timeframe</span>
             {{ data.start|date:"Y-m-d H:i:s" }} ~ {{ data.end|date:"Y-m-d H:i:s" }}
-            <a href="{{ MEDIA_URL }}{{ data.payload }}" target="_blank" class="pull-right">
+            <a href="{{ MEDIA_URL }}{{ data.payload }}"
+               target="_blank"
+               class="pull-right"
+               download="">
               <button type="button" class="btn btn-default btn-xs">
                 <span class="glyphicon glyphicon-download"></span> Data
               </button>
