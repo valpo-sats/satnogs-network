@@ -123,3 +123,10 @@ def view_observation(request, id):
 
     return render(request, 'base/observation_view.html',
                   {'observation': observation, 'data': data})
+
+
+def stations_list(request):
+    """View to render Stations page."""
+    stations = Station.objects.all()
+
+    return render(request, 'base/stations.html', {'stations': stations})
