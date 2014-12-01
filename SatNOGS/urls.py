@@ -24,6 +24,8 @@ urlpatterns = patterns(
         TemplateView.as_view(template_name='base/about.html'),
         name='about'),
     url(r'^stations/$', 'base.views.stations_list', name='stations'),
+    url(r'^s/(?P<id>[0-9]+)/$',
+        'base.views.view_station', name='stations_view_station'),
     url(r'^prediction_windows/(?P<sat_id>[\w.@+-]+)/(?P<start_date>.+)/(?P<end_date>.+)/$',
         'base.views.prediction_windows',
         name='prediction_windows'),

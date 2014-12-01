@@ -33,9 +33,11 @@ class Station(models.Model):
                                         MinValueValidator(-90)])
     lng = models.FloatField(validators=[MaxValueValidator(180),
                                         MinValueValidator(-180)])
+    location = models.CharField(max_length=255, null=True, blank=True)
     antenna = models.ManyToManyField(Antenna)
     featured = models.BooleanField(default=False)
     featured_date = models.DateField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         # Set featured_date when featured bit is flipped

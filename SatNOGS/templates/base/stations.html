@@ -20,24 +20,36 @@
         <th>Location</th>
         <th>Altitude</th>
         <th>Antenna</th>
+        <th>Owner</th>
       </thead>
       <tbody>
         {% for station in stations.all %}
           <tr>
             <td>
-              <a href="#">
+              <a href="{% url 'base.views.view_station' id=station.id %}">
                 <span class="label label-default">
                   {{ station.id }}
                 </span>
               </a>
             </td>
             <td>{{ station.name }}</td>
-            <td>{{ station.lat }}, {{ station.lng }}</td>
+            {% if station.location %}
+              <td title="{{ station.lat|floatformat:-3 }}, {{ station.lng|floatformat:-3 }}">
+                {{ station.location }}
+              </td>
+            {% else %}
+              <td>{{ station.lat|floatformat:-3 }}, {{ station.lng|floatformat:-3 }}</td>
+            {% endif %}
             <td>{{ station.alt}} m</td>
             <td>
               {% for antenna in station.antenna.all %}
                 {{ antenna.antenna_type}} on {{ antenna.frequency }} ({{ antenna.band}})<br>
               {% endfor %}
+            </td>
+            <td>
+              <a href="{% url 'users:view_user' station.owner.username %}">
+                {{ station.owner.get_full_name }}
+              </a>
             </td>
           </tr>
         {% endfor %}
