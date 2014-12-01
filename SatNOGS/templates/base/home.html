@@ -6,8 +6,8 @@
 {% block title %}Home{% endblock %}
 
 {% block css %}
-  <script src='https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.js'></script>
-  <link href='https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.css' rel='stylesheet' />
+  <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
 {% endblock css %}
 
 {% block prenav-content %}
@@ -43,7 +43,11 @@
                    class="img-gs-front"
                    alt="{{ featured_station.name }}"
                    title="{{ featured_station.name }}">
-              <h3>{{ featured_station.name }}</h3>
+              <h3>
+                <a href="{% url 'base.views.view_station' id=featured_station.id %}">
+                   {{ featured_station.name }}
+                </a>
+              </h3>
             </div>
             <div class="caption">
               <div class="gs-front-line">

@@ -130,3 +130,11 @@ def stations_list(request):
     stations = Station.objects.all()
 
     return render(request, 'base/stations.html', {'stations': stations})
+
+
+def view_station(request, id):
+    """View for single station page."""
+    station = get_object_or_404(Station, id=id)
+
+    return render(request, 'base/station_view.html',
+                  {'station': station})
