@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
-from django.views.generic import TemplateView
 
 from django.contrib import admin
 
@@ -12,23 +11,10 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    url(r'^$', 'base.views.index', name='home'),
 
-    # Observations
-    url(r'^o/(?P<id>[0-9]+)/$',
-        'base.views.view_observation', name='observations_view_observation'),
-    url(r'^observations/$', 'base.views.observations_list',
-        name='observations'),
-    url(r'^observations/new/$', 'base.views.observation_new', name='observation_new'),
-    url(r'^about/$',
-        TemplateView.as_view(template_name='base/about.html'),
-        name='about'),
-    url(r'^stations/$', 'base.views.stations_list', name='stations'),
-    url(r'^s/(?P<id>[0-9]+)/$',
-        'base.views.view_station', name='stations_view_station'),
-    url(r'^prediction_windows/(?P<sat_id>[\w.@+-]+)/(?P<start_date>.+)/(?P<end_date>.+)/$',
-        'base.views.prediction_windows',
-        name='prediction_windows'),
+    # Base urls
+    url(r'^', include('base.urls')),
+
     url(r'^admin/', include(admin.site.urls)),
     url(r'^users/', include('users.urls', namespace='users')),
     url(r'^accounts/', include('allauth.urls')),
