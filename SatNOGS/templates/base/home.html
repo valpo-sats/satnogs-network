@@ -44,7 +44,7 @@
                    alt="{{ featured_station.name }}"
                    title="{{ featured_station.name }}">
               <h3>
-                <a href="{% url 'base.views.view_station' id=featured_station.id %}">
+                <a href="{% url 'stations_view_station' id=featured_station.id %}">
                    {{ featured_station.name }}
                 </a>
               </h3>
@@ -116,7 +116,7 @@
               {% for observation in latest_observations.all %}
                 <tr>
                   <td>
-                    <a href="{% url 'base.views.view_observation' id=observation.id %}">
+                    <a href="{% url 'observations_view_observation' id=observation.id %}">
                       <span class="label
                                    {% if not observation.data_set.all %}
                                     label-danger
@@ -155,7 +155,7 @@
               {% for observation in scheduled_observations.all %}
                 <tr>
                   <td>
-                    <a href="{% url 'base.views.view_observation' id=observation.id %}">
+                    <a href="{% url 'observations_view_observation' id=observation.id %}">
                       <span class="label label-info">
                         {{ observation.id }}
                       </span>

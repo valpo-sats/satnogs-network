@@ -26,7 +26,7 @@
         {% for station in stations.all %}
           <tr>
             <td>
-              <a href="{% url 'base.views.view_station' id=station.id %}">
+              <a href="{% url 'stations_view_station' id=station.id %}">
                 <span class="label label-default">
                   {{ station.id }}
                 </span>
