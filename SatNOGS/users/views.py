@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse
-from django.shortcuts import render
-
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.views.generic import DetailView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
@@ -10,8 +9,8 @@ from django.views.generic import ListView
 from braces.views import LoginRequiredMixin
 
 from .forms import UserForm
-
 from .models import User
+from base.forms import StationForm
 
 from base.models import Station, Observation
 
@@ -55,8 +54,19 @@ def view_user(request, username):
     user = User.objects.get(username=username)
     observations = Observation.objects.filter(author=user)[0:10]
     stations = Station.objects.filter(owner=user)
+    form = StationForm()
+    if request.method == 'POST':
+        form = StationForm(request.POST, request.FILES)
+        if form.is_valid():
+            f = form.save(commit=False)
+            f.owner = user
+            f.save()
+            form.save_m2m()
+            messages.success(request, 'New Ground Station added!')
+            return redirect(reverse('users:view_user', kwargs={'username': username}))
 
     return render(request, 'users/user_detail.html',
                   {'user': user,
                    'observations': observations,
-                   'stations': stations})
+                   'stations': stations,
+                   'form': form})

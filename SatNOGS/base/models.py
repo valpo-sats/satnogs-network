@@ -28,16 +28,20 @@ class Station(models.Model):
     owner = models.ForeignKey(User)
     name = models.CharField(max_length=45)
     image = models.ImageField(upload_to='ground_stations')
-    alt = models.PositiveIntegerField()
+    alt = models.PositiveIntegerField(help_text='In meters above ground')
     lat = models.FloatField(validators=[MaxValueValidator(90),
                                         MinValueValidator(-90)])
     lng = models.FloatField(validators=[MaxValueValidator(180),
                                         MinValueValidator(-180)])
     location = models.CharField(max_length=255, null=True, blank=True)
-    antenna = models.ManyToManyField(Antenna)
+    antenna = models.ManyToManyField(Antenna, null=True, blank=True,
+                                     help_text=('If you want to add a new Antenna '
+                                                'contact SatNOGS Team'))
     featured = models.BooleanField(default=False)
     featured_date = models.DateField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
+    online = models.BooleanField(default=False,
+                                 help_text='Is your Ground Station functional?')
 
     def save(self, *args, **kwargs):
         # Set featured_date when featured bit is flipped
