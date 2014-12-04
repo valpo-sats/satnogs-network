@@ -16,7 +16,7 @@ class StationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Station
         fields = ('owner', 'name', 'image', 'alt', 'lat', 'lng',
-                  'antenna', 'featured', 'featured_date')
+                  'antenna', 'featured_date', 'id')
 
     image = serializers.SerializerMethodField('image_url')
 

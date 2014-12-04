@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 
-from base.api import serializers
+from api import serializers
 from base.models import (Antenna, Data, Observation, Satellite, Station,
                          Transponder)
 

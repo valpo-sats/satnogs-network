@@ -20,7 +20,7 @@ urlpatterns = patterns(
     url(r'^accounts/', include('allauth.urls')),
     url(r'^avatar/', include('avatar.urls')),
 
-    url(r'^api/', include('base.api.urls'))
+    url(r'^api/', include('api.urls'))
 )
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
