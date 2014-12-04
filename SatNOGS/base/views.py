@@ -13,12 +13,12 @@ from .models import Station, Transponder, Observation, Data, Satellite
 def index(request):
     """View to render index page."""
     observations = Observation.objects.all()
-    featured_stations = Station.objects.filter(featured=True)
+    featured_station = Station.objects.filter(online=True).latest('featured_date')
 
     ctx = {
         'latest_observations': observations.filter(end__lt=now()),
         'scheduled_observations': observations.filter(end__gte=now()),
-        'featured_station': featured_stations.latest('featured_date')
+        'featured_station': featured_station
     }
 
     return render(request, 'base/home.html', ctx)

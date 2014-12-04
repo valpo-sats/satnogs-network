@@ -38,55 +38,55 @@
           <h3 class="panel-title">Featured Ground Station</h3>
         </div>
         <div class="panel-body">
-            <div class="text-center">
-              <img src="{{ MEDIA_URL }}{{ featured_station.image }}"
-                   class="img-gs-front"
-                   alt="{{ featured_station.name }}"
-                   title="{{ featured_station.name }}">
-              <h3>
-                <a href="{% url 'stations_view_station' id=featured_station.id %}">
-                   {{ featured_station.name }}
+          <div class="text-center">
+            <img src="{{ MEDIA_URL }}{{ featured_station.image }}"
+                 class="img-gs-front"
+                 alt="{{ featured_station.name }}"
+                 title="{{ featured_station.name }}">
+            <h3>
+              <a href="{% url 'stations_view_station' id=featured_station.id %}">
+                 {{ featured_station.name }}
+              </a>
+            </h3>
+          </div>
+          <div class="caption">
+            <div class="gs-front-line">
+              <span class="label label-info">Owner</span>
+              <span class="gs-front-data">
+                <a href="{% url 'users:view_user' featured_station.owner.username %}">
+                  {{ featured_station.owner.get_full_name }}
                 </a>
-              </h3>
+              </span>
             </div>
-            <div class="caption">
-              <div class="gs-front-line">
-                <span class="label label-info">Owner</span>
-                <span class="gs-front-data">
-                  <a href="{% url 'users:view_user' featured_station.owner.username %}">
-                    {{ featured_station.owner.get_full_name }}
-                  </a>
-                </span>
-              </div>
-              <div class="gs-front-line">
-                <span class="label label-info">Coordinates</span>
-                <span class="gs-front-data">
-                  {{ featured_station.lng|floatformat:2 }}°,
-                  {{ featured_station.lat|floatformat:2 }}°
-                </span>
-              </div>
-              <div class="gs-front-line">
-                <span class="label label-info">Antennas</span>
-                <span class="gs-front-data">
-                  {% for antenna in featured_station.antenna.all %}
-                    {{antenna.band}} {{ antenna.antenna_type }}{% if forloop.last %}{% else %},{% endif %}
-                  {% endfor %}
-                </span>
-              </div>
-              <div class="gs-front-line">
-                <span class="label label-info">Success Rate</span>
-                <span class="gs-front-data">
-                  <div class="progress">
-                    <div class="progress-bar progress-bar-success" style="width: 88%">
-                      <span class="sr-only">88% Complete (success)</span>
-                    </div>
-                    <div class="progress-bar progress-bar-danger" style="width: 12%">
-                      <span class="sr-only">12% Complete (danger)</span>
-                    </div>
+            <div class="gs-front-line">
+              <span class="label label-info">Coordinates</span>
+              <span class="gs-front-data">
+                {{ featured_station.lng|floatformat:2 }}°,
+                {{ featured_station.lat|floatformat:2 }}°
+              </span>
+            </div>
+            <div class="gs-front-line">
+              <span class="label label-info">Antennas</span>
+              <span class="gs-front-data">
+                {% for antenna in featured_station.antenna.all %}
+                  {{antenna.band}} {{ antenna.antenna_type }}{% if forloop.last %}{% else %},{% endif %}
+                {% endfor %}
+              </span>
+            </div>
+            <div class="gs-front-line">
+              <span class="label label-info">Success Rate</span>
+              <span class="gs-front-data">
+                <div class="progress">
+                  <div class="progress-bar progress-bar-success" style="width: 88%">
+                    <span class="sr-only">88% Complete (success)</span>
                   </div>
-                </span>
-              </div>
+                  <div class="progress-bar progress-bar-danger" style="width: 12%">
+                    <span class="sr-only">12% Complete (danger)</span>
+                  </div>
+                </div>
+              </span>
             </div>
+          </div>
         </div>
       </div>
     </div>
