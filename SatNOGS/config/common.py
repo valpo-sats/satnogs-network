@@ -39,13 +39,15 @@ class Common(Configuration):
     THIRD_PARTY_APPS = (
         'crispy_forms',  # Form layouts
         'avatar',  # for user avatars
-        'rest_framework'
+        'rest_framework',
+        'rest_framework.authtoken'
     )
 
     # Apps specific for this project go here.
     LOCAL_APPS = (
-        'users',  # custom users app
+        'users',
         'base',
+        'api',
         'django_extensions',
     )
 
@@ -183,7 +185,7 @@ class Common(Configuration):
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
     STATIC_URL = '/static/'
 
-    # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
+    # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
     STATICFILES_DIRS = (
         join(BASE_DIR, 'static'),
     )
@@ -266,9 +268,10 @@ class Common(Configuration):
     # END LOGGING CONFIGURATION
 
     REST_FRAMEWORK = {
-        # Use Django's standard `django.contrib.auth` permissions,
-        # or allow read-only access for unauthenticated users.
-        'DEFAULT_PERMISSION_CLASSES': [
-            'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-        ]
+        'DEFAULT_PERMISSION_CLASSES': (
+            'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        ),
+        'DEFAULT_AUTHENTICATION_CLASSES': (
+            'rest_framework.authentication.TokenAuthentication',
+        )
     }
