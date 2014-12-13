@@ -28,7 +28,7 @@ class StationFactory(factory.django.DjangoModelFactory):
     alt = fuzzy.FuzzyInteger(0, 800)
     lat = fuzzy.FuzzyFloat(-20, 70)
     lng = fuzzy.FuzzyFloat(-180, 180)
-    featured = fuzzy.FuzzyChoice(choices=[True, False])
+    featured_date = fuzzy.FuzzyDateTime(now() - timedelta(days=10), now())
 
     @factory.post_generation
     def antennas(self, create, extracted, **kwargs):

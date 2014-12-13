@@ -37,22 +37,10 @@ class Station(models.Model):
     antenna = models.ManyToManyField(Antenna, null=True, blank=True,
                                      help_text=('If you want to add a new Antenna '
                                                 'contact SatNOGS Team'))
-    featured = models.BooleanField(default=False)
     featured_date = models.DateField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     online = models.BooleanField(default=False,
                                  help_text='Is your Ground Station functional?')
-
-    def save(self, *args, **kwargs):
-        # Set featured_date when featured bit is flipped
-        if self.pk is None:
-            if self.featured:
-                self.featured_date = now().date()
-        else:
-            former = Station.objects.get(pk=self.pk)
-            if (not former.featured) and self.featured:
-                self.featured_date = now().date()
-        super(Station, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return "%d - %s" % (self.pk, self.name)
