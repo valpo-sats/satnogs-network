@@ -1,6 +1,8 @@
 import ephem
 from datetime import datetime, timedelta
 
+from django.contrib import messages
+from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.urlresolvers import reverse
 from django.utils.timezone import now
@@ -8,6 +10,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
 from network.base.models import Station, Transponder, Observation, Data, Satellite
+from network.base.forms import StationForm
 
 
 def index(request):
@@ -135,6 +138,20 @@ def stations_list(request):
 def station_view(request, id):
     """View for single station page."""
     station = get_object_or_404(Station, id=id)
+    form = StationForm(instance=station)
 
     return render(request, 'base/station_view.html',
-                  {'station': station})
+                  {'station': station, 'form': form})
+
+
+@require_POST
+def edit_station(request):
+    """Edit or add a single station."""
+    form = StationForm(request.POST, request.FILES)
+    if form.is_valid():
+        f = form.save(commit=False)
+        f.owner = request.user
+        f.save()
+        form.save_m2m()
+        messages.success(request, 'Successfully saved Ground Station')
+        return redirect(reverse('stations_view_station', kwargs={'id': f.id}))

@@ -1,6 +1,5 @@
 from django.core.urlresolvers import reverse
-from django.shortcuts import render, redirect
-from django.contrib import messages
+from django.shortcuts import render
 from django.views.generic import DetailView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
@@ -60,15 +59,6 @@ def view_user(request, username):
     except:
         token = Token.objects.create(user=user)
     form = StationForm()
-    if request.method == 'POST':
-        form = StationForm(request.POST, request.FILES)
-        if form.is_valid():
-            f = form.save(commit=False)
-            f.owner = user
-            f.save()
-            form.save_m2m()
-            messages.success(request, 'New Ground Station added!')
-            return redirect(reverse('users:view_user', kwargs={'username': username}))
 
     return render(request, 'users/user_detail.html',
                   {'user': user,

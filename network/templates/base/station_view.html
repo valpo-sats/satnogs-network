@@ -18,7 +18,7 @@
     data-lat="{{ station.lat }}">
    {{ station.id }} - {{ station.name }}
   {% if request.user == station.owner %}
-    <a class="btn btn-primary pull-right" href="#">Edit Station</a>
+    <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#StationModal">Edit Ground Station</button>
   {% endif %}
 </h2>
 
@@ -87,6 +87,9 @@
     <div id="map-station"></div>
   </div>
 </div>
+
+<!-- Station Modal -->
+{% include 'includes/station_edit.html' %}
 {% endblock content %}
 
 {% block javascript %}
