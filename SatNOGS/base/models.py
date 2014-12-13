@@ -22,6 +22,9 @@ class Antenna(models.Model):
                             max_length=5)
     antenna_type = models.CharField(choices=ANTENNA_TYPES, max_length=15)
 
+    def __unicode__(self):
+        return "%s - %s - %s" % (self.band, self.antenna_type, self.frequency)
+
 
 class Station(models.Model):
     """Model for SatNOGS ground stations."""
