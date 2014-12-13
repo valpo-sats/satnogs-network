@@ -56,7 +56,10 @@ def view_user(request, username):
     user = User.objects.get(username=username)
     observations = Observation.objects.filter(author=user)[0:10]
     stations = Station.objects.filter(owner=user)
-    token = Token.objects.get(user=user)
+    try:
+        token = Token.objects.get(user=user)
+    except:
+        token = Token.objects.create(user=user)
     form = StationForm()
     if request.method == 'POST':
         form = StationForm(request.POST, request.FILES)

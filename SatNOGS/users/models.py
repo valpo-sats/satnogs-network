@@ -7,9 +7,10 @@ from django.db.models.signals import post_save
 
 
 def gen_token(sender, instance, created, **kwargs):
-    token = Token.objects.get(user=instance)
-    if not token:
-        Token.objects.crete(user=instance)
+    try:
+        Token.objects.get(user=instance)
+    except:
+        Token.objects.create(user=instance)
 
 
 class User(AbstractUser):

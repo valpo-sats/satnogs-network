@@ -1,5 +1,6 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 
+from api.perms import StationOwnerCanEditPermission
 from api import serializers
 from base.models import (Antenna, Data, Observation, Satellite, Station,
                          Transponder)
@@ -30,6 +31,10 @@ class ObservationView(viewsets.ModelViewSet):
     serializer_class = serializers.ObservationSerializer
 
 
-class DataView(viewsets.ModelViewSet):
+class DataView(viewsets.ReadOnlyModelViewSet,
+               mixins.UpdateModelMixin):
     queryset = Data.objects.all()
     serializer_class = serializers.DataSerializer
+    permission_classes = [
+        StationOwnerCanEditPermission
+    ]

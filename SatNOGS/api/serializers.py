@@ -48,4 +48,4 @@ class ObservationSerializer(serializers.ModelSerializer):
 class DataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Data
-        fields = ('start', 'end', 'observation', 'ground_station', 'payload')
+        fields = ('id', 'start', 'end', 'observation', 'ground_station', 'payload')
