@@ -8,6 +8,8 @@ from django.views.generic import ListView
 
 from braces.views import LoginRequiredMixin
 
+from rest_framework.authtoken.models import Token
+
 from .forms import UserForm
 from .models import User
 from base.forms import StationForm
@@ -54,6 +56,10 @@ def view_user(request, username):
     user = User.objects.get(username=username)
     observations = Observation.objects.filter(author=user)[0:10]
     stations = Station.objects.filter(owner=user)
+    try:
+        token = Token.objects.get(user=user)
+    except:
+        token = Token.objects.create(user=user)
     form = StationForm()
     if request.method == 'POST':
         form = StationForm(request.POST, request.FILES)
@@ -69,4 +75,5 @@ def view_user(request, username):
                   {'user': user,
                    'observations': observations,
                    'stations': stations,
+                   'token': token,
                    'form': form})

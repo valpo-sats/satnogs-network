@@ -31,6 +31,6 @@ django-autoslug==1.7.2
 orbit==0.2
 
 # Django REST framework
-djangorestframework
+djangorestframework==3.0.1
 markdown
 django-filter
