@@ -132,8 +132,11 @@ def observation_view(request, id):
 def stations_list(request):
     """View to render Stations page."""
     stations = Station.objects.all()
+    form = StationForm()
+    antennas = Antenna.objects.all()
 
-    return render(request, 'base/stations.html', {'stations': stations})
+    return render(request, 'base/stations.html',
+                  {'stations': stations, 'form': form, 'antennas': antennas})
 
 
 def station_view(request, id):
