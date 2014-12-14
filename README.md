@@ -34,9 +34,13 @@ $ source ../env/satnogs/bin/activate
 ```
 (satnogs)$ ./manage.py createsuperuser
 ```
-7 - Run development server
+7 - Push some demo data
 ```
-(satnogs)$ ./manage.py runserver 0.0.0.0:8000
+(satnogs)$ ./manage.py initialize
+```
+8 - Run development server
+```
+(satnogs)$ ./manage.py runserver
 ```
 Your satnogs-network development instance is available in localhost:8000 . Go hack!
 
