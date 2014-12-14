@@ -12,7 +12,7 @@ from rest_framework.authtoken.models import Token
 from network.users.forms import UserForm
 from network.users.models import User
 from network.base.forms import StationForm
-from network.base.models import Station, Observation
+from network.base.models import Station, Observation, Antenna
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -59,10 +59,12 @@ def view_user(request, username):
     except:
         token = Token.objects.create(user=user)
     form = StationForm()
+    antennas = Antenna.objects.all()
 
     return render(request, 'users/user_detail.html',
                   {'user': user,
                    'observations': observations,
                    'stations': stations,
                    'token': token,
-                   'form': form})
+                   'form': form,
+                   'antennas': antennas})

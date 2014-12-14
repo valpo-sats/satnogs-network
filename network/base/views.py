@@ -9,7 +9,8 @@ from django.utils.timezone import now
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
-from network.base.models import Station, Transponder, Observation, Data, Satellite
+from network.base.models import (Station, Transponder, Observation,
+                                 Data, Satellite, Antenna)
 from network.base.forms import StationForm
 
 
@@ -139,15 +140,21 @@ def station_view(request, id):
     """View for single station page."""
     station = get_object_or_404(Station, id=id)
     form = StationForm(instance=station)
+    antennas = Antenna.objects.all()
 
     return render(request, 'base/station_view.html',
-                  {'station': station, 'form': form})
+                  {'station': station, 'form': form, 'antennas': antennas})
 
 
 @require_POST
 def edit_station(request):
     """Edit or add a single station."""
-    form = StationForm(request.POST, request.FILES)
+    if request.POST['id']:
+        pk = request.POST.get('id')
+        station = get_object_or_404(Station, id=pk, owner=request.user)
+        form = StationForm(request.POST, request.FILES, instance=station)
+    else:
+        form = StationForm(request.POST, request.FILES)
     if form.is_valid():
         f = form.save(commit=False)
         f.owner = request.user
@@ -155,3 +162,6 @@ def edit_station(request):
         form.save_m2m()
         messages.success(request, 'Successfully saved Ground Station')
         return redirect(reverse('stations_view_station', kwargs={'id': f.id}))
+    else:
+        messages.error(request, 'Some fields missing on the form')
+        return redirect(reverse('users:view_user', kwargs={'username': request.user.username}))

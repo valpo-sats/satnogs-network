@@ -136,3 +136,8 @@
   float: right;
   border-radius: 5px;
 }
+
+.station-edit-image {
+  width: 20px;
+  float: right;
+}
