@@ -2,6 +2,8 @@
 *.py[cod]
 *.pyc
 __pycache__
+env
+.env
 
 # Logs
 *.log
@@ -20,6 +22,7 @@ nosetests.xml
 # Sqlite
 *.db
 *.sqlite
+*.sqlite3
 
 # Media
 media

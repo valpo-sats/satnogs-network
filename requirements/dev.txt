@@ -1,0 +1,7 @@
+# Local development dependencies go here
+-r base.txt
+
+# Debug & Testing
+django-debug-toolbar==1.2.1
+sqlparse==0.1.14
+factory_boy
