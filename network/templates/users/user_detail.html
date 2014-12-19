@@ -74,6 +74,8 @@
     <div class="col-md-12">
       {% if user == request.user %}
         <button class="btn btn-default" data-toggle="modal" data-target="#StationModal">Add Ground Station</button>
+        <!-- Station Modal -->
+        {% include 'includes/station_edit.html' %}
       {% endif %}
     </div>
   </div>
@@ -145,7 +147,4 @@
       </div>
     </div>
   </div>
-
-  <!-- Station Modal -->
-  {% include 'includes/station_edit.html' %}
 {% endblock content %}

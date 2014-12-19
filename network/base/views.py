@@ -150,7 +150,7 @@ def station_view(request, id):
 
 
 @require_POST
-def edit_station(request):
+def station_edit(request):
     """Edit or add a single station."""
     if request.POST['id']:
         pk = request.POST.get('id')
@@ -164,7 +164,7 @@ def edit_station(request):
         f.save()
         form.save_m2m()
         messages.success(request, 'Successfully saved Ground Station')
-        return redirect(reverse('stations_view_station', kwargs={'id': f.id}))
+        return redirect(reverse('base:station_view', kwargs={'id': f.id}))
     else:
         messages.error(request, 'Some fields missing on the form')
         return redirect(reverse('users:view_user', kwargs={'username': request.user.username}))
