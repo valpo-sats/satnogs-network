@@ -7,7 +7,7 @@
 <h1>
   Ground Stations
   {% if user.is_authenticated %}
-    <a class="btn btn-primary pull-right" href="">New Ground Station</a>
+    <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#StationModal">New Ground Station</button>
   {% endif %}
 </h1>
 
@@ -57,4 +57,7 @@
     </table>
   </div>
 </div>
+
+<!-- Station Modal -->
+{% include 'includes/station_edit.html' %}
 {% endblock content %}

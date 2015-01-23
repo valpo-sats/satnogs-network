@@ -1,13 +1,17 @@
 import ephem
 from datetime import datetime, timedelta
 
+from django.contrib import messages
+from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.urlresolvers import reverse
 from django.utils.timezone import now
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
-from network.base.models import Station, Transponder, Observation, Data, Satellite
+from network.base.models import (Station, Transponder, Observation,
+                                 Data, Satellite, Antenna)
+from network.base.forms import StationForm
 
 
 def index(request):
@@ -128,13 +132,39 @@ def observation_view(request, id):
 def stations_list(request):
     """View to render Stations page."""
     stations = Station.objects.all()
+    form = StationForm()
+    antennas = Antenna.objects.all()
 
-    return render(request, 'base/stations.html', {'stations': stations})
+    return render(request, 'base/stations.html',
+                  {'stations': stations, 'form': form, 'antennas': antennas})
 
 
 def station_view(request, id):
     """View for single station page."""
     station = get_object_or_404(Station, id=id)
+    form = StationForm(instance=station)
+    antennas = Antenna.objects.all()
 
     return render(request, 'base/station_view.html',
-                  {'station': station})
+                  {'station': station, 'form': form, 'antennas': antennas})
+
+
+@require_POST
+def station_edit(request):
+    """Edit or add a single station."""
+    if request.POST['id']:
+        pk = request.POST.get('id')
+        station = get_object_or_404(Station, id=pk, owner=request.user)
+        form = StationForm(request.POST, request.FILES, instance=station)
+    else:
+        form = StationForm(request.POST, request.FILES)
+    if form.is_valid():
+        f = form.save(commit=False)
+        f.owner = request.user
+        f.save()
+        form.save_m2m()
+        messages.success(request, 'Successfully saved Ground Station')
+        return redirect(reverse('base:station_view', kwargs={'id': f.id}))
+    else:
+        messages.error(request, 'Some fields missing on the form')
+        return redirect(reverse('users:view_user', kwargs={'username': request.user.username}))
