@@ -5,43 +5,8 @@ It features multiple observers to multiple intrumentation functionality and mana
 
 ## Installation
 
-### Development
+See the [documentation](http://docs.satnogs.org/satnogs-network-installation.html).
 
-Requirements: You ‘ll need python, virtualenv, pip and git
+## License
 
-1 - Clone our code
-```
-$ git clone https://github.com/satnogs/satnogs-network.git
-```
-2 - Set up the virtual environment.You will need to have a folder for your virtual envs. Create outside your project folder an "env" folder or fix the following commands to match your setup.
-```
-$ cd satnogs-network/
-$ virtualenv --no-site-packages ../env/satnogs
-```
-3 - Activate your python virtual environment
-```
-$ source ../env/satnogs/bin/activate
-```
-4 - Install local development requirements
-```
-(satnogs)$ pip install -r requirements/local.txt
-```
-5 - Create and setup the database
-```
-(satnogs)$ ./manage.py migrate
-```
-6 - Create a superuser
-```
-(satnogs)$ ./manage.py createsuperuser
-```
-7 - Push some demo data
-```
-(satnogs)$ ./manage.py initialize
-```
-8 - Run development server
-```
-(satnogs)$ ./manage.py runserver
-```
-Your satnogs-network development instance is available in localhost:8000 . Go hack!
-
-LICENSE: [MPL-2.0](LICENSE)
+[MPL-2.0](LICENSE)
