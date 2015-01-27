@@ -150,7 +150,7 @@ REST_FRAMEWORK = {
 }
 
 # Security
-SECRET_KEY = getenv('DJANGO_SECRET_KEY')
+SECRET_KEY = getenv('DJANGO_SECRET_KEY', 'changeme')
 
 # Database
 import dj_database_url

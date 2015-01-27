@@ -3,7 +3,6 @@ from base import *
 
 
 # Apps
-INSTALLED_APPS = Common.INSTALLED_APPS
 INSTALLED_APPS += ('djangosecure', )
 
 # Security
@@ -17,14 +16,8 @@ SESSION_COOKIE_HTTPONLY = True
 SECURE_SSL_REDIRECT = True
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '*')
 
-# Templates
-TEMPLATE_LOADERS = (
-    ('django.template.loaders.cached.Loader', (
-        'django.template.loaders.filesystem.Loader',
-        'django.template.loaders.app_directories.Loader',
-    )),
-)
-
-# Analytics
-GOOGLE_ANALYTICS_PROPERTY_ID = os.getenv('DJANGO_GOOGLE_ANALYTICS_PROPERTY_ID', False)
-GOOGLE_ANALYTICS_DOMAIN = os.getenv('DJANGO_GOOGLE_ANALYTICS_DOMAIN', False)
+# Mail
+EMAIL_HOST = "localhost"
+EMAIL_PORT = 25
+DEFAULT_FROM_EMAIL = os.getenv('DJANGO_DEFAULT_FROM_EMAIL', 'noreply@example.com')
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
