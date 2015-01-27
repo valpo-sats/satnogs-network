@@ -26,3 +26,4 @@ nosetests.xml
 
 # Media
 media
+staticfiles
