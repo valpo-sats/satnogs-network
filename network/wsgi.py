@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import dotenv
-import django.core.handlers.wsgi
+from django.core.wsgi import get_wsgi_application
 
-dotenv.read_dotenv()
-application = django.core.handlers.wsgi.WSGIHandler()
+dotenv.read_dotenv(dotenv='.env')
+application = get_wsgi_application()
