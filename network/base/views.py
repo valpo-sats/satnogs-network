@@ -60,7 +60,7 @@ def observation_new(request):
 
         return redirect(reverse('base:observation_view', kwargs={'id': obs.id}))
 
-    satellites = Satellite.objects.all()
+    satellites = Satellite.objects.filter(transponder__alive=True)
     transponders = Transponder.objects.filter(alive=True)
 
     return render(request, 'base/observation_new.html', {'satellites': satellites,
