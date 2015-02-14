@@ -1,3 +1,5 @@
+from django.utils.timezone import now
+
 import django_filters
 from rest_framework import viewsets, mixins
 
@@ -58,3 +60,6 @@ class JobView(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.JobSerializer
     filter_class = DataFilter
     filter_fields = ('ground_station')
+
+    def get_queryset(self):
+        return self.queryset.filter(start__gte=now())
