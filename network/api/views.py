@@ -51,3 +51,10 @@ class DataView(viewsets.ReadOnlyModelViewSet, mixins.UpdateModelMixin):
         if payload == '':
             return self.queryset.filter(payload='')
         return super(DataView, self).get_queryset()
+
+
+class JobView(viewsets.ReadOnlyModelViewSet):
+    queryset = Data.objects.filter(payload='')
+    serializer_class = serializers.JobSerializer
+    filter_class = DataFilter
+    filter_fields = ('ground_station')
