@@ -156,3 +156,7 @@ SECRET_KEY = getenv('DJANGO_SECRET_KEY', 'changeme')
 import dj_database_url
 DATABASE_URL = getenv('DJANGO_DATABASE_URL', 'sqlite:///db.sqlite3')
 DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
+}

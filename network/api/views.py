@@ -1,3 +1,4 @@
+import django_filters
 from rest_framework import viewsets, mixins
 
 from network.api.perms import StationOwnerCanEditPermission
@@ -31,10 +32,22 @@ class ObservationView(viewsets.ModelViewSet):
     serializer_class = serializers.ObservationSerializer
 
 
-class DataView(viewsets.ReadOnlyModelViewSet,
-               mixins.UpdateModelMixin):
+class DataFilter(django_filters.FilterSet):
+    class Meta:
+        model = Data
+        fields = ['start', 'end', 'ground_station']
+
+
+class DataView(viewsets.ReadOnlyModelViewSet, mixins.UpdateModelMixin):
     queryset = Data.objects.all()
     serializer_class = serializers.DataSerializer
+    filter_class = DataFilter
     permission_classes = [
         StationOwnerCanEditPermission
     ]
+
+    def get_queryset(self):
+        payload = self.request.QUERY_PARAMS.get('payload', None)
+        if payload == '':
+            return self.queryset.filter(payload='')
+        return super(DataView, self).get_queryset()
