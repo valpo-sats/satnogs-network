@@ -1,0 +1,4 @@
+# Local development dependencies go here
+-r dev.txt
+
+psycopg2==2.5.4
