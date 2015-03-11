@@ -10,10 +10,8 @@ web:
     - db
   environment:
     - DJANGO_SETTINGS_MODULE=network.settings.dev
-    - DJANGO_DEFAULT_FROM_EMAIL=noreply@example.com
-    - DJANGO_GOOGLE_ANALYTICS_DOMAIN=auto
-    - DJANGO_GOOGLE_ANALYTICS_PROPERTY_ID=UA-xxxxxxxx-x
-    - DJANGO_ALLOWED_HOSTS=*
-    - DJANGO_DATABASE_URL=postgres://postgres@db/postgres
+    - DEFAULT_FROM_EMAIL=noreply@example.com
+    - ALLOWED_HOSTS=*
+    - DATABASE_URL=postgres://postgres@db/postgres
   command:
     ./bin/run-fig.sh
