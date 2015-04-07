@@ -6,8 +6,7 @@
 {% block title %}Home{% endblock %}
 
 {% block css %}
-  <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
-  <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
+  <link rel="stylesheet" href="{% static 'css/lib/mapbox.css' %}">
 {% endblock css %}
 
 {% block prenav-content %}
@@ -209,5 +208,6 @@
 {% endblock content %}
 
 {% block javascript %}
-  <script type="text/javascript" src="{% static 'js/home.js' %}"></script>
+  <script src="{% static 'js/lib/mapbox.js' %}"></script>
+  <script src="{% static 'js/home.js' %}"></script>
 {% endblock %}
