@@ -1,5 +1,10 @@
 db:
-  image: postgres:9.3
+  image: mariadb:5.5
+  environment:
+  - MYSQL_DATABASE=network
+  - MYSQL_USER=network
+  - MYSQL_PASSWORD=network
+  - MYSQL_ROOT_PASSWORD=toor
 web:
   build: .
   ports:
@@ -12,6 +17,6 @@ web:
     - DJANGO_SETTINGS_MODULE=network.settings.dev
     - DEFAULT_FROM_EMAIL=noreply@example.com
     - ALLOWED_HOSTS=*
-    - DATABASE_URL=postgres://postgres@db/postgres
+    - DATABASE_URL=mysql://network:network@db/network
   command:
     ./bin/run-fig.sh
