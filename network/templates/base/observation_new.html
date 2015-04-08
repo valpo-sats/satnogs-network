@@ -6,7 +6,7 @@
 {% block title %}New Observation{% endblock %}
 
 {% block css %}
-<link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/lib/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
 {% endblock css %}
 
 {% block content %}
@@ -111,9 +111,9 @@
 {% endblock content %}
 
 {% block javascript %}
-<script src="{% static 'js/d3.v3.min.js' %}"></script>
-<script src="{% static 'js/d3-timeline.js' %}"></script>
-<script src="{% static 'js/moment.min.js' %}"></script>
-<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
-<script src="{% static 'js/observation_new.js' %}"></script>
+  <script src="{% static 'js/lib/d3.v3.min.js' %}"></script>
+  <script src="{% static 'js/lib/d3-timeline.js' %}"></script>
+  <script src="{% static 'js/lib/moment.min.js' %}"></script>
+  <script src="{% static 'js/lib/bootstrap-datetimepicker.min.js' %}"></script>
+  <script src="{% static 'js/observation_new.js' %}"></script>
 {% endblock javascript %}

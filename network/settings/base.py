@@ -96,7 +96,7 @@ STATICFILES_FINDERS = (
 MEDIA_ROOT = path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
-STATION_DEFAULT_IMAGE = '/static/images/dish.png'
+STATION_DEFAULT_IMAGE = '/static/img/dish.png'
 
 # App conf
 ROOT_URLCONF = 'network.urls'
