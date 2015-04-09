@@ -74,6 +74,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
     'allauth.account.context_processors.account',
     'allauth.socialaccount.context_processors.socialaccount',
+
+    'network.base.context_processors.analytics',
 )
 TEMPLATE_DIRS = (
     path.join(BASE_DIR, 'templates'),
