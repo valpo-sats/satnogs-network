@@ -59,6 +59,10 @@ body {
     font-family:'ClearSans';
 }
 
+a:hover {
+    text-decoration: none;
+}
+
 .alert-debug {
     color: black;
     background-color: white;
