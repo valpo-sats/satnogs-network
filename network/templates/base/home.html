@@ -15,8 +15,7 @@
 
 {% block content %}
   <div class="row" id="call2action">
-    {% if request.user.is_authenticated %}
-    {% else %}
+    {% if not request.user.is_authenticated %}
       <div class="col-md-8 col-md-offset-2 panel panel-default">
         <h3 class="text-center">
           Ground stations swarm control, at your fingertips.
@@ -72,6 +71,7 @@
                 {% endfor %}
               </span>
             </div>
+            <!--
             <div class="gs-front-line">
               <span class="label label-info">Success Rate</span>
               <span class="gs-front-data">
@@ -85,12 +85,12 @@
                 </div>
               </span>
             </div>
+            -->
           </div>
         </div>
       </div>
     </div>
     <div class="col-md-8">
-      <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
         <li class="active">
           <a href="#successful" class="toggle" role="tab" data-toggle="tab">Latest Observations</a>
@@ -99,7 +99,6 @@
           <a href="#scheduled" class="toggle" role="tab" data-toggle="tab">Scheduled Observations</a>
         </li>
       </ul>
-      <!-- Tab panes -->
       <div class="tab-content">
         <div class="tab-pane active" id="successful">
           <table class="table table-hover">
@@ -129,7 +128,10 @@
                   <td>{{ observation.satellite.name }}</td>
                   <td>{% frq observation.transponder.downlink_low %}</td>
                   <td>{{ observation.transponder.mode }}</td>
-                  <td>{{ observation.start|date:"Y-m-d H:i:s" }}</br>{{ observation.end|date:"Y-m-d H:i:s" }}</td>
+                  <td>
+                    {{ observation.start|date:"Y-m-d H:i:s" }}<br>
+                    {{ observation.end|date:"Y-m-d H:i:s" }}
+                  </td>
                   <td>
                     <a href="{% url 'users:view_user' username=observation.author.username %}">
                       {{ observation.author.get_full_name }}
