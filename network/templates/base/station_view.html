@@ -18,10 +18,8 @@
      {{ station.id }} - {{ station.name }}
     {% if request.user == station.owner %}
       <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#StationModal">Edit Ground Station</button>
-      <!-- Station Modal -->
-      {% include 'includes/station_edit.html' %}
     {% endif %}
-  </h2
+  </h2>
 
   <div class="row">
     <div class="col-md-4">
@@ -88,6 +86,11 @@
       <div id="map-station"></div>
     </div>
   </div>
+
+  {% if request.user == station.owner %}
+    <!-- Station Modal -->
+    {% include 'includes/station_edit.html' %}
+  {% endif %}
 {% endblock content %}
 
 {% block javascript %}
