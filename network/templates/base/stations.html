@@ -48,7 +48,7 @@
               </td>
               <td>
                 <a href="{% url 'users:view_user' username=station.owner.username %}">
-                  {{ station.owner.get_full_name }}
+                  {{ station.owner.displayname }}
                 </a>
               </td>
             </tr>
