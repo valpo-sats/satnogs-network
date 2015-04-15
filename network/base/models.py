@@ -37,9 +37,9 @@ class Station(models.Model):
                                         MinValueValidator(-90)])
     lng = models.FloatField(validators=[MaxValueValidator(180),
                                         MinValueValidator(-180)])
-    qthlocator = models.CharField(max_length=255, null=True, blank=True)
-    location = models.CharField(max_length=255, null=True, blank=True)
-    antenna = models.ManyToManyField(Antenna, null=True, blank=True,
+    qthlocator = models.CharField(max_length=255, blank=True)
+    location = models.CharField(max_length=255, blank=True)
+    antenna = models.ManyToManyField(Antenna, blank=True,
                                      help_text=('If you want to add a new Antenna '
                                                 'contact SatNOGS Team'))
     featured_date = models.DateField(null=True, blank=True)
@@ -61,9 +61,9 @@ class Satellite(models.Model):
     """Model for SatNOGS satellites."""
     norad_cat_id = models.PositiveIntegerField()
     name = models.CharField(max_length=45)
-    tle0 = models.CharField(max_length=100, null=True)
-    tle1 = models.CharField(max_length=200, null=True)
-    tle2 = models.CharField(max_length=200, null=True)
+    tle0 = models.CharField(max_length=100, blank=True)
+    tle1 = models.CharField(max_length=200, blank=True)
+    tle2 = models.CharField(max_length=200, blank=True)
     updated = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __unicode__(self):
