@@ -19,7 +19,6 @@ THIRD_PARTY_APPS = (
     'crispy_forms',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
 )
 LOCAL_APPS = (
     'network.users',
@@ -106,16 +105,17 @@ WSGI_APPLICATION = 'network.wsgi.application'
 
 # Auth
 AUTHENTICATION_BACKENDS = (
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 )
-ACCOUNT_AUTHENTICATION_METHOD = "username"
+ACCOUNT_ADAPTER = 'network.users.adapter.NoSignupsAdapter'
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-AUTH_USER_MODEL = "users.User"
-LOGIN_REDIRECT_URL = "users:redirect_user"
-LOGIN_URL = "account_login"
-AUTOSLUG_SLUGIFY_FUNCTION = "slugify.slugify"
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = 'users:redirect_user'
+LOGIN_URL = 'account_login'
+AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 
 # Logging
 LOGGING = {

@@ -5,3 +5,4 @@
 django-debug-toolbar==1.2.1
 sqlparse==0.1.14
 factory_boy
+flake8==2.4.0

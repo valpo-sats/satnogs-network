@@ -6,7 +6,7 @@ from django.utils.timezone import now
 from factory import fuzzy
 
 from network.base.models import (ANTENNA_BANDS, ANTENNA_TYPES, MODE_CHOICES,
-                         Antenna, Satellite, Station, Transponder, Observation)
+                                 Antenna, Satellite, Station, Transponder, Observation)
 from network.users.tests import UserFactory
 
 
