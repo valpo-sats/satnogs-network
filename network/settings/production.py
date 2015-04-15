@@ -1,6 +1,7 @@
 import os
 from base import *
 
+ENVIRONMENT = 'production'
 
 # Apps
 INSTALLED_APPS += ('djangosecure', )
@@ -21,3 +22,6 @@ EMAIL_HOST = "localhost"
 EMAIL_PORT = 25
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@example.com')
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
+# Analytics
+GOOGLE_ANALYTICS_KEY = os.getenv('GOOGLE_ANALYTICS_KEY', None)

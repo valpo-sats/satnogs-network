@@ -1,6 +1,8 @@
 import os
 from base import *
 
+ENVIRONMENT = 'stage'
+
 # Security
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*')
 
