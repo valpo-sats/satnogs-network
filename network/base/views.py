@@ -1,6 +1,7 @@
 import ephem
 from datetime import datetime, timedelta
 
+from django.conf import settings
 from django.contrib import messages
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404, render, redirect
@@ -22,7 +23,9 @@ def index(request):
     ctx = {
         'latest_observations': observations.filter(end__lt=now()),
         'scheduled_observations': observations.filter(end__gte=now()),
-        'featured_station': featured_station
+        'featured_station': featured_station,
+        'mapbox_id': settings.MAPBOX_MAP_ID,
+        'mapbox_token': settings.MAPBOX_TOKEN
     }
 
     return render(request, 'base/home.html', ctx)
@@ -146,7 +149,9 @@ def station_view(request, id):
     antennas = Antenna.objects.all()
 
     return render(request, 'base/station_view.html',
-                  {'station': station, 'form': form, 'antennas': antennas})
+                  {'station': station, 'form': form, 'antennas': antennas,
+                   'mapbox_id': settings.MAPBOX_MAP_ID,
+                   'mapbox_token': settings.MAPBOX_TOKEN})
 
 
 @require_POST

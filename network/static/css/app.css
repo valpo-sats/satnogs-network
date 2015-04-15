@@ -59,6 +59,10 @@ body {
     font-family:'ClearSans';
 }
 
+a:hover {
+    text-decoration: none;
+}
+
 .alert-debug {
     color: black;
     background-color: white;
@@ -96,6 +100,14 @@ body {
     margin: 0 auto;
     margin-top: -7px;
     margin-right: 5px;
+}
+
+footer {
+    margin-bottom: 10px;
+}
+
+.footer-options {
+    padding: 10px;
 }
 
 #main-navbar {

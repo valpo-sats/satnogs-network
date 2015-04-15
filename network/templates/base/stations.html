@@ -27,12 +27,21 @@
             <tr>
               <td>
                 <a href="{% url 'base:station_view' id=station.id %}">
-                  <span class="label label-default">
+                  <span class="label
+                               {% if station.online %}
+                                 label-success
+                               {% else %}
+                                 label-danger
+                               {% endif %}">
                     {{ station.id }}
                   </span>
                 </a>
               </td>
-              <td>{{ station.name }}</td>
+              <td>
+                <a href="{% url 'base:station_view' id=station.id %}">
+                  {{ station.name }}
+                </a>
+              </td>
               {% if station.location %}
                 <td title="{{ station.lat|floatformat:-3 }}, {{ station.lng|floatformat:-3 }}">
                   {{ station.location }}
@@ -48,7 +57,7 @@
               </td>
               <td>
                 <a href="{% url 'users:view_user' username=station.owner.username %}">
-                  {{ station.owner.get_full_name }}
+                  {{ station.owner.displayname }}
                 </a>
               </td>
             </tr>

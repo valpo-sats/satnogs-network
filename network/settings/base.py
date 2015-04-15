@@ -161,3 +161,8 @@ DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
 }
+
+# Mapbox API
+MAPBOX_GEOCODE_URL = 'https://api.tiles.mapbox.com/v4/geocode/mapbox.places/'
+MAPBOX_MAP_ID = getenv('MAPBOX_MAP_ID', '')
+MAPBOX_TOKEN = getenv('MAPBOX_TOKEN', '')
