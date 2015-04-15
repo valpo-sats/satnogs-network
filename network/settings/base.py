@@ -19,7 +19,6 @@ THIRD_PARTY_APPS = (
     'crispy_forms',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
 )
 LOCAL_APPS = (
     'network.users',
@@ -109,6 +108,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
+ACCOUNT_ADAPTER = 'network.users.adapter.NoSignupsAdapter'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
