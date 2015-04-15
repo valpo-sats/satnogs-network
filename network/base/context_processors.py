@@ -7,6 +7,6 @@ def analytics(request):
     if settings.ENVIRONMENT == 'production':
         return {'analytics_code': render_to_string('includes/analytics.html',
                 {'google_analytics_key': settings.GOOGLE_ANALYTICS_KEY,
-                 'user': request.user })}
+                 'user': request.user})}
     else:
         return {'analytics_code': ''}
