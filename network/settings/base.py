@@ -102,6 +102,7 @@ STATION_DEFAULT_IMAGE = '/static/img/dish.png'
 # App conf
 ROOT_URLCONF = 'network.urls'
 WSGI_APPLICATION = 'network.wsgi.application'
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # Auth
 AUTHENTICATION_BACKENDS = (
