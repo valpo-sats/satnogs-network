@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.urlresolvers import reverse
-from django.utils.timezone import now
+from django.utils.timezone import now, make_aware, utc
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
@@ -45,21 +45,29 @@ def observation_new(request):
     if request.method == 'POST':
         sat_id = request.POST.get('satellite')
         trans_id = request.POST.get('transponder')
-        start = request.POST.get('start-time')
-        end = request.POST.get('end-time')
+        start_time = datetime.strptime(request.POST.get('start-time'), '%Y-%m-%d %H:%M')
+        start = make_aware(start_time, utc)
+        end_time = datetime.strptime(request.POST.get('end-time'), '%Y-%m-%d %H:%M')
+        end = make_aware(end_time, utc)
         sat = Satellite.objects.get(norad_cat_id=sat_id)
         trans = Transponder.objects.get(id=trans_id)
         obs = Observation(satellite=sat, transponder=trans,
                           author=me, start=start, end=end)
         obs.save()
+
         total = int(request.POST.get('total'))
+
         for item in range(total):
-            start = request.POST.get('{}-starting_time'.format(item))
-            end = request.POST.get('{}-ending_time'.format(item))
+            start = datetime.strptime(
+                request.POST.get('{0}-starting_time'.format(item)), '%Y-%m-%d %H:%M:%S.%f'
+            )
+            end = datetime.strptime(
+                request.POST.get('{}-ending_time'.format(item)), '%Y-%m-%d %H:%M:%S.%f'
+            )
             station_id = request.POST.get('{}-station'.format(item))
             ground_station = Station.objects.get(id=station_id)
-            Data.objects.create(start=start, end=end, ground_station=ground_station,
-                                observation=obs)
+            Data.objects.create(start=make_aware(start, utc), end=make_aware(end, utc),
+                                ground_station=ground_station, observation=obs)
 
         return redirect(reverse('base:observation_view', kwargs={'id': obs.id}))
 
