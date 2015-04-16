@@ -30,25 +30,32 @@ $( document ).ready( function(){
         $.ajax({
             url: '/prediction_windows/' + satellite + '/' + start_time + '/' + end_time + '/'
         }).done(function(data) {
-            var dc = 0; //Data counter
-            var suggested_data = [];
-            $.each(data, function( i,k ){
-                label = k.id + ' - ' + k.name;
-                var times = [];
-                $.each(k.window, function( m,n ){
-                    var starting_time = moment(n.start).valueOf();
-                    var ending_time = moment(n.end).valueOf();
-                    $('#windows-data').append('<input type="hidden" name="'+dc+'-starting_time" value="'+n.start+'">');
-                    $('#windows-data').append('<input type="hidden" name="'+dc+'-ending_time" value="'+n.end+'">');
-                    $('#windows-data').append('<input type="hidden" name="'+dc+'-station" value="'+k.id+'">');
-                    times.push({starting_time: starting_time, ending_time: ending_time})
-                    dc = dc +1;
+            if (data['error']) {
+                var error_msg = data['error'];
+                $('#windows-data').html('<span class="text-danger">' + error_msg + '</span>');
+            } else {
+                var dc = 0; //Data counter
+                var suggested_data = [];
+                $('#windows-data').text('');
+                $.each(data, function( i,k ){
+                    label = k.id + ' - ' + k.name;
+                    var times = [];
+                    $.each(k.window, function( m,n ){
+                        var starting_time = moment(n.start).valueOf();
+                        var ending_time = moment(n.end).valueOf();
+                        console.log(starting_time + '-' + ending_time);
+                        $('#windows-data').append('<input type="hidden" name="'+dc+'-starting_time" value="'+n.start+'">');
+                        $('#windows-data').append('<input type="hidden" name="'+dc+'-ending_time" value="'+n.end+'">');
+                        $('#windows-data').append('<input type="hidden" name="'+dc+'-station" value="'+k.id+'">');
+                        times.push({starting_time: starting_time, ending_time: ending_time})
+                        dc = dc +1;
+                    });
+                    suggested_data.push({label : label, times : times});
                 });
-                suggested_data.push({label : label, times : times});
-            });
 
-            $('#windows-data').append('<input type="hidden" name="total" value="'+dc+'">');
-            timeline_init(start_time, end_time, suggested_data);
+                $('#windows-data').append('<input type="hidden" name="total" value="'+dc+'">');
+                timeline_init(start_time, end_time, suggested_data);
+            }
         });
     });
 });

@@ -79,7 +79,13 @@ def observation_new(request):
 
 
 def prediction_windows(request, sat_id, start_date, end_date):
-    sat = get_object_or_404(Satellite, norad_cat_id=sat_id)
+    try:
+        sat = Satellite.objects.filter(transponder__alive=True).filter(norad_cat_id=sat_id).get()
+    except:
+        data = {
+            'error': 'You should select a Satellite first.'
+        }
+        return JsonResponse(data, safe=False)
     satellite = ephem.readtle(str(sat.tle0), str(sat.tle1), str(sat.tle2))
 
     end_date = datetime.strptime(end_date, '%Y-%m-%d %H:%M')
@@ -96,7 +102,13 @@ def prediction_windows(request, sat_id, start_date, end_date):
         station_match = False
         keep_digging = True
         while keep_digging:
-            tr, azr, tt, altt, ts, azs = observer.next_pass(satellite)
+            try:
+                tr, azr, tt, altt, ts, azs = observer.next_pass(satellite)
+            except ValueError:
+                data = {
+                    'error': 'That satellite seems to stay always below your horizon.'
+                }
+                break
 
             if ephem.Date(tr).datetime() < end_date:
                 if not station_match:
