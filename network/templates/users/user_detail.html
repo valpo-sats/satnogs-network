@@ -80,7 +80,7 @@
   {% else %}
     <div class="row">
       <div class="col-md-12 notice">
-        <p>{{ user.get_full_name }} is not an owner of any ground stations.</p>
+        <p>{{ user.displayname }} is not an owner of any ground stations.</p>
       </div>
     </div>
   {% endif %}
@@ -95,6 +95,11 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-sm-12">
+      <h3>Observations</h3>
+    </div>
+  </div>
 
   {% if observations %}
     <div class="row">
@@ -106,7 +111,6 @@
             <th>Frequency</th>
             <th>Encoding</th>
             <th>Timeframe</th>
-            <th>Observer</th>
           </thead>
           <tbody>
             {% for observation in observations.all %}
@@ -127,7 +131,6 @@
                 <td>{% frq observation.transponder.downlink_low %}</td>
                 <td>{{ observation.transponder.mode }}</td>
                 <td>{{ observation.start|date:"Y-m-d H:i:s" }}</br>{{ observation.end|date:"Y-m-d H:i:s" }}</td>
-                <td>{{ observation.author.get_full_name }}</td>
               </tr>
             {% endfor %}
           </tbody>
@@ -137,7 +140,7 @@
   {% else %}
     <div class="row">
       <div class="col-md-12 notice">
-        <p>{{ user.get_full_name }} is not an author of any observations.</p>
+        <p>{{ user.displayname }} is not an author of any observations.</p>
       </div>
     </div>
   {% endif %}
