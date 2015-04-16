@@ -1,9 +1,9 @@
-import factory
 import random
-
 from datetime import timedelta
-from django.utils.timezone import now
+
+import factory
 from factory import fuzzy
+from django.utils.timezone import now
 
 from network.base.models import (ANTENNA_BANDS, ANTENNA_TYPES, MODE_CHOICES,
                                  Antenna, Satellite, Station, Transponder, Observation)
