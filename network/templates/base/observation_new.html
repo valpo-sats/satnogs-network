@@ -36,7 +36,7 @@
     <div class="form-group">
       <label class="col-sm-3 control-label">Transponder</label>
       <div class="col-sm-9">
-        <select id="transponder-selection" class="form-control" disabled name="transponder" >
+        <select id="transponder-selection" class="form-control" disabled name="transponder">
           <option id="no-transponder" value="" disabled selected>No transponder available</option>
           {% for transponder in transponders %}
             <option data-satellite="{{ transponder.satellite.norad_cat_id }}"
@@ -56,8 +56,10 @@
           <input type="text"
                  class="form-control"
                  name="start-time"
-                 data-date-format="YYYY-MM-DD HH:mm" />
-          <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                 data-date-format="YYYY-MM-DD HH:mm"
+                 autocomplete="off">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
           </span>
         </div>
       </div>
@@ -69,8 +71,10 @@
           <input type="text"
                  class="form-control"
                  name="end-time"
-                 data-date-format="YYYY-MM-DD HH:mm" />
-          <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                 data-date-format="YYYY-MM-DD HH:mm"
+                 autocomplete="off">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
           </span>
         </div>
         <small class="pull-right">
