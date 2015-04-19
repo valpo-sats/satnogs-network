@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load tags %}
+{% load staticfiles %}
 
 {% block title %}Ground Stations{% endblock %}
 
@@ -17,6 +18,9 @@
         <thead>
           <th>ID</th>
           <th>Name</th>
+          {% if station.qthlocator %}
+            <th>qthlocator</th>
+          {% endif %}
           <th>Location</th>
           <th>Altitude</th>
           <th>Antenna</th>
@@ -42,6 +46,11 @@
                   {{ station.name }}
                 </a>
               </td>
+              {% if station.qthlocator %}
+                <td title="{{ station.lat|floatformat:-3 }}, {{ station.lng|floatformat:-3 }}">
+                  {{ station.qthlocator }}
+                </td>
+              {% endif %}
               {% if station.location %}
                 <td title="{{ station.lat|floatformat:-3 }}, {{ station.lng|floatformat:-3 }}">
                   {{ station.location }}
@@ -70,3 +79,7 @@
   <!-- Station Modal -->
   {% include 'includes/station_edit.html' %}
 {% endblock content %}
+
+{% block javascript %}
+  <script src="{% static 'js/gridsquare.js' %}"></script>
+{% endblock javascript %}

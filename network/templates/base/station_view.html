@@ -27,16 +27,26 @@
         <span class="label label-default">Owner</span>
         <span class="gs-front-data">
           <a href="{% url 'users:view_user' username=station.owner.username %}">
-            {{ station.owner.get_full_name }}
+            {{ station.owner.displayname }}
           </a>
         </span>
       </div>
-      <div class="gs-front-line">
-        <span class="label label-default">Location</span>
-        <span class="gs-front-data">
-          {{ station.location }}
-        </span>
-      </div>
+      {% if station.qthlocator %}
+        <div class="gs-front-line">
+          <span class="label label-default">QTH Locator</span>
+          <span class="gs-front-data">
+            {{ station.qthlocator }}
+          </span>
+        </div>
+      {% endif %}
+      {% if station.location %}
+        <div class="gs-front-line">
+          <span class="label label-default">Location</span>
+          <span class="gs-front-data">
+            {{ station.location }}
+          </span>
+        </div>
+      {% endif %}
       <div class="gs-front-line">
         <span class="label label-default">Coordinates</span>
         <span class="gs-front-data">
@@ -96,4 +106,5 @@
 {% block javascript %}
   <script src="{% static 'js/lib/mapbox.js' %}"></script>
   <script src="{% static 'js/station_view.js' %}"></script>
+  <script src="{% static 'js/gridsquare.js' %}"></script>
 {% endblock javascript %}
