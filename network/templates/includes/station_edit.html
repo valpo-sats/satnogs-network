@@ -38,23 +38,24 @@
           <div class="form-group">
             <label for="lat" class="col-sm-2 control-label">Latitude</label>
             <div class="col-sm-10">
-              <input value="{{ form.lat.value|default_if_none:"" }}" id="lat" type="text" class="form-control" name="lat" placeholder="Latitude">
+              <input value="{{ form.lat.value|default_if_none:"" }}" id="lat" type="text" class="form-control" name="lat" placeholder="Latitude" onchange="gridsquare()">
             </div>
           </div>
           <div class="form-group">
             <label for="lng" class="col-sm-2 control-label">Longtitude</label>
             <div class="col-sm-10">
-              <input value="{{ form.lng.value|default_if_none:"" }}" id="lng" type="text" class="form-control" name="lng" placeholder="Longtitude">
+              <input value="{{ form.lng.value|default_if_none:"" }}" id="lng" type="text" class="form-control" name="lng" placeholder="Longtitude" onchange="gridsquare()">
             </div>
           </div>
           <div class="form-group">
-            <label for="location" class="col-sm-2 control-label">Location</label>
+            <label for="qthlocator" class="col-sm-2 control-label">QTH Locator</label>
             <div class="col-sm-10">
               <input class="form-control"
-                     id="location"
+                     id="qthlocator"
                      type="text"
-                     placeholder="Geocoded location here"
-                     disabled>
+                     name="qthlocator"
+                     value="{{ form.qthlocator.value|default_if_none:"Geocoded gridsquare here" }}"
+                     readonly>
             </div>
           </div>
           <div class="form-group">
@@ -73,7 +74,7 @@
             <div class="col-sm-offset-2 col-sm-10">
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" name="online" {% if form.online.value %}checked="True"{% endif %}"> Online Ground Station
+                  <input type="checkbox" name="online" {% if form.online.value %}checked="True"{% endif %}> Online Ground Station
                 </label>
               </div>
             </div>
