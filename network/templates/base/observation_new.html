@@ -52,7 +52,8 @@
     <div class="form-group">
       <label class="col-sm-3 control-label">Start Time</label>
       <div class="col-sm-9">
-        <div class='input-group date' id='datetimepicker-start'>
+        <div class='input-group date' id="datetimepicker-start"
+             data-date-minstart="{{ date_min_start }}">
           <input type="text"
                  class="form-control"
                  name="start-time"
@@ -67,7 +68,8 @@
     <div class="form-group">
       <label class="col-sm-3 control-label">End Time</label>
       <div class="col-sm-9">
-        <div class='input-group date' id='datetimepicker-end'>
+        <div class='input-group date' id="datetimepicker-end"
+             data-date-maxrange="{{ date_max_range }}">
           <input type="text"
                  class="form-control"
                  name="end-time"

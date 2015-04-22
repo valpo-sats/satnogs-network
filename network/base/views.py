@@ -74,8 +74,12 @@ def observation_new(request):
     satellites = Satellite.objects.filter(transponder__alive=True)
     transponders = Transponder.objects.filter(alive=True)
 
-    return render(request, 'base/observation_new.html', {'satellites': satellites,
-                                                         'transponders': transponders})
+
+    return render(request, 'base/observation_new.html',
+                  {'satellites': satellites,
+                   'transponders': transponders,
+                   'date_min_start': settings.DATE_MIN_START,
+                   'date_max_range': settings.DATE_MAX_RANGE})
 
 
 def prediction_windows(request, sat_id, start_date, end_date):
