@@ -49,7 +49,7 @@ class DataView(viewsets.ReadOnlyModelViewSet, mixins.UpdateModelMixin):
     ]
 
     def get_queryset(self):
-        payload = self.request.QUERY_PARAMS.get('payload', None)
+        payload = self.request.query_params.get('payload', None)
         if payload == '':
             return self.queryset.filter(payload='')
         return super(DataView, self).get_queryset()

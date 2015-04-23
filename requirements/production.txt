@@ -1,3 +1,2 @@
 # Production-only dependencies
 -r base.txt
-envdir==0.7
