@@ -170,3 +170,7 @@ REST_FRAMEWORK = {
 MAPBOX_GEOCODE_URL = 'https://api.tiles.mapbox.com/v4/geocode/mapbox.places/'
 MAPBOX_MAP_ID = getenv('MAPBOX_MAP_ID', '')
 MAPBOX_TOKEN = getenv('MAPBOX_TOKEN', '')
+
+# Observations datetimes in minutes
+DATE_MIN_START = '60'
+DATE_MAX_RANGE = '480'

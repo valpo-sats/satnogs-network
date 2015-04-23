@@ -52,7 +52,7 @@
               <span class="label label-info">Owner</span>
               <span class="gs-front-data">
                 <a href="{% url 'users:view_user' username=featured_station.owner.username %}">
-                  {{ featured_station.owner.get_full_name }}
+                  {{ featured_station.owner.displayname }}
                 </a>
               </span>
             </div>
@@ -134,7 +134,7 @@
                   </td>
                   <td>
                     <a href="{% url 'users:view_user' username=observation.author.username %}">
-                      {{ observation.author.get_full_name }}
+                      {{ observation.author.displayname }}
                     </a>
                   </td>
                 </tr>
@@ -166,7 +166,7 @@
                   <td>{% frq observation.transponder.downlink_low %}</td>
                   <td>{{ observation.transponder.mode }}</td>
                   <td>{{ observation.start|date:"Y-m-d H:i:s" }}</br>{{ observation.end|date:"Y-m-d H:i:s" }}</td>
-                  <td>{{ observation.author.get_full_name }}</td>
+                  <td>{{ observation.author.displayname }}</td>
                 </tr>
               {% endfor %}
             </tbody>

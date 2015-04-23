@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.urlresolvers import reverse
-from django.utils.timezone import now
+from django.utils.timezone import now, make_aware, utc
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
@@ -45,33 +45,51 @@ def observation_new(request):
     if request.method == 'POST':
         sat_id = request.POST.get('satellite')
         trans_id = request.POST.get('transponder')
-        start = request.POST.get('start-time')
-        end = request.POST.get('end-time')
+        start_time = datetime.strptime(request.POST.get('start-time'), '%Y-%m-%d %H:%M')
+        start = make_aware(start_time, utc)
+        end_time = datetime.strptime(request.POST.get('end-time'), '%Y-%m-%d %H:%M')
+        end = make_aware(end_time, utc)
         sat = Satellite.objects.get(norad_cat_id=sat_id)
         trans = Transponder.objects.get(id=trans_id)
         obs = Observation(satellite=sat, transponder=trans,
                           author=me, start=start, end=end)
         obs.save()
+
         total = int(request.POST.get('total'))
+
         for item in range(total):
-            start = request.POST.get('{}-starting_time'.format(item))
-            end = request.POST.get('{}-ending_time'.format(item))
+            start = datetime.strptime(
+                request.POST.get('{0}-starting_time'.format(item)), '%Y-%m-%d %H:%M:%S.%f'
+            )
+            end = datetime.strptime(
+                request.POST.get('{}-ending_time'.format(item)), '%Y-%m-%d %H:%M:%S.%f'
+            )
             station_id = request.POST.get('{}-station'.format(item))
             ground_station = Station.objects.get(id=station_id)
-            Data.objects.create(start=start, end=end, ground_station=ground_station,
-                                observation=obs)
+            Data.objects.create(start=make_aware(start, utc), end=make_aware(end, utc),
+                                ground_station=ground_station, observation=obs)
 
         return redirect(reverse('base:observation_view', kwargs={'id': obs.id}))
 
     satellites = Satellite.objects.filter(transponder__alive=True)
     transponders = Transponder.objects.filter(alive=True)
 
-    return render(request, 'base/observation_new.html', {'satellites': satellites,
-                                                         'transponders': transponders})
+
+    return render(request, 'base/observation_new.html',
+                  {'satellites': satellites,
+                   'transponders': transponders,
+                   'date_min_start': settings.DATE_MIN_START,
+                   'date_max_range': settings.DATE_MAX_RANGE})
 
 
 def prediction_windows(request, sat_id, start_date, end_date):
-    sat = get_object_or_404(Satellite, norad_cat_id=sat_id)
+    try:
+        sat = Satellite.objects.filter(transponder__alive=True).filter(norad_cat_id=sat_id).get()
+    except:
+        data = {
+            'error': 'You should select a Satellite first.'
+        }
+        return JsonResponse(data, safe=False)
     satellite = ephem.readtle(str(sat.tle0), str(sat.tle1), str(sat.tle2))
 
     end_date = datetime.strptime(end_date, '%Y-%m-%d %H:%M')
@@ -88,7 +106,13 @@ def prediction_windows(request, sat_id, start_date, end_date):
         station_match = False
         keep_digging = True
         while keep_digging:
-            tr, azr, tt, altt, ts, azs = observer.next_pass(satellite)
+            try:
+                tr, azr, tt, altt, ts, azs = observer.next_pass(satellite)
+            except ValueError:
+                data = {
+                    'error': 'That satellite seems to stay always below your horizon.'
+                }
+                break
 
             if ephem.Date(tr).datetime() < end_date:
                 if not station_match:
