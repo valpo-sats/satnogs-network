@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.timezone import now
@@ -44,14 +46,22 @@ class Station(models.Model):
                                                 'contact SatNOGS Team'))
     featured_date = models.DateField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    online = models.BooleanField(default=False,
-                                 help_text='Is your Ground Station functional?')
+    active = models.BooleanField(default=False)
+    last_seen = models.DateTimeField(null=True, blank=True)
 
     def get_image(self):
         if self.image and hasattr(self.image, 'url'):
             return self.image.url
         else:
             return settings.STATION_DEFAULT_IMAGE
+
+    @property
+    def online(self):
+        try:
+            heartbeat = self.last_seen + timedelta(minutes=settings.STATION_HEARTBEAT_TIME)
+            return self.active and heartbeat > now()
+        except:
+            return False
 
     def __unicode__(self):
         return "%d - %s" % (self.pk, self.name)
@@ -64,7 +74,7 @@ class Satellite(models.Model):
     tle0 = models.CharField(max_length=100, blank=True)
     tle1 = models.CharField(max_length=200, blank=True)
     tle2 = models.CharField(max_length=200, blank=True)
-    updated = models.DateTimeField(auto_now_add=True, blank=True)
+    updated = models.DateTimeField(auto_now=True, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -79,9 +89,9 @@ class Transponder(models.Model):
     downlink_low = models.PositiveIntegerField(blank=True, null=True)
     downlink_high = models.PositiveIntegerField(blank=True, null=True)
     mode = models.CharField(choices=zip(MODE_CHOICES, MODE_CHOICES),
-                            max_length=10)
+                            max_length=10, blank=True)
     invert = models.BooleanField(default=False)
-    baud = models.FloatField(validators=[MinValueValidator(0)])
+    baud = models.FloatField(validators=[MinValueValidator(0)], null=True, blank=True)
     satellite = models.ForeignKey(Satellite, related_name='transponder',
                                   null=True)
 

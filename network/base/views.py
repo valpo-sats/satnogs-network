@@ -18,7 +18,7 @@ from network.base.forms import StationForm
 def index(request):
     """View to render index page."""
     observations = Observation.objects.all()
-    featured_station = Station.objects.filter(online=True).latest('featured_date')
+    featured_station = Station.objects.filter(active=True).latest('featured_date')
 
     ctx = {
         'latest_observations': observations.filter(end__lt=now()),
@@ -74,7 +74,6 @@ def observation_new(request):
     satellites = Satellite.objects.filter(transponder__alive=True)
     transponders = Transponder.objects.filter(alive=True)
 
-
     return render(request, 'base/observation_new.html',
                   {'satellites': satellites,
                    'transponders': transponders,
@@ -98,6 +97,8 @@ def prediction_windows(request, sat_id, start_date, end_date):
 
     stations = Station.objects.all()
     for station in stations:
+        if not station.online:
+            continue
         observer = ephem.Observer()
         observer.lon = str(station.lng)
         observer.lat = str(station.lat)
@@ -192,7 +193,12 @@ def station_edit(request):
         f.owner = request.user
         f.save()
         form.save_m2m()
-        messages.success(request, 'Successfully saved Ground Station')
+        if f.online:
+            messages.success(request, 'Successfully saved Ground Station.')
+        else:
+            messages.success(request, ('Successfully saved Ground Station. It will appear online '
+                                       'as soon as it connects with our API.'))
+
         return redirect(reverse('base:station_view', kwargs={'id': f.id}))
     else:
         messages.error(request, 'Some fields missing on the form')
