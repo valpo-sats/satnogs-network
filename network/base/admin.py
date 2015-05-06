@@ -12,7 +12,6 @@ class StationAdmin(admin.ModelAdmin):
     list_display = ('name', 'owner', 'lng', 'lat', 'qthlocator',
                     'created_date', 'active', 'state')
     list_filter = ('active', 'created')
-    readonly_fields = ('last_seen', )
 
     def created_date(self, obj):
         return obj.created.strftime('%d.%m.%Y, %H:%M')

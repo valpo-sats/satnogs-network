@@ -21,7 +21,6 @@ class StationView(viewsets.ReadOnlyModelViewSet):
 class SatelliteView(viewsets.ReadOnlyModelViewSet):
     queryset = Satellite.objects.all()
     serializer_class = serializers.SatelliteSerializer
-    #permission_classes = [SafeMethodsOnlyPermission]
 
 
 class TransponderView(viewsets.ReadOnlyModelViewSet):
