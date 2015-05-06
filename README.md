@@ -12,4 +12,4 @@ See the [documentation](http://docs.satnogs.org/network/).
 
 &copy; 2014-2015 [Libre Space Foundation](http://librespacefoundation.org).
 
-Licensed under the [MPL-2.0](LICENSE).
+Licensed under the [AGPLv3](LICENSE).
