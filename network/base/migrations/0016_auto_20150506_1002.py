@@ -8,10 +8,40 @@ import django.core.validators
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('base', '0016_auto_20150416_0758'),
+        ('base', '0015_station_qthlocator'),
     ]
 
     operations = [
+        migrations.AlterModelOptions(
+            name='data',
+            options={'ordering': ['-start', '-end']},
+        ),
+        migrations.AlterModelOptions(
+            name='observation',
+            options={'ordering': ['-start', '-end']},
+        ),
+        migrations.AlterModelOptions(
+            name='satellite',
+            options={'ordering': ['norad_cat_id']},
+        ),
+        migrations.AlterModelOptions(
+            name='station',
+            options={'ordering': ['-active', '-last_seen']},
+        ),
+        migrations.RemoveField(
+            model_name='station',
+            name='online',
+        ),
+        migrations.AddField(
+            model_name='station',
+            name='active',
+            field=models.BooleanField(default=False),
+        ),
+        migrations.AddField(
+            model_name='station',
+            name='last_seen',
+            field=models.DateTimeField(null=True, blank=True),
+        ),
         migrations.AlterField(
             model_name='satellite',
             name='tle0',
@@ -29,6 +59,11 @@ class Migration(migrations.Migration):
             name='tle2',
             field=models.CharField(default='', max_length=200, blank=True),
             preserve_default=False,
+        ),
+        migrations.AlterField(
+            model_name='satellite',
+            name='updated',
+            field=models.DateTimeField(auto_now=True),
         ),
         migrations.AlterField(
             model_name='station',

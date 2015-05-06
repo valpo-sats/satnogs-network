@@ -4,6 +4,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.timezone import now
 from django.conf import settings
+from django.db.models.signals import post_save
+from django.utils.html import format_html
 
 from network.users.models import User
 
@@ -16,6 +18,13 @@ ANTENNA_TYPES = (
     ('parabolic', 'Parabolic'),
 )
 MODE_CHOICES = ['FM', 'AFSK', 'BFSK', 'APRS', 'SSTV', 'CW', 'FMN']
+
+
+def station_ping(sender, instance, created, **kwargs):
+    if not created:
+        ground_station = Station.objects.get(pk=instance.ground_station.pk)
+        ground_station.last_seen = now()
+        ground_station.save()
 
 
 class Antenna(models.Model):
@@ -49,6 +58,9 @@ class Station(models.Model):
     active = models.BooleanField(default=False)
     last_seen = models.DateTimeField(null=True, blank=True)
 
+    class Meta:
+        ordering = ['-active', '-last_seen']
+
     def get_image(self):
         if self.image and hasattr(self.image, 'url'):
             return self.image.url
@@ -63,6 +75,12 @@ class Station(models.Model):
         except:
             return False
 
+    def state(self):
+        if self.online:
+            return format_html('<span style="color:green">Online</span>')
+        else:
+            return format_html('<span style="color:red">Offline</span>')
+
     def __unicode__(self):
         return "%d - %s" % (self.pk, self.name)
 
@@ -75,6 +93,9 @@ class Satellite(models.Model):
     tle1 = models.CharField(max_length=200, blank=True)
     tle2 = models.CharField(max_length=200, blank=True)
     updated = models.DateTimeField(auto_now=True, blank=True)
+
+    class Meta:
+        ordering = ['norad_cat_id']
 
     def __unicode__(self):
         return self.name
@@ -107,6 +128,9 @@ class Observation(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
 
+    class Meta:
+        ordering = ['-start', '-end']
+
     @property
     def is_past(self):
         return self.end < now()
@@ -126,3 +150,8 @@ class Data(models.Model):
     observation = models.ForeignKey(Observation)
     ground_station = models.ForeignKey(Station)
     payload = models.FileField(upload_to='data_payloads', blank=True, null=True)
+
+    class Meta:
+        ordering = ['-start', '-end']
+
+post_save.connect(station_ping, sender=Data)
