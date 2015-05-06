@@ -2,12 +2,13 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import django.core.validators
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('base', '0015_station_qthlocator'),
+        ('base', '0016_auto_20150416_0758'),
     ]
 
     operations = [
@@ -45,5 +46,15 @@ class Migration(migrations.Migration):
             name='qthlocator',
             field=models.CharField(default='', max_length=255, blank=True),
             preserve_default=False,
+        ),
+        migrations.AlterField(
+            model_name='transponder',
+            name='baud',
+            field=models.FloatField(blank=True, null=True, validators=[django.core.validators.MinValueValidator(0)]),
+        ),
+        migrations.AlterField(
+            model_name='transponder',
+            name='mode',
+            field=models.CharField(blank=True, max_length=10, choices=[(b'FM', b'FM'), (b'AFSK', b'AFSK'), (b'BFSK', b'BFSK'), (b'APRS', b'APRS'), (b'SSTV', b'SSTV'), (b'CW', b'CW'), (b'FMN', b'FMN')]),
         ),
     ]

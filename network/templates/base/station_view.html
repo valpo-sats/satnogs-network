@@ -10,16 +10,29 @@
 {% endblock css %}
 
 {% block content %}
-  <h2 id="station-info"
-      data-name="{{ station.name }}"
-      data-id="{{ station.id }}"
-      data-lng="{{ station.lng }}"
-      data-lat="{{ station.lat }}">
-     {{ station.id }} - {{ station.name }}
-    {% if request.user == station.owner %}
-      <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#StationModal">Edit Ground Station</button>
-    {% endif %}
-  </h2>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 id="station-info"
+          data-name="{{ station.name }}"
+          data-id="{{ station.id }}"
+          data-lng="{{ station.lng }}"
+          data-lat="{{ station.lat }}">
+        {{ station.id }} - {{ station.name }}
+        {% if station.online %}
+          <span class="label label-success">Online</span>
+        {% else %}
+          <span class="label label-danger">Offline</button>
+        {% endif %}
+      </h2>
+    </div>
+    <div class="col-md-6 text-right">
+      <h2>
+        {% if request.user == station.owner %}
+          <button class="btn btn-primary" data-toggle="modal" data-target="#StationModal">Edit Ground Station</button>
+        {% endif %}
+      </h2>
+    </div>
+  </div>
 
   <div class="row">
     <div class="col-md-4">
@@ -64,6 +77,13 @@
         <span class="gs-front-data"
               title="{{ station.created|date:"c" }}">
           {{ station.created|timesince }} ago
+        </span>
+      </div>
+      <div class="gs-front-line">
+        <span class="label label-default">Last Seen</span>
+        <span class="gs-front-data"
+              title="{{ station.last_seen|date:"c" }}">
+          {{ station.last_seen|timesince }} ago
         </span>
       </div>
     </div>
