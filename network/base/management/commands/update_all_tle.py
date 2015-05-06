@@ -10,7 +10,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        satellites = Satellite.objets.all()
+        satellites = Satellite.objetcs.all()
 
         for obj in satellites:
             try:
