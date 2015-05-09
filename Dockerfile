@@ -13,4 +13,4 @@ COPY . /app
 
 EXPOSE 80
 
-CMD ["./bin/run-docker.sh"]
+CMD ["./docker/run-docker.sh"]
