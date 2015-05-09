@@ -6,7 +6,7 @@ from network.base.models import Satellite
 
 
 class Command(BaseCommand):
-    help = 'Create initial fixtures'
+    help = 'Update TLEs for existing Satellites'
 
     def handle(self, *args, **options):
 

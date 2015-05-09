@@ -176,3 +176,6 @@ DATE_MAX_RANGE = '480'
 
 # Station heartbeat in minutes
 STATION_HEARTBEAT_TIME = 60
+
+# DB API
+DB_API_ENDPOINT = getenv('DB_API_ENDPOINT', 'https://db.satnogs.org/api/')
