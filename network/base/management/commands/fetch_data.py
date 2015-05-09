@@ -50,6 +50,6 @@ class Command(BaseCommand):
                 self.stdout.write('Transponder {0} updated'.format(uuid))
             except Transponder.DoesNotExist:
                 new_transponder = Transponder.objects.create(**transponder)
-                new_trnasponder.satellite = sat
-                new_trnasponder.save()
+                new_transponder.satellite = sat
+                new_transponder.save()
                 self.stdout.write('Transponder {0} created'.format(uuid))
