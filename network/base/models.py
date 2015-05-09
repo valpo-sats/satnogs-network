@@ -1,4 +1,5 @@
 from datetime import timedelta
+from shortuuidfield import ShortUUIDField
 
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -17,7 +18,7 @@ ANTENNA_TYPES = (
     ('helical', 'Helical'),
     ('parabolic', 'Parabolic'),
 )
-MODE_CHOICES = ['FM', 'AFSK', 'BFSK', 'APRS', 'SSTV', 'CW', 'FMN']
+MODE_CHOICES = ['FM', 'AFSK', 'BFSK', 'APRS', 'SSTV', 'CW', 'FMN', 'SSTV', 'GMSK', 'SSB']
 
 
 def station_ping(sender, instance, created, **kwargs):
@@ -103,6 +104,7 @@ class Satellite(models.Model):
 
 class Transponder(models.Model):
     """Model for antennas transponders."""
+    uuid = ShortUUIDField(db_index=True)
     description = models.TextField()
     alive = models.BooleanField(default=True)
     uplink_low = models.PositiveIntegerField(blank=True, null=True)

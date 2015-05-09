@@ -25,10 +25,10 @@ class SatelliteAdmin(admin.ModelAdmin):
 
 
 class TransponderAdmin(admin.ModelAdmin):
-    list_display = ('description', 'satellite', 'uplink_low',
+    list_display = ('uuid', 'description', 'satellite', 'uplink_low',
                     'uplink_high', 'downlink_low', 'downlink_high')
-    search_fields = ('satellite', )
-    list_filter = ('mode', 'invert', )
+    search_fields = ('satellite', 'uuid')
+    list_filter = ('mode', 'invert', 'uuid')
 
 
 class ObservationAdmin(admin.ModelAdmin):
