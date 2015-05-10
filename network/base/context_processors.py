@@ -10,3 +10,11 @@ def analytics(request):
                  'user': request.user})}
     else:
         return {'analytics_code': ''}
+
+
+def stage_notice(request):
+    """Displays stage notice."""
+    if settings.ENVIRONMENT == 'stage':
+        return {'stage_notice': render_to_string('includes/stage_notice.html')}
+    else:
+        return {'stage_notice': ''}
