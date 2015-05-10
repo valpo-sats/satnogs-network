@@ -1,7 +1,7 @@
-import json, urllib2
+import json
+import urllib2
 
 from django.core.management.base import BaseCommand, CommandError
-from django.core import serializers
 from django.conf import settings
 
 from network.base.models import Satellite, Transponder
@@ -26,13 +26,11 @@ class Command(BaseCommand):
             name = satellite['name']
             try:
                 sat = Satellite.objects.get(norad_cat_id=norad_cat_id)
-                #trans = Transponder.objects.filter(satellite=sat).delete()
                 self.stdout.write('Satellite {0} already exists'.format(norad_cat_id))
             except:
                 sat = Satellite(norad_cat_id=norad_cat_id, name=name)
                 sat.save()
                 self.stdout.write('Satellite {0} added'.format(norad_cat_id))
-            #Transponder.objects.filter(satellite=sat).delete()
 
         for transponder in json.loads(transponders):
             norad_cat_id = transponder['norad_cat_id']
