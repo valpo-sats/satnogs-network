@@ -71,7 +71,7 @@ class Station(models.Model):
     @property
     def online(self):
         try:
-            heartbeat = self.last_seen + timedelta(minutes=settings.STATION_HEARTBEAT_TIME)
+            heartbeat = self.last_seen + timedelta(minutes=int(settings.STATION_HEARTBEAT_TIME))
             return self.active and heartbeat > now()
         except:
             return False
