@@ -42,8 +42,8 @@ MIDDLEWARE_CLASSES = (
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 ADMINS = (
     (
-        getenv('DEFAULT_FROM_EMAIL', 'ADMINS'),
-        getenv('DEFAULT_FROM_EMAIL', 'noreply@example.com')
+        getenv('ADMINS_FROM_NAME', 'Admins'),
+        getenv('ADMINS_FROM_EMAIL', 'noreply@example.com')
     ),
 )
 MANAGERS = ADMINS
