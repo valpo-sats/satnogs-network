@@ -3,6 +3,9 @@ from base import *
 
 ENVIRONMENT = 'production'
 
+# Disable registration
+ACCOUNT_ADAPTER = 'network.users.adapter.NoSignupsAdapter'
+
 # Security
 SECURE_HSTS_SECONDS = 60
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
