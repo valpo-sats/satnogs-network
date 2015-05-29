@@ -45,7 +45,6 @@ class ObservationAdmin(admin.ModelAdmin):
 
 class DataAdmin(admin.ModelAdmin):
     list_display = ('id', 'start_date', 'end_date', 'observation', 'ground_station')
-    exclude = ('payload', )
     readonly_fields = ('observation', 'ground_station')
 
     def start_date(self, obj):
