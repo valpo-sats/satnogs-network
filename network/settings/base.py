@@ -41,7 +41,10 @@ MIDDLEWARE_CLASSES = (
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 ADMINS = (
-    ('SatNOGS team', 'info@satnogs.org'),
+    (
+        getenv('ADMINS_FROM_NAME', 'Admins'),
+        getenv('ADMINS_FROM_EMAIL', 'noreply@example.com')
+    ),
 )
 MANAGERS = ADMINS
 
@@ -57,8 +60,8 @@ CACHES = {
 TIME_ZONE = 'UTC'
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
-USE_I18N = True
-USE_L10N = True
+USE_I18N = False
+USE_L10N = False
 USE_TZ = True
 
 # Templates
@@ -110,7 +113,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
-ACCOUNT_ADAPTER = 'network.users.adapter.NoSignupsAdapter'
+ACCOUNT_ADAPTER = 'allauth.account.adapter.DefaultAccountAdapter'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
@@ -175,7 +178,7 @@ DATE_MIN_START = '60'
 DATE_MAX_RANGE = '480'
 
 # Station heartbeat in minutes
-STATION_HEARTBEAT_TIME = 60
+STATION_HEARTBEAT_TIME = getenv('STATION_HEARTBEAT_TIME', 60)
 
 # DB API
 DB_API_ENDPOINT = getenv('DB_API_ENDPOINT', 'https://db.satnogs.org/api/')
