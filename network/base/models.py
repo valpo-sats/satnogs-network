@@ -5,7 +5,6 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.timezone import now
 from django.conf import settings
-from django.db.models.signals import post_save
 from django.utils.html import format_html
 
 from network.users.models import User
@@ -19,13 +18,6 @@ ANTENNA_TYPES = (
     ('parabolic', 'Parabolic'),
 )
 MODE_CHOICES = ['FM', 'AFSK', 'BFSK', 'APRS', 'SSTV', 'CW', 'FMN', 'SSTV', 'GMSK', 'SSB']
-
-
-def station_ping(sender, instance, created, **kwargs):
-    if not created:
-        ground_station = Station.objects.get(pk=instance.ground_station.pk)
-        ground_station.last_seen = now()
-        ground_station.save()
 
 
 class Antenna(models.Model):
@@ -155,5 +147,3 @@ class Data(models.Model):
 
     class Meta:
         ordering = ['-start', '-end']
-
-post_save.connect(station_ping, sender=Data)
