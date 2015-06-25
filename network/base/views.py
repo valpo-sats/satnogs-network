@@ -74,7 +74,7 @@ def observation_new(request):
 
         return redirect(reverse('base:observation_view', kwargs={'id': obs.id}))
 
-    satellites = Satellite.objects.filter(transponder__alive=True)
+    satellites = Satellite.objects.filter(transponder__alive=True).distinct()
     transponders = Transponder.objects.filter(alive=True)
 
     return render(request, 'base/observation_new.html',
@@ -86,7 +86,7 @@ def observation_new(request):
 
 def prediction_windows(request, sat_id, start_date, end_date):
     try:
-        sat = Satellite.objects.filter(transponder__alive=True).filter(norad_cat_id=sat_id).get()
+        sat = Satellite.objects.filter(transponder__alive=True).distinct().get(norad_cat_id=sat_id)
     except:
         data = {
             'error': 'You should select a Satellite first.'
