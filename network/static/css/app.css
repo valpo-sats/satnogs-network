@@ -188,6 +188,15 @@ footer {
     color: #ffff00;
 }
 
+.leaflet-left {
+    display: none;
+}
+
+.mapbox-improve-map {
+    display: none;
+}
+
+
 /* Stations
 ==================== */
 
