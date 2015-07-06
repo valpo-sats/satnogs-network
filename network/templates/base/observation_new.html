@@ -7,6 +7,7 @@
 
 {% block css %}
   <link href="{% static 'css/lib/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/lib/spinner.css' %}">
 {% endblock css %}
 
 {% block content %}
@@ -99,7 +100,11 @@
 <div class="row calculation-result">
   <div class="col-md-12">
     <h3>Calculated Timeline</h3>
-    <div id="timeline"></div>
+    <div class="graph-spinner">
+      <div class="three-quarters" id="spinner-data">loading...</div>
+    </div>
+    <div id="timeline">
+    </div>
     <div id="hoverRes">
       <div class="coloredDiv"></div>
       <div id="name"></div>

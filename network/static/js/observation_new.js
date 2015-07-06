@@ -27,13 +27,16 @@ $(function () {
 $( document ).ready( function(){
     $('#calculate-observation').click( function(){
         $('.calculation-result').show();
+        $('#timeline').empty();
         var satellite = $('#satellite-selection').val();
         var start_time = $('#datetimepicker-start input').val();
         var end_time = $('#datetimepicker-end input').val();
-
+        
         $.ajax({
-            url: '/prediction_windows/' + satellite + '/' + start_time + '/' + end_time + '/'
+            url: '/prediction_windows/' + satellite + '/' + start_time + '/' + end_time + '/',
+            beforeSend: function() { $('#spinner-data').show(); }
         }).done(function(data) {
+            $('#spinner-data').hide();
             if (data['error']) {
                 var error_msg = data['error'];
                 $('#timeline').empty();
@@ -53,13 +56,18 @@ $( document ).ready( function(){
                         $('#windows-data').append('<input type="hidden" name="'+dc+'-ending_time" value="'+n.end+'">');
                         $('#windows-data').append('<input type="hidden" name="'+dc+'-station" value="'+k.id+'">');
                         times.push({starting_time: starting_time, ending_time: ending_time})
-                        dc = dc +1;
+                        dc = dc + 1;
                     });
                     suggested_data.push({label : label, times : times});
                 });
 
                 $('#windows-data').append('<input type="hidden" name="total" value="'+dc+'">');
-                timeline_init(start_time, end_time, suggested_data);
+                if (dc > 0) {
+                    timeline_init(start_time, end_time, suggested_data);
+                } else {
+                    var error_msg = 'No Ground Station available for this observation window';
+                    $('#windows-data').html('<span class="text-danger">' + error_msg + '</span>');
+                }
             }
         });
     });

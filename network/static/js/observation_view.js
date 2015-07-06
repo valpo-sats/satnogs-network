@@ -31,9 +31,11 @@ $(document).ready(function() {
 
     // Waveform loading
     $('.observation-data').each(function( index ){
+        var wid = $(this).data('id');
         var wavesurfer = Object.create(WaveSurfer);
         var data_payload_url = $(this).data('payload');
-        var container_el = '#data-' + $(this).data('id');
+        var container_el = '#data-' + wid;
+        var loading = '#spinner-data-' + wid;
 
         wavesurfer.init({
           container: container_el,
@@ -41,10 +43,18 @@ $(document).ready(function() {
           progressColor: 'purple'
         });
 
+        wavesurfer.on('loading', function() {
+            $(loading).show();
+        });
+
         $(this).find('.playpause').click( function(){
             wavesurfer.playPause();
         });
 
         wavesurfer.load(data_payload_url);
+
+        wavesurfer.on('ready', function() {
+            $(loading).hide();
+        });
     });
 });

@@ -5,6 +5,10 @@
 
 {% block title %}Observation {{ observation.id }}{% endblock %}
 
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/lib/spinner.css' %}">
+{% endblock %}
+
 {% block content %}
   <h2 id="observation-info"
       data-start="{{ observation.start|date:"U"}}"
@@ -77,6 +81,9 @@
             </div>
             <div class="panel-body">
               {% if data.payload %}
+                <div class="graph-spinner">
+                  <div class="three-quarters" id="spinner-data-{{ data.id }}">loading...</div>
+                </div>
                 <div class="wave" id="data-{{ data.id }}"></div>
               {% else %}
                 <div class="notice">

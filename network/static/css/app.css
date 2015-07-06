@@ -154,10 +154,6 @@ footer {
     height:20px; width:20px; float:left;
 }
 
-.playpause {
-    margin-right: 20px;
-}
-
 .edit-profile-buttons {
     margin-right: 30px;
 }
@@ -165,10 +161,6 @@ footer {
 .notice {
     text-align: center;
     color: #888;
-}
-
-.calculation-result {
-    display: none;
 }
 
 .stage-notice {
@@ -219,7 +211,7 @@ footer {
 }
 
 
-/* D3
+/* Observations
 ==================== */
 
 .axis path,
@@ -244,4 +236,17 @@ footer {
     -webkit-transform: translate(0px,30px); /* Safari and Chrome */
     -o-transform: translate(0px,30px); /* Opera */
     -moz-transform: translate(0px,30px); /* Firefox */
+}
+
+.playpause {
+    margin-right: 20px;
+}
+
+.graph-spinner {
+    width:50px;
+    margin: auto;
+}
+
+#spinner-data {
+    display: none;
 }
