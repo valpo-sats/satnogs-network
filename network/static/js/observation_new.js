@@ -31,7 +31,7 @@ $( document ).ready( function(){
         var satellite = $('#satellite-selection').val();
         var start_time = $('#datetimepicker-start input').val();
         var end_time = $('#datetimepicker-end input').val();
-        
+
         $.ajax({
             url: '/prediction_windows/' + satellite + '/' + start_time + '/' + end_time + '/',
             beforeSend: function() { $('#spinner-data').show(); }
@@ -94,4 +94,6 @@ function timeline_init( start, end, payload ){
 
     var svg = d3.select('#timeline').append('svg').attr('width', 1140)
                 .datum(payload).call(chart);
+
+    $('#schedule-observation').removeAttr('disabled');
 }
