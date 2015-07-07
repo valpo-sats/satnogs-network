@@ -151,7 +151,10 @@ footer {
 }
 
 .coloredDiv {
-    height:20px; width:20px; float:left;
+    height:20px;
+    width:20px;
+    float:left;
+    margin-right: 5px;
 }
 
 .edit-profile-buttons {

@@ -28,6 +28,7 @@ $( document ).ready( function(){
     $('#calculate-observation').click( function(){
         $('.calculation-result').show();
         $('#timeline').empty();
+        $('#hoverRes').hide();
         var satellite = $('#satellite-selection').val();
         var start_time = $('#datetimepicker-start input').val();
         var end_time = $('#datetimepicker-end input').val();
@@ -39,7 +40,6 @@ $( document ).ready( function(){
             $('#loading').hide();
             if (data['error']) {
                 var error_msg = data['error'];
-                $('#timeline').empty();
                 $('#windows-data').html('<span class="text-danger">' + error_msg + '</span>');
             } else {
                 var dc = 0; //Data counter
@@ -78,6 +78,8 @@ function timeline_init( start, end, payload ){
     var end_time_timeline = moment.utc(end).valueOf();
 
     $('#timeline').empty();
+    $('.coloredDiv').css('background-color', 'transparent');
+    $('#name').empty();
 
     var chart = d3.timeline()
                   .stack()
@@ -95,5 +97,6 @@ function timeline_init( start, end, payload ){
     var svg = d3.select('#timeline').append('svg').attr('width', 1140)
                 .datum(payload).call(chart);
 
+    $('#hoverRes').show();
     $('#schedule-observation').removeAttr('disabled');
 }
