@@ -30,7 +30,7 @@ $(document).ready(function() {
                 .datum(observation_data).call(chart);
 
     // Waveform loading
-    $('.observation-data').each(function( index ){
+    $('.wave').each(function( index ){
         var wid = $(this).data('id');
         var wavesurfer = Object.create(WaveSurfer);
         var data_payload_url = $(this).data('payload');
@@ -47,7 +47,7 @@ $(document).ready(function() {
             $(loading).show();
         });
 
-        $(this).find('.playpause').click( function(){
+        $(this).parents('.observation-data').find('.playpause').click( function(){
             wavesurfer.playPause();
         });
 
