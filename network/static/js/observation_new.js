@@ -34,9 +34,9 @@ $( document ).ready( function(){
 
         $.ajax({
             url: '/prediction_windows/' + satellite + '/' + start_time + '/' + end_time + '/',
-            beforeSend: function() { $('#spinner-data').show(); }
+            beforeSend: function() { $('#loading').show(); }
         }).done(function(data) {
-            $('#spinner-data').hide();
+            $('#loading').hide();
             if (data['error']) {
                 var error_msg = data['error'];
                 $('#timeline').empty();

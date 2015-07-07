@@ -81,9 +81,7 @@
             </div>
             <div class="panel-body">
               {% if data.payload %}
-                <div class="graph-spinner">
-                  <div class="three-quarters" id="spinner-data-{{ data.id }}">loading...</div>
-                </div>
+                <div id="loading" class="notice">Loading data</div>
                 <div class="wave" id="data-{{ data.id }}"></div>
               {% else %}
                 <div class="notice">

@@ -35,7 +35,7 @@ $(document).ready(function() {
         var wavesurfer = Object.create(WaveSurfer);
         var data_payload_url = $(this).data('payload');
         var container_el = '#data-' + wid;
-        var loading = '#spinner-data-' + wid;
+        var loading = '#loading';
 
         wavesurfer.init({
           container: container_el,
