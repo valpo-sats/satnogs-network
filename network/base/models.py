@@ -133,6 +133,10 @@ class Observation(models.Model):
     def is_future(self):
         return self.end > now()
 
+    @property
+    def has_data(self):
+        return self.data_set.exclude(payload='').count()
+
     def __unicode__(self):
         return "%d" % self.id
 
