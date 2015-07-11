@@ -42,7 +42,7 @@
           {% for transponder in transponders %}
             <option data-satellite="{{ transponder.satellite.norad_cat_id }}"
                     value="{{ transponder.id }}">
-              {{ transponder.description }} - {% frq transponder.downlink_low %} - {{ transponder.mode }}
+              {{ transponder.description }} - {{ transponder.downlink_low|frq }} - {{ transponder.mode }}
             </option>
           {% endfor %}
         </select>
