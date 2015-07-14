@@ -38,7 +38,7 @@
                 </a>
               </td>
               <td>{{ observation.satellite.name }}</td>
-              <td>{% frq observation.transponder.downlink_low %}</td>
+              <td>{{ observation.transponder.downlink_low|frq }}</td>
               <td>{{ observation.transponder.mode }}</td>
               <td>{{ observation.start|date:"Y-m-d H:i:s" }}</br>{{ observation.end|date:"Y-m-d H:i:s" }}</td>
               <td>
