@@ -125,23 +125,48 @@ AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s - %(process)d %(thread)d - %(message)s'
+        },
+    },
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
         }
     },
     'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'opbeat': {
+            'level': 'WARNING',
             'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
+            'class': 'opbeat.contrib.django.handlers.OpbeatHandler',
+        },
     },
     'loggers': {
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['opbeat'],
             'level': 'ERROR',
             'propagate': True,
+        },
+        'django.network.backends': {
+            'level': 'ERROR',
+            'handlers': ['opbeat'],
+            'propagate': False,
+        },
+        'network': {
+            'level': 'WARNING',
+            'handlers': ['opbeat'],
+            'propagate': False,
+        },
+        'opbeat.errors': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
         },
     }
 }
