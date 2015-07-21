@@ -42,9 +42,9 @@
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
               <li class="{% active request 'base:home' %}"><a href="{% url 'base:home' %}">Home</a></li>
+              <li class="{% active request 'base:about' %}"><a href="{% url 'base:about' %}">About</a></li>
               <li class="{% active request 'base:observations_list' %}"><a href="{% url 'base:observations_list' %}">Observations</a></li>
               <li class="{% active request 'base:stations_list' %}"><a href="{% url 'base:stations_list' %}">Ground Stations</a></li>
-              <li class="{% active request 'base:about' %}"><a href="{% url 'base:about' %}">About</a></li>
               <li><a href="https://community.satnogs.org/" target="_blank">Community</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -105,7 +105,7 @@
             <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA</a> license.
           </div>
           <div class="col-md-6 text-right footer-options">
-            <a href="https://github.com/satnogs/satnogs-network">Contribute</a> |
+            <a href="https://satnogs.org/" target="_blank">SatNOGS</a> |
             <a href="#top">Back to top</a>
           </div>
         </div>
