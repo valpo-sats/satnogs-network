@@ -6,6 +6,7 @@ urlpatterns = patterns(
     'network.base.views',
     url(r'^$', 'index', name='home'),
     url(r'^about/$', TemplateView.as_view(template_name='base/about.html'), name='about'),
+    url(r'^robots\.txt$', 'robots', name='robots'),
 
     # Observations
     url(r'^observations/$', 'observations_list', name='observations_list'),

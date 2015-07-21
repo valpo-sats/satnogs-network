@@ -7,7 +7,7 @@ from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.urlresolvers import reverse
 from django.utils.timezone import now, make_aware, utc
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotFound, HttpResponseServerError, HttpResponse
 from django.contrib.auth.decorators import login_required
 
 from network.base.models import (Station, Transponder, Observation,
@@ -32,6 +32,23 @@ def index(request):
     }
 
     return render(request, 'base/home.html', ctx)
+
+
+def custom_404(request):
+    """Custom 404 error handler."""
+    return HttpResponseNotFound(render(request, '404.html'))
+
+
+def custom_500(request):
+    """Custom 500 error handler."""
+    return HttpResponseServerError(render(request, '500.html'))
+
+
+def robots(request):
+    data = render(request, 'robots.txt', {'environment': settings.ENVIRONMENT})
+    response = HttpResponse(data,
+                            content_type='text/plain; charset=utf-8')
+    return response
 
 
 def observations_list(request):
