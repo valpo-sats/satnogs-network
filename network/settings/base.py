@@ -1,7 +1,6 @@
 from os import path, getenv
 BASE_DIR = path.dirname(path.dirname(__file__))
 
-
 # Apps
 DJANGO_APPS = (
     'django.contrib.auth',
