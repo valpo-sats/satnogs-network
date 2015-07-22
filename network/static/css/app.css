@@ -200,6 +200,17 @@ footer {
     display: none;
 }
 
+code.log {
+    display: none;
+    background-color: transparent;
+}
+
+code.log p {
+    background-color: black;
+    color: white;
+    padding: 5px;
+}
+
 
 /* Stations
 ==================== */

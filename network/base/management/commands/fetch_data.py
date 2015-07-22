@@ -14,7 +14,7 @@ class Command(BaseCommand):
         apiurl = settings.DB_API_ENDPOINT
         satellites_url = "{0}satellites".format(apiurl)
         transponders_url = "{0}transponders".format(apiurl)
-        self.stdout.write(satellites_url)
+        self.stdout.write("Fetching from: {0}".format(satellites_url))
         try:
             satellites = urllib2.urlopen(satellites_url).read()
             transponders = urllib2.urlopen(transponders_url).read()
@@ -26,15 +26,16 @@ class Command(BaseCommand):
             name = satellite['name']
             try:
                 sat = Satellite.objects.get(norad_cat_id=norad_cat_id)
-                self.stdout.write('Satellite {0} already exists'.format(norad_cat_id))
+                self.stdout.write('Satellite {0}-{1} already exists'.format(norad_cat_id, name))
             except:
                 sat = Satellite(norad_cat_id=norad_cat_id, name=name)
                 sat.save()
-                self.stdout.write('Satellite {0} added'.format(norad_cat_id))
+                self.stdout.write('Satellite {0}-{1} added'.format(norad_cat_id, name))
 
         for transponder in json.loads(transponders):
             norad_cat_id = transponder['norad_cat_id']
             uuid = transponder['uuid']
+            description = transponder['description']
 
             try:
                 sat = Satellite.objects.get(norad_cat_id=norad_cat_id)
@@ -45,9 +46,9 @@ class Command(BaseCommand):
                 existing_transponder = Transponder.objects.get(uuid=uuid)
                 existing_transponder.__dict__.update(transponder)
                 existing_transponder.satellite = sat
-                self.stdout.write('Transponder {0} updated'.format(uuid))
+                self.stdout.write('Transponder {0}-{1} updated'.format(uuid, description))
             except Transponder.DoesNotExist:
                 new_transponder = Transponder.objects.create(**transponder)
                 new_transponder.satellite = sat
                 new_transponder.save()
-                self.stdout.write('Transponder {0} created'.format(uuid))
+                self.stdout.write('Transponder {0}-{1} created'.format(uuid, description))

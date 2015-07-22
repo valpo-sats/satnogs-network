@@ -1,4 +1,4 @@
-{% load staticfiles i18n %}
+{% load staticfiles %}
 {% load avatar_tags %}
 {% load tags %}
 
@@ -57,6 +57,9 @@
                 </a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="{% url 'users:view_user' username=request.user.username %}">My Profile</a></li>
+                    {% if request.user.is_superuser %}
+                      <li><a href="{% url 'base:settings_site' %}">Site Settings</a></li>
+                    {% endif %}
                     <li><a href="{% url 'account_logout' %}">Logout</a></li>
                 </ul>
               </li>
