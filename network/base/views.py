@@ -1,5 +1,6 @@
 import ephem
 from datetime import datetime, timedelta
+from StringIO import StringIO
 
 from django.conf import settings
 from django.contrib import messages
@@ -7,12 +8,14 @@ from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.urlresolvers import reverse
 from django.utils.timezone import now, make_aware, utc
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotFound, HttpResponseServerError, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.core.management import call_command
 
 from network.base.models import (Station, Transponder, Observation,
                                  Data, Satellite, Antenna)
 from network.base.forms import StationForm
+from network.base.decorators import admin_required
 
 
 def index(request):
@@ -32,6 +35,43 @@ def index(request):
     }
 
     return render(request, 'base/home.html', ctx)
+
+
+def custom_404(request):
+    """Custom 404 error handler."""
+    return HttpResponseNotFound(render(request, '404.html'))
+
+
+def custom_500(request):
+    """Custom 500 error handler."""
+    return HttpResponseServerError(render(request, '500.html'))
+
+
+def robots(request):
+    data = render(request, 'robots.txt', {'environment': settings.ENVIRONMENT})
+    response = HttpResponse(data,
+                            content_type='text/plain; charset=utf-8')
+    return response
+
+
+@admin_required
+def settings_site(request):
+    """View to render settings page."""
+    if request.method == 'POST':
+        if request.POST['fetch']:
+            try:
+                out = StringIO()
+                call_command('fetch_data', stdout=out)
+                request.session['fetch_out'] = out.getvalue()
+            except:
+                messages.error(request, 'fetch command failed.')
+        return redirect(reverse('base:settings_site'))
+
+    fetch_out = request.session.get('fetch_out', False)
+    if fetch_out:
+        del request.session['fetch_out']
+        return render(request, 'base/settings_site.html', {'fetch_data': fetch_out})
+    return render(request, 'base/settings_site.html')
 
 
 def observations_list(request):
@@ -74,7 +114,7 @@ def observation_new(request):
 
         return redirect(reverse('base:observation_view', kwargs={'id': obs.id}))
 
-    satellites = Satellite.objects.filter(transponder__alive=True)
+    satellites = Satellite.objects.filter(transponder__alive=True).distinct()
     transponders = Transponder.objects.filter(alive=True)
 
     return render(request, 'base/observation_new.html',
@@ -86,7 +126,7 @@ def observation_new(request):
 
 def prediction_windows(request, sat_id, start_date, end_date):
     try:
-        sat = Satellite.objects.filter(transponder__alive=True).filter(norad_cat_id=sat_id).get()
+        sat = Satellite.objects.filter(transponder__alive=True).distinct().get(norad_cat_id=sat_id)
     except:
         data = {
             'error': 'You should select a Satellite first.'

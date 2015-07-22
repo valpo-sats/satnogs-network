@@ -3,7 +3,7 @@
 
 {% load staticfiles %}
 
-{% block title %}Ground Station {{ station.name }}{% endblock %}
+{% block title %} - Ground Station {{ station.name }}{% endblock %}
 
 {% block css %}
   <link rel="stylesheet" href="{% static 'css/lib/mapbox.css' %}">
@@ -92,7 +92,7 @@
         </div>
         <div class="panel panel-default">
           <div class="panel-body">
-            {{ antenna.band }} - {{ antenna.antenna_type }} - {% frq antenna.frequency %}
+            {{ antenna.band }} - {{ antenna.antenna_type }} - {{ antenna.frequency|frq }}
           </div>
         </div>
       {% empty %}
