@@ -12,7 +12,7 @@ from django.http import JsonResponse, HttpResponseNotFound, HttpResponseServerEr
 from django.contrib.auth.decorators import login_required
 from django.core.management import call_command
 
-from network.base.models import (Station, Transponder, Observation,
+from network.base.models import (Station, Transmitter, Observation,
                                  Data, Satellite, Antenna)
 from network.base.forms import StationForm
 from network.base.decorators import admin_required
@@ -87,14 +87,14 @@ def observation_new(request):
     me = request.user
     if request.method == 'POST':
         sat_id = request.POST.get('satellite')
-        trans_id = request.POST.get('transponder')
+        trans_id = request.POST.get('transmitter')
         start_time = datetime.strptime(request.POST.get('start-time'), '%Y-%m-%d %H:%M')
         start = make_aware(start_time, utc)
         end_time = datetime.strptime(request.POST.get('end-time'), '%Y-%m-%d %H:%M')
         end = make_aware(end_time, utc)
         sat = Satellite.objects.get(norad_cat_id=sat_id)
-        trans = Transponder.objects.get(id=trans_id)
-        obs = Observation(satellite=sat, transponder=trans,
+        trans = Transmitter.objects.get(id=trans_id)
+        obs = Observation(satellite=sat, transmitter=trans,
                           author=me, start=start, end=end)
         obs.save()
 
@@ -114,19 +114,19 @@ def observation_new(request):
 
         return redirect(reverse('base:observation_view', kwargs={'id': obs.id}))
 
-    satellites = Satellite.objects.filter(transponder__alive=True).distinct()
-    transponders = Transponder.objects.filter(alive=True)
+    satellites = Satellite.objects.filter(transmitters__alive=True).distinct()
+    transmitters = Transmitter.objects.filter(alive=True)
 
     return render(request, 'base/observation_new.html',
                   {'satellites': satellites,
-                   'transponders': transponders,
+                   'transmitters': transmitters,
                    'date_min_start': settings.DATE_MIN_START,
                    'date_max_range': settings.DATE_MAX_RANGE})
 
 
 def prediction_windows(request, sat_id, start_date, end_date):
     try:
-        sat = Satellite.objects.filter(transponder__alive=True).distinct().get(norad_cat_id=sat_id)
+        sat = Satellite.objects.filter(transmitters__alive=True).distinct().get(norad_cat_id=sat_id)
     except:
         data = {
             'error': 'You should select a Satellite first.'

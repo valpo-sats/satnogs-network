@@ -35,14 +35,14 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-3 control-label">Transponder</label>
+      <label class="col-sm-3 control-label">Transmitter</label>
       <div class="col-sm-9">
-        <select id="transponder-selection" class="form-control" disabled name="transponder">
-          <option id="no-transponder" value="" disabled selected>No transponder available</option>
-          {% for transponder in transponders %}
-            <option data-satellite="{{ transponder.satellite.norad_cat_id }}"
-                    value="{{ transponder.id }}">
-              {{ transponder.description }} - {{ transponder.downlink_low|frq }} - {{ transponder.mode }}
+        <select id="transmitter-selection" class="form-control" disabled name="transmitter">
+          <option id="no-transmitter" value="" disabled selected>No transmitter available</option>
+          {% for transmitter in transmitters %}
+            <option data-satellite="{{ transmitter.satellite.norad_cat_id }}"
+                    value="{{ transmitter.id }}">
+              {{ transmitter.description }} - {{ transmitter.downlink_low|frq }} - {{ transmitter.mode }}
             </option>
           {% endfor %}
         </select>

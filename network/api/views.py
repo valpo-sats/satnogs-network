@@ -5,33 +5,7 @@ from rest_framework import viewsets, mixins
 
 from network.api.perms import StationOwnerCanEditPermission
 from network.api import serializers, filters
-from network.base.models import (Antenna, Data, Observation, Satellite,
-                                 Station, Transponder)
-
-
-class AntennaView(viewsets.ReadOnlyModelViewSet):
-    queryset = Antenna.objects.all()
-    serializer_class = serializers.AntennaSerializer
-
-
-class StationView(viewsets.ReadOnlyModelViewSet):
-    queryset = Station.objects.all()
-    serializer_class = serializers.StationSerializer
-
-
-class SatelliteView(viewsets.ReadOnlyModelViewSet):
-    queryset = Satellite.objects.all()
-    serializer_class = serializers.SatelliteSerializer
-
-
-class TransponderView(viewsets.ReadOnlyModelViewSet):
-    queryset = Transponder.objects.all()
-    serializer_class = serializers.TransponderSerializer
-
-
-class ObservationView(viewsets.ReadOnlyModelViewSet):
-    queryset = Observation.objects.all()
-    serializer_class = serializers.ObservationSerializer
+from network.base.models import Data
 
 
 class DataView(viewsets.ModelViewSet, mixins.UpdateModelMixin):

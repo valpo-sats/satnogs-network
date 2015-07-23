@@ -1,3 +1,8 @@
+## 0.4
+
+* Rename Transponders to Transmitters
+* Hide unused API endpoints
+
 ## 0.3
 
 * Last Seen feature on Ground Stations

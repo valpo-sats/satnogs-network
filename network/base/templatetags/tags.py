@@ -15,7 +15,7 @@ def active(request, urls):
 def frq(value):
     try:
         to_format = float(value)
-    except TypeError:
+    except (TypeError, ValueError):
         return '-'
     formatted = format(float(to_format) / 1000000, '.3f')
     formatted = formatted + ' Mhz'

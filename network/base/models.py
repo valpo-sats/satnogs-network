@@ -94,7 +94,7 @@ class Satellite(models.Model):
         return self.name
 
 
-class Transponder(models.Model):
+class Transmitter(models.Model):
     """Model for antennas transponders."""
     uuid = ShortUUIDField(db_index=True)
     description = models.TextField()
@@ -107,7 +107,7 @@ class Transponder(models.Model):
                             max_length=10, blank=True)
     invert = models.BooleanField(default=False)
     baud = models.FloatField(validators=[MinValueValidator(0)], null=True, blank=True)
-    satellite = models.ForeignKey(Satellite, related_name='transponder',
+    satellite = models.ForeignKey(Satellite, related_name='transmitters',
                                   null=True)
 
     def __unicode__(self):
@@ -117,7 +117,7 @@ class Transponder(models.Model):
 class Observation(models.Model):
     """Model for SatNOGS observations."""
     satellite = models.ForeignKey(Satellite)
-    transponder = models.ForeignKey(Transponder, null=True)
+    transmitter = models.ForeignKey(Transmitter, null=True, related_name='observations')
     author = models.ForeignKey(User)
     start = models.DateTimeField()
     end = models.DateTimeField()
