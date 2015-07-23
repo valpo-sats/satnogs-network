@@ -64,7 +64,7 @@ class JobSerializer(serializers.ModelSerializer):
                   'frequency')
 
     def get_frequency(self, obj):
-        return obj.observation.transponder.downlink_low
+        return obj.observation.transmitter.downlink_low
 
     def get_tle0(self, obj):
         return obj.observation.satellite.tle0

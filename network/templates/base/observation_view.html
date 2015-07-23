@@ -29,8 +29,8 @@
         <tbody>
             <tr>
               <td>{{ observation.satellite.norad_cat_id }} - {{ observation.satellite.name }}</td>
-              <td>{{ observation.transponder.downlink_low|frq }}</td>
-              <td>{{ observation.transponder.mode }}</td>
+              <td>{{ observation.transmitter.downlink_low|frq }}</td>
+              <td>{{ observation.transmitter.mode }}</td>
               <td>{{ observation.start|date:"Y-m-d H:i:s" }}</br>{{ observation.end|date:"Y-m-d H:i:s" }}</td>
               <td>
                 <a href="{% url 'users:view_user' username=observation.author.username %}">
