@@ -17,10 +17,6 @@ $(function () {
         $('#transmitter-selection').prop('disabled', false);
         $('#transmitter-selection option').hide();
         $('#transmitter-selection option[data-satellite="'+norad+'"]').show().prop('selected', true);
-        if($('#transmitter-selection option:visible').length === 0) {
-            $('#transmitter-selection').prop('disabled', true);
-            $('#transmitter-selection option[id="no-transmitter"]').show().prop('selected', true);
-        }
     });
 });
 
