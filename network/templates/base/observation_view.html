@@ -5,10 +5,6 @@
 
 {% block title %} - Observation {{ observation.id }}{% endblock %}
 
-{% block css %}
-  <link rel="stylesheet" href="{% static 'css/lib/spinner.css' %}">
-{% endblock %}
-
 {% block content %}
   <h2 id="observation-info"
       data-start="{{ observation.start|date:"U"}}"
