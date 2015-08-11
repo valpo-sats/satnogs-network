@@ -12,10 +12,23 @@ from django.http import JsonResponse, HttpResponseNotFound, HttpResponseServerEr
 from django.contrib.auth.decorators import login_required
 from django.core.management import call_command
 
+from rest_framework import serializers, viewsets
+
 from network.base.models import (Station, Transmitter, Observation,
                                  Data, Satellite, Antenna)
 from network.base.forms import StationForm
 from network.base.decorators import admin_required
+
+
+class StationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Station
+        fields = ('name', 'lat', 'lng')
+
+
+class StationAllView(viewsets.ReadOnlyModelViewSet):
+    queryset = Station.objects.all()
+    serializer_class = StationSerializer
 
 
 def index(request):
