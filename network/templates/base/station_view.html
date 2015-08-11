@@ -81,7 +81,11 @@
         {% endif %}
         <span class="gs-front-data"
               title="{{ station.last_seen|date:"c" }}">
-          Last seen {{ station.last_seen|timesince }} ago
+          {% if station.last_seen %}
+            Last seen {{ station.last_seen|timesince }} ago
+          {% else %}
+            Never seen
+          {% endif %}
         </span>
       </div>
     </div>
