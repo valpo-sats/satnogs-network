@@ -139,7 +139,8 @@ def observation_new(request):
 
 def prediction_windows(request, sat_id, start_date, end_date):
     try:
-        sat = Satellite.objects.filter(transmitters__alive=True).distinct().get(norad_cat_id=sat_id)
+        sat = Satellite.objects.filter(transmitters__alive=True). \
+            distinct().get(norad_cat_id=sat_id)
     except:
         data = {
             'error': 'You should select a Satellite first.'

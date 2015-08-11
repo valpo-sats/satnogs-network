@@ -59,8 +59,6 @@ body {
     font-family:'ClearSans';
 }
 
-
-
 a:hover {
     text-decoration: none;
 }
@@ -109,6 +107,10 @@ a:hover {
     margin: 0 auto;
     margin-top: -7px;
     margin-right: 5px;
+}
+
+.progress {
+    margin-bottom: 0px;
 }
 
 footer {
