@@ -11,12 +11,7 @@ $(document).ready(function() {
         zoomControl: false
     }).setView([40, 0], 3);
     var LocLayer = L.mapbox.featureLayer().addTo(map);
-
-    $('#successful a.toggle').click(function (e) {
-        e.preventDefault();
-        $(this).tab('show');
-    })
-
+    
     $.ajax({
         url: stations
     }).done(function(data) {

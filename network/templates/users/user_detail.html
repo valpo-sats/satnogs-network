@@ -118,10 +118,10 @@
                 <td>
                   <a href="{% url 'base:observation_view' id=observation.id %}">
                     <span class="label
-                                 {% if not observation.data_set.all %}
-                                  label-danger
-                                 {% else %}
+                                 {% if observation.has_data %}
                                   label-success
+                                 {% else %}
+                                  label-danger
                                  {% endif %}">
                       {{ observation.id }}
                     </span>

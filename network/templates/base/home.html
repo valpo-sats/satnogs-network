@@ -95,14 +95,14 @@
     <div class="{% if featured_station %}col-md-8{% else %}col-md-12{% endif %}">
       <ul class="nav nav-tabs" role="tablist">
         <li class="active">
-          <a href="#successful" class="toggle" role="tab" data-toggle="tab">Latest Observations</a>
+          <a href="#latest" class="toggle" role="tab" data-toggle="tab">Latest Observations</a>
         </li>
         <li>
           <a href="#scheduled" class="toggle" role="tab" data-toggle="tab">Scheduled Observations</a>
         </li>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane active" id="successful">
+        <div class="tab-pane active" id="latest">
           <table class="table table-hover">
             <thead>
               <th>ID</th>
@@ -118,10 +118,10 @@
                   <td>
                     <a href="{% url 'base:observation_view' id=observation.id %}">
                       <span class="label
-                                   {% if not observation.data_set.all %}
-                                    label-danger
-                                   {% else %}
+                                   {% if observation.has_data %}
                                     label-success
+                                   {% else %}
+                                    label-danger
                                    {% endif %}">
                         {{ observation.id }}
                       </span>
