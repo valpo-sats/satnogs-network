@@ -12,10 +12,23 @@ from django.http import JsonResponse, HttpResponseNotFound, HttpResponseServerEr
 from django.contrib.auth.decorators import login_required
 from django.core.management import call_command
 
+from rest_framework import serializers, viewsets
+
 from network.base.models import (Station, Transmitter, Observation,
                                  Data, Satellite, Antenna)
 from network.base.forms import StationForm
 from network.base.decorators import admin_required
+
+
+class StationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Station
+        fields = ('name', 'lat', 'lng')
+
+
+class StationAllView(viewsets.ReadOnlyModelViewSet):
+    queryset = Station.objects.all()
+    serializer_class = StationSerializer
 
 
 def index(request):
@@ -126,7 +139,8 @@ def observation_new(request):
 
 def prediction_windows(request, sat_id, start_date, end_date):
     try:
-        sat = Satellite.objects.filter(transmitters__alive=True).distinct().get(norad_cat_id=sat_id)
+        sat = Satellite.objects.filter(transmitters__alive=True). \
+            distinct().get(norad_cat_id=sat_id)
     except:
         data = {
             'error': 'You should select a Satellite first.'

@@ -20,3 +20,11 @@ def frq(value):
     formatted = format(float(to_format) / 1000000, '.3f')
     formatted = formatted + ' Mhz'
     return formatted
+
+
+@register.filter
+def percentagerest(value):
+    try:
+        return 100 - value
+    except (TypeError, ValueError):
+        return 0

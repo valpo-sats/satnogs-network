@@ -74,6 +74,12 @@ class Station(models.Model):
         else:
             return format_html('<span style="color:red">Offline</span>')
 
+    @property
+    def success_rate(self):
+        observations = self.data_set.all().count()
+        success = self.data_set.exclude(payload='').count()
+        return int(100 * (float(success) / float(observations)))
+
     def __unicode__(self):
         return "%d - %s" % (self.pk, self.name)
 
