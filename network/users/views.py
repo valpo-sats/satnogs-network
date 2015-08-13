@@ -15,12 +15,6 @@ from network.base.forms import StationForm
 from network.base.models import Station, Observation, Antenna
 
 
-class UserDetailView(LoginRequiredMixin, DetailView):
-    model = User
-    slug_field = "username"
-    slug_url_kwarg = "username"
-
-
 class UserRedirectView(LoginRequiredMixin, RedirectView):
     permanent = False
 
@@ -41,12 +35,6 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_object(self):
         return User.objects.get(username=self.request.user.username)
-
-
-class UserListView(LoginRequiredMixin, ListView):
-    model = User
-    slug_field = "username"
-    slug_url_kwarg = "username"
 
 
 def view_user(request, username):
