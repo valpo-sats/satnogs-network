@@ -13,6 +13,7 @@ urlpatterns = patterns(
     # Observations
     url(r'^observations/$', 'observations_list', name='observations_list'),
     url(r'^observations/(?P<id>[0-9]+)/$', 'observation_view', name='observation_view'),
+    url(r'^observations/(?P<id>[0-9]+)/delete/$', 'observation_delete', name='observation_delete'),
     url(r'^observations/new/$', 'observation_new', name='observation_new'),
     url(r'^prediction_windows/(?P<sat_id>[\w.@+-]+)/(?P<start_date>.+)/(?P<end_date>.+)/$',
         'prediction_windows', name='prediction_windows'),

@@ -214,6 +214,19 @@ def observation_view(request, id):
                   {'observation': observation, 'data': data})
 
 
+@login_required
+def observation_delete(request, id):
+    """View for deleting observation."""
+    me = request.user
+    observation = get_object_or_404(Observation, id=id)
+    if observation.author == me and observation.is_deletable:
+        observation.delete()
+        messages.success(request, 'Observation deleted successfully.')
+    else:
+        messages.error(request, 'Permission denied.')
+    return redirect(reverse('base:observations_list'))
+
+
 def stations_list(request):
     """View to render Stations page."""
     stations = Station.objects.all()

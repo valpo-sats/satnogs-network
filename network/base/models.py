@@ -153,6 +153,11 @@ class Observation(models.Model):
         return self.end > now()
 
     @property
+    def is_deletable(self):
+        deletion = self.start - timedelta(minutes=int(settings.OBSERVATION_MAX_DELETION_RANGE))
+        return deletion > now()
+
+    @property
     def has_data(self):
         return self.data_set.exclude(payload='').count()
 
