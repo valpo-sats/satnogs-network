@@ -1,9 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
-from django.views.generic import DetailView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
-from django.views.generic import ListView
 
 from braces.views import LoginRequiredMixin
 
