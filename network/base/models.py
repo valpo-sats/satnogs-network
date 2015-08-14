@@ -17,7 +17,13 @@ ANTENNA_TYPES = (
     ('helical', 'Helical'),
     ('parabolic', 'Parabolic'),
 )
-MODE_CHOICES = ['FM', 'AFSK', 'BFSK', 'APRS', 'SSTV', 'CW', 'FMN', 'SSTV', 'GMSK', 'SSB']
+
+
+class Mode(models.Model):
+    name = models.CharField(max_length=10, unique=True)
+
+    def __unicode__(self):
+        return self.name
 
 
 class Antenna(models.Model):
@@ -28,7 +34,7 @@ class Antenna(models.Model):
     antenna_type = models.CharField(choices=ANTENNA_TYPES, max_length=15)
 
     def __unicode__(self):
-        return "%s - %s - %s" % (self.band, self.antenna_type, self.frequency)
+        return '{0} - {1} - {2}'.format(self.band, self.antenna_type, self.frequency)
 
 
 class Station(models.Model):
@@ -88,6 +94,8 @@ class Satellite(models.Model):
     """Model for SatNOGS satellites."""
     norad_cat_id = models.PositiveIntegerField()
     name = models.CharField(max_length=45)
+    names = models.TextField(blank=True)
+    image = models.ImageField(upload_to='satellites', blank=True)
     tle0 = models.CharField(max_length=100, blank=True)
     tle1 = models.CharField(max_length=200, blank=True)
     tle2 = models.CharField(max_length=200, blank=True)
@@ -95,6 +103,12 @@ class Satellite(models.Model):
 
     class Meta:
         ordering = ['norad_cat_id']
+
+    def get_image(self):
+        if self.image and hasattr(self.image, 'url'):
+            return self.image.url
+        else:
+            return settings.SATELLITE_DEFAULT_IMAGE
 
     def __unicode__(self):
         return self.name
@@ -109,12 +123,11 @@ class Transmitter(models.Model):
     uplink_high = models.PositiveIntegerField(blank=True, null=True)
     downlink_low = models.PositiveIntegerField(blank=True, null=True)
     downlink_high = models.PositiveIntegerField(blank=True, null=True)
-    mode = models.CharField(choices=zip(MODE_CHOICES, MODE_CHOICES),
-                            max_length=10, blank=True)
+    mode = models.ForeignKey(Mode, related_name='transmitters', blank=True,
+                             null=True, on_delete=models.SET_NULL)
     invert = models.BooleanField(default=False)
     baud = models.FloatField(validators=[MinValueValidator(0)], null=True, blank=True)
-    satellite = models.ForeignKey(Satellite, related_name='transmitters',
-                                  null=True)
+    satellite = models.ForeignKey(Satellite, related_name='transmitters', null=True)
 
     def __unicode__(self):
         return self.description
