@@ -21,6 +21,7 @@ urlpatterns = patterns(
     # Stations
     url(r'^stations/$', 'stations_list', name='stations_list'),
     url(r'^stations/(?P<id>[0-9]+)/$', 'station_view', name='station_view'),
+    url(r'^stations/(?P<id>[0-9]+)/delete/$', 'station_delete', name='station_delete'),
     url(r'^stations/edit/$', 'station_edit', name='station_edit'),
     url(r'^stations_all/$', StationAllView.as_view({'get': 'list'}), name='stations_all'),
 
