@@ -72,19 +72,21 @@
                   {% endfor %}
                 </span>
               </div>
-              <div class="gs-front-line">
-                <span class="label label-info">Success Rate</span>
-                <span class="gs-front-data">
-                  <div class="progress" title="{{ featured_station.success_rate }}%">
-                    <div class="progress-bar progress-bar-success" style="width: {{ featured_station.success_rate }}%">
-                      <span class="sr-only">{{ featured_station.success_rate }}% Complete (success)</span>
+              {% if featured_station.success_rate %}
+                <div class="gs-front-line">
+                  <span class="label label-info">Success Rate</span>
+                  <span class="gs-front-data">
+                    <div class="progress" title="{{ featured_station.success_rate }}%">
+                      <div class="progress-bar progress-bar-success" style="width: {{ featured_station.success_rate }}%">
+                        <span class="sr-only">{{ featured_station.success_rate }}% Complete (success)</span>
+                      </div>
+                      <div class="progress-bar progress-bar-danger" style="width: {{ featured_station.success_rate|percentagerest }}%">
+                        <span class="sr-only">{{ featured_station.success_rate|percentagerest }}% Complete (danger)</span>
+                      </div>
                     </div>
-                    <div class="progress-bar progress-bar-danger" style="width: {{ featured_station.success_rate|percentagerest }}%">
-                      <span class="sr-only">{{ featured_station.success_rate|percentagerest }}% Complete (danger)</span>
-                    </div>
-                  </div>
-                </span>
-              </div>
+                  </span>
+                </div>
+              {% endif %}
             </div>
           </div>
         </div>

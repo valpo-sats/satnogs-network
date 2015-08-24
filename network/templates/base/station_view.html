@@ -73,19 +73,21 @@
           {{ station.created|timesince }} ago
         </span>
       </div>
-      <div class="gs-front-line">
-        <span class="label label-default">Success Rate</span>
-        <span class="gs-front-data">
-          <div class="progress" title="{{ station.success_rate }}%">
-            <div class="progress-bar progress-bar-success" style="width: {{ station.success_rate }}%">
-              <span class="sr-only">{{ station.success_rate }}% Complete (success)</span>
+      {% if station.success_rate %}
+        <div class="gs-front-line">
+          <span class="label label-default">Success Rate</span>
+          <span class="gs-front-data">
+            <div class="progress" title="{{ station.success_rate }}%">
+              <div class="progress-bar progress-bar-success" style="width: {{ station.success_rate }}%">
+                <span class="sr-only">{{ station.success_rate }}% Complete (success)</span>
+              </div>
+              <div class="progress-bar progress-bar-danger" style="width: {{ station.success_rate|percentagerest }}%">
+                <span class="sr-only">{{ station.success_rate|percentagerest }}% Complete (danger)</span>
+              </div>
             </div>
-            <div class="progress-bar progress-bar-danger" style="width: {{ station.success_rate|percentagerest }}%">
-              <span class="sr-only">{{ station.success_rate|percentagerest }}% Complete (danger)</span>
-            </div>
-          </div>
-        </span>
-      </div>
+          </span>
+        </div>
+      {% endif %}
       <div class="gs-front-line">
         {% if station.online %}
           <span class="label label-success">Online</span>

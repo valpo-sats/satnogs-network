@@ -84,7 +84,10 @@ class Station(models.Model):
     def success_rate(self):
         observations = self.data_set.all().count()
         success = self.data_set.exclude(payload='').count()
-        return int(100 * (float(success) / float(observations)))
+        if observations:
+            return int(100 * (float(success) / float(observations)))
+        else:
+            return False
 
     def __unicode__(self):
         return "%d - %s" % (self.pk, self.name)
