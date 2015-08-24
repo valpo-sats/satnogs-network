@@ -273,3 +273,13 @@ def station_edit(request):
     else:
         messages.error(request, 'Some fields missing on the form')
         return redirect(reverse('users:view_user', kwargs={'username': request.user.username}))
+
+
+@login_required
+def station_delete(request, id):
+    """View for deleting a station."""
+    me = request.user
+    station = get_object_or_404(Station, id=id, owner=request.user)
+    station.delete()
+    messages.success(request, 'Ground Station deleted successfully.')
+    return redirect(reverse('users:view_user', kwargs={'username': me}))
