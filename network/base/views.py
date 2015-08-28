@@ -1,3 +1,5 @@
+import json
+import urllib2
 import ephem
 from datetime import datetime, timedelta
 from StringIO import StringIO
@@ -8,6 +10,7 @@ from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.urlresolvers import reverse
 from django.utils.timezone import now, make_aware, utc
+from django.utils.text import slugify
 from django.http import JsonResponse, HttpResponseNotFound, HttpResponseServerError, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.management import call_command
@@ -209,9 +212,25 @@ def observation_view(request, id):
     """View for single observation page."""
     observation = get_object_or_404(Observation, id=id)
     data = Data.objects.filter(observation=observation)
+    discuss_slug = 'https://community.satnogs.org/t/observation-{0}-{1}-{2}' \
+                   .format(observation.id, slugify(observation.satellite.name),
+                           observation.satellite.norad_cat_id)
+    discuss_url = ('https://community.satnogs.org/new-topic?title=Observation {0}: {1} ({2})'
+                   '&body=Regarding [Observation {3}](http://{4}{5}) ...&category=observations') \
+                   .format(observation.id, observation.satellite.name,
+                           observation.satellite.norad_cat_id, observation.id,
+                           request.get_host(), request.path)
+
+    try:
+        apiurl = '{0}.json'.format(discuss_slug)
+        urllib2.urlopen(apiurl).read()
+        has_comments = True
+    except:
+        has_comments = False
 
     return render(request, 'base/observation_view.html',
-                  {'observation': observation, 'data': data})
+                  {'observation': observation, 'data': data, 'has_comments': has_comments,
+                   'discuss_url': discuss_url, 'discuss_slug': discuss_slug})
 
 
 @login_required
