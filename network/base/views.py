@@ -1,4 +1,3 @@
-import json
 import urllib2
 import ephem
 from datetime import datetime, timedelta
@@ -212,25 +211,29 @@ def observation_view(request, id):
     """View for single observation page."""
     observation = get_object_or_404(Observation, id=id)
     data = Data.objects.filter(observation=observation)
-    discuss_slug = 'https://community.satnogs.org/t/observation-{0}-{1}-{2}' \
-                   .format(observation.id, slugify(observation.satellite.name),
-                           observation.satellite.norad_cat_id)
-    discuss_url = ('https://community.satnogs.org/new-topic?title=Observation {0}: {1} ({2})'
-                   '&body=Regarding [Observation {3}](http://{4}{5}) ...&category=observations') \
-                   .format(observation.id, observation.satellite.name,
-                           observation.satellite.norad_cat_id, observation.id,
-                           request.get_host(), request.path)
 
-    try:
-        apiurl = '{0}.json'.format(discuss_slug)
-        urllib2.urlopen(apiurl).read()
-        has_comments = True
-    except:
-        has_comments = False
+    if settings.ENVIRONMENT == 'production':
+        discuss_slug = 'https://community.satnogs.org/t/observation-{0}-{1}-{2}' \
+            .format(observation.id, slugify(observation.satellite.name),
+                    observation.satellite.norad_cat_id)
+        discuss_url = ('https://community.satnogs.org/new-topic?title=Observation {0}: {1} ({2})'
+                       '&body=Regarding [Observation {3}](http://{4}{5}) ...&category=observations') \
+            .format(observation.id, observation.satellite.name,
+                    observation.satellite.norad_cat_id, observation.id,
+                    request.get_host(), request.path)
+        try:
+            apiurl = '{0}.json'.format(discuss_slug)
+            urllib2.urlopen(apiurl).read()
+            has_comments = True
+        except:
+            has_comments = False
+
+        return render(request, 'base/observation_view.html',
+                      {'observation': observation, 'data': data, 'has_comments': has_comments,
+                       'discuss_url': discuss_url, 'discuss_slug': discuss_slug})
 
     return render(request, 'base/observation_view.html',
-                  {'observation': observation, 'data': data, 'has_comments': has_comments,
-                   'discuss_url': discuss_url, 'discuss_slug': discuss_slug})
+                  {'observation': observation, 'data': data})
 
 
 @login_required

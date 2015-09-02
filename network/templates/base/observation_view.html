@@ -79,15 +79,17 @@
             <h3>Data</h3>
           </div>
           <div class="col-md-6 text-right">
-            <h3>
-              <a id="obs-discuss"
-                 data-slug="{{ discuss_slug }}"
-                 href="{% if has_comments %}{{ discuss_slug }}{% else %}{{ discuss_url }}{% endif %}"
-                 class="btn btn-primary" target="_blank">
-                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-                Discuss Observation
-              </a>
-            </h3>
+            {% if discuss_slug %}
+              <h3>
+                <a id="obs-discuss"
+                   data-slug="{{ discuss_slug }}"
+                   href="{% if has_comments %}{{ discuss_slug }}{% else %}{{ discuss_url }}{% endif %}"
+                   class="btn btn-primary" target="_blank">
+                  <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                  Discuss Observation
+                </a>
+              </h3>
+            {% endif %}
           </div>
         </div>
 
