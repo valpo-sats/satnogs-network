@@ -1,7 +1,13 @@
 from django.contrib import admin
 
 from network.base.models import (Antenna, Satellite, Station, Transmitter,
-                                 Observation, Data, Mode)
+                                 Observation, Data, Mode, Rig)
+
+
+@admin.register(Rig)
+class RigAdmin(admin.ModelAdmin):
+    list_display = ('name', 'rictld_number')
+    list_filter = ('name', )
 
 
 @admin.register(Mode)
