@@ -19,7 +19,7 @@ from django.core.management import call_command
 from rest_framework import serializers, viewsets
 
 from network.base.models import (Station, Transmitter, Observation,
-                                 Data, Satellite, Antenna, Tle)
+                                 Data, Satellite, Antenna, Tle, Rig)
 from network.base.forms import StationForm
 from network.base.decorators import admin_required
 
@@ -326,6 +326,7 @@ def station_view(request, id):
     station = get_object_or_404(Station, id=id)
     form = StationForm(instance=station)
     antennas = Antenna.objects.all()
+    rigs = Rig.objects.all()
 
     try:
         satellites = Satellite.objects.filter(transmitters__alive=True).distinct()
@@ -408,7 +409,8 @@ def station_view(request, id):
                   {'station': station, 'form': form, 'antennas': antennas,
                    'mapbox_id': settings.MAPBOX_MAP_ID,
                    'mapbox_token': settings.MAPBOX_TOKEN,
-                   'nextpasses': sorted(nextpasses, key=itemgetter('tr'))})
+                   'nextpasses': sorted(nextpasses, key=itemgetter('tr')),
+                   'rigs': rigs})
 
 
 @require_POST

@@ -80,6 +80,12 @@
         </span>
       </div>
       <div class="gs-front-line">
+        <span class="label label-default">Rig</span>
+        <span class="gs-front-data">
+          {{ station.rig|default:"-" }}
+        </span>
+      </div>
+      <div class="gs-front-line">
         <span class="label label-default">Creation Date</span>
         <span class="gs-front-data"
               title="{{ station.created|date:"c" }}">
