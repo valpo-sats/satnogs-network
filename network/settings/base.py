@@ -18,6 +18,7 @@ THIRD_PARTY_APPS = (
     'crispy_forms',
     'allauth',
     'allauth.account',
+    'compressor',
 )
 LOCAL_APPS = (
     'network.users',
@@ -96,6 +97,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
 )
 MEDIA_ROOT = path.join(path.dirname(BASE_DIR), 'media')
 MEDIA_URL = '/media/'
