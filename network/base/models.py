@@ -176,5 +176,9 @@ class Data(models.Model):
     ground_station = models.ForeignKey(Station)
     payload = models.FileField(upload_to='data_payloads', blank=True, null=True)
 
+    @property
+    def is_past(self):
+        return self.end < now()
+
     class Meta:
         ordering = ['-start', '-end']

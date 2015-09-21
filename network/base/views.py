@@ -33,6 +33,29 @@ class StationAllView(viewsets.ReadOnlyModelViewSet):
     serializer_class = StationSerializer
 
 
+def _resolve_overlaps(station, start, end):
+    data = Data.objects.filter(ground_station=station)
+
+    if data:
+        for datum in data:
+            if datum.is_past:
+                continue
+            if datum.start <= end and start <= datum.end:
+                if datum.start <= start and datum.end >= end:
+                    return False
+                if start < datum.start and end > datum.end:
+                    start1 = start
+                    end1 = datum.start
+                    start2 = datum.end
+                    end2 = end
+                    return start1, end1, start2, end2
+                if datum.start <= start:
+                    start = datum.end
+                if datum.end >= end:
+                    end = datum.start
+    return start, end
+
+
 def index(request):
     """View to render index page."""
     observations = Observation.objects.all()
@@ -175,14 +198,6 @@ def prediction_windows(request, sat_id, start_date, end_date):
                 break
 
             if ephem.Date(tr).datetime() < end_date:
-                if not station_match:
-                    station_windows = {
-                        'id': station.id,
-                        'name': station.name,
-                        'window': []
-                    }
-                    station_match = True
-
                 if ephem.Date(ts).datetime() > end_date:
                     ts = end_date
                     keep_digging = False
@@ -190,12 +205,36 @@ def prediction_windows(request, sat_id, start_date, end_date):
                     time_start_new = ephem.Date(ts).datetime() + timedelta(minutes=1)
                     observer.date = time_start_new.strftime("%Y-%m-%d %H:%M:%S.%f")
 
-                station_windows['window'].append(
-                    {
-                        'start': ephem.Date(tr).datetime().strftime("%Y-%m-%d %H:%M:%S.%f"),
-                        'end': ephem.Date(ts).datetime().strftime("%Y-%m-%d %H:%M:%S.%f"),
-                        'az_start': azr
-                    })
+                # Adjust or discard window if overlaps exist
+                window_start = make_aware(ephem.Date(tr).datetime(), utc)
+                window_end = make_aware(ephem.Date(ts).datetime(), utc)
+                window = _resolve_overlaps(station, window_start, window_end)
+                if window:
+                    if not station_match:
+                        station_windows = {
+                            'id': station.id,
+                            'name': station.name,
+                            'window': []
+                        }
+                        station_match = True
+                    window_start = window[0]
+                    window_end = window[1]
+                    station_windows['window'].append(
+                        {
+                            'start': window_start.strftime("%Y-%m-%d %H:%M:%S.%f"),
+                            'end': window_end.strftime("%Y-%m-%d %H:%M:%S.%f"),
+                            'az_start': azr
+                        })
+                    # In case our window was split in two
+                    if window[2]:
+                        window_start = window[2]
+                        window_end = window[3]
+                        station_windows['window'].append(
+                            {
+                                'start': window_start.strftime("%Y-%m-%d %H:%M:%S.%f"),
+                                'end': window_end.strftime("%Y-%m-%d %H:%M:%S.%f"),
+                                'az_start': azr
+                            })
 
             else:
                 # window start outside of window bounds
