@@ -25,6 +25,7 @@ $( document ).ready( function(){
         $('.calculation-result').show();
         $('#timeline').empty();
         $('#hoverRes').hide();
+        $('#windows-data').empty();
         var satellite = $('#satellite-selection').val();
         var start_time = $('#datetimepicker-start input').val();
         var end_time = $('#datetimepicker-end input').val();

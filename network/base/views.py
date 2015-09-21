@@ -226,7 +226,7 @@ def prediction_windows(request, sat_id, start_date, end_date):
                             'az_start': azr
                         })
                     # In case our window was split in two
-                    if window[2]:
+                    try:
                         window_start = window[2]
                         window_end = window[3]
                         station_windows['window'].append(
@@ -235,6 +235,8 @@ def prediction_windows(request, sat_id, start_date, end_date):
                                 'end': window_end.strftime("%Y-%m-%d %H:%M:%S.%f"),
                                 'az_start': azr
                             })
+                    except:
+                        pass
 
             else:
                 # window start outside of window bounds
