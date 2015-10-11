@@ -16,6 +16,7 @@ ANTENNA_TYPES = (
     ('yagi', 'Yagi'),
     ('helical', 'Helical'),
     ('parabolic', 'Parabolic'),
+    ('vertical', 'Verical'),
 )
 
 
