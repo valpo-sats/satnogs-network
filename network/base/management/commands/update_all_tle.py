@@ -27,4 +27,4 @@ class Command(BaseCommand):
             obj.tle2 = tle[2]
             obj.save()
             self.stdout.write(('Satellite {} with Identifier {} '
-                              'found [updated]').format(obj.norad_cat_id, obj.name))
+                              'found [updated]').format(obj.name, obj.norad_cat_id))
