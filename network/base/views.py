@@ -22,6 +22,7 @@ from network.base.models import (Station, Transmitter, Observation,
                                  Data, Satellite, Antenna)
 from network.base.forms import StationForm
 from network.base.decorators import admin_required
+from network.base.helpers import get_latest_tle
 
 
 class StationSerializer(serializers.ModelSerializer):
@@ -173,7 +174,11 @@ def prediction_windows(request, sat_id, start_date, end_date):
             'error': 'You should select a Satellite first.'
         }
         return JsonResponse(data, safe=False)
-    satellite = ephem.readtle(str(sat.tle0), str(sat.tle1), str(sat.tle2))
+
+    latest_tle = get_latest_tle(sat)
+    satellite = ephem.readtle(str(latest_tle.tle0),
+                              str(latest_tle.tle1),
+                              str(latest_tle.tle2))
 
     end_date = datetime.strptime(end_date, '%Y-%m-%d %H:%M')
 
@@ -325,11 +330,12 @@ def station_view(request, id):
 
     for satellite in satellites:
         observer.date = ephem.date(datetime.today())
+        latest_tle = get_latest_tle(satellite)
 
         try:
-            sat_ephem = ephem.readtle(str(satellite.tle0),
-                                      str(satellite.tle1),
-                                      str(satellite.tle2))
+            sat_ephem = ephem.readtle(str(latest_tle.tle0),
+                                      str(latest_tle.tle1),
+                                      str(latest_tle.tle2))
 
             # Here we are going to iterate over each satellite to
             # find its appropriate passes within a given time constraint

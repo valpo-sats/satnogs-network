@@ -100,10 +100,6 @@ class Satellite(models.Model):
     name = models.CharField(max_length=45)
     names = models.TextField(blank=True)
     image = models.ImageField(upload_to='satellites', blank=True)
-    tle0 = models.CharField(max_length=100, blank=True)
-    tle1 = models.CharField(max_length=200, blank=True)
-    tle2 = models.CharField(max_length=200, blank=True)
-    updated = models.DateTimeField(auto_now=True, blank=True)
 
     class Meta:
         ordering = ['norad_cat_id']
@@ -116,6 +112,20 @@ class Satellite(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class Tle(models.Model):
+    tle0 = models.CharField(max_length=100, blank=True)
+    tle1 = models.CharField(max_length=200, blank=True)
+    tle2 = models.CharField(max_length=200, blank=True)
+    updated = models.DateTimeField(auto_now=True, blank=True)
+    satellite = models.ForeignKey(Satellite, related_name='tles', null=True)
+
+    class Meta:
+        ordering = ['tle0']
+
+    def __unicode__(self):
+        return self.tle0
 
 
 class Transmitter(models.Model):
@@ -141,6 +151,7 @@ class Observation(models.Model):
     """Model for SatNOGS observations."""
     satellite = models.ForeignKey(Satellite)
     transmitter = models.ForeignKey(Transmitter, null=True, related_name='observations')
+    tle = models.ForeignKey(Tle, null=True)
     author = models.ForeignKey(User)
     start = models.DateTimeField()
     end = models.DateTimeField()
