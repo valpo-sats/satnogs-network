@@ -3,7 +3,6 @@ from orbit import satellite
 from django.core.management.base import BaseCommand
 
 from network.base.models import Satellite, Tle
-from network.base.helpers import get_latest_tle
 
 
 class Command(BaseCommand):
@@ -27,7 +26,7 @@ class Command(BaseCommand):
             # Get latest satellite TLE and check if it changed
             tle = sat.tle()
             try:
-                latest_tle = get_latest_tle
+                latest_tle = obj.latest_tle
                 if latest_tle.tle1 == tle[1]:
                     self.stdout.write(('Satellite {} with Identifier {} '
                                       'found [defer]').format(obj.name, obj.norad_cat_id))

@@ -19,10 +19,9 @@ from django.core.management import call_command
 from rest_framework import serializers, viewsets
 
 from network.base.models import (Station, Transmitter, Observation,
-                                 Data, Satellite, Antenna)
+                                 Data, Satellite, Antenna, Tle)
 from network.base.forms import StationForm
 from network.base.decorators import admin_required
-from network.base.helpers import get_latest_tle
 
 
 class StationSerializer(serializers.ModelSerializer):
@@ -135,7 +134,8 @@ def observation_new(request):
         end = make_aware(end_time, utc)
         sat = Satellite.objects.get(norad_cat_id=sat_id)
         trans = Transmitter.objects.get(id=trans_id)
-        obs = Observation(satellite=sat, transmitter=trans,
+        tle = Tle.objects.get(id=sat.latest_tle.id)
+        obs = Observation(satellite=sat, transmitter=trans, tle=tle,
                           author=me, start=start, end=end)
         obs.save()
 
@@ -175,10 +175,9 @@ def prediction_windows(request, sat_id, start_date, end_date):
         }
         return JsonResponse(data, safe=False)
 
-    latest_tle = get_latest_tle(sat)
-    satellite = ephem.readtle(str(latest_tle.tle0),
-                              str(latest_tle.tle1),
-                              str(latest_tle.tle2))
+    satellite = ephem.readtle(str(sat.latest_tle.tle0),
+                              str(sat.latest_tle.tle1),
+                              str(sat.latest_tle.tle2))
 
     end_date = datetime.strptime(end_date, '%Y-%m-%d %H:%M')
 
@@ -330,12 +329,11 @@ def station_view(request, id):
 
     for satellite in satellites:
         observer.date = ephem.date(datetime.today())
-        latest_tle = get_latest_tle(satellite)
 
         try:
-            sat_ephem = ephem.readtle(str(latest_tle.tle0),
-                                      str(latest_tle.tle1),
-                                      str(latest_tle.tle2))
+            sat_ephem = ephem.readtle(str(satellite.latest_tle.tle0),
+                                      str(satellite.latest_tle.tle1),
+                                      str(satellite.latest_tle.tle2))
 
             # Here we are going to iterate over each satellite to
             # find its appropriate passes within a given time constraint

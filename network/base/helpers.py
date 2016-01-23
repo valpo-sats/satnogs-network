@@ -1,6 +1,17 @@
-from network.base.models import Satellite, Tle
+from datetime import datetime, timedelta
 
 
-def get_latest_tle(satellite):
-    latest_tle = Tle.objects.filter(satellite=satellite).latest('updated')
-    return latest_tle
+def tle_epoch_datetime(line):
+    try:
+        yd, s = line[18:32].split('.')
+        epoch = datetime.strptime(yd, "%y%j") + timedelta(seconds=float("." + s) * 24 * 60 * 60)
+        return epoch
+    except:
+        return False
+
+
+def tle_set_number(line):
+    try:
+        return line[65:68]
+    except:
+        return False

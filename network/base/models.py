@@ -8,6 +8,7 @@ from django.conf import settings
 from django.utils.html import format_html
 
 from network.users.models import User
+from network.base.helpers import tle_epoch_datetime, tle_set_number
 
 
 ANTENNA_BANDS = ['HF', 'VHF', 'UHF', 'L', 'S', 'C', 'X', 'KU']
@@ -109,6 +110,21 @@ class Satellite(models.Model):
             return self.image.url
         else:
             return settings.SATELLITE_DEFAULT_IMAGE
+
+    @property
+    def latest_tle(self):
+        latest_tle = Tle.objects.filter(satellite=self).latest('updated')
+        return latest_tle
+
+    @property
+    def tle_epoch(self):
+        epoch = tle_epoch_datetime(self.latest_tle.tle1)
+        return epoch
+
+    @property
+    def tle_no(self):
+        tle_no = tle_set_number(self.latest_tle.tle1)
+        return tle_no
 
     def __unicode__(self):
         return self.name
