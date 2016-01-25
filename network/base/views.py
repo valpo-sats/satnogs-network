@@ -377,7 +377,7 @@ def station_view(request, id):
                     break  # if there happens to be a non-EarthSatellite object in the list
                 except Exception:
                     break
-        except ValueError:
+        except (ValueError, AttributeError):
             pass  # TODO: if something does not have a proper TLE line we need to know/fix
 
     return render(request, 'base/station_view.html',

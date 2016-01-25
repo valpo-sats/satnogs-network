@@ -113,8 +113,11 @@ class Satellite(models.Model):
 
     @property
     def latest_tle(self):
-        latest_tle = Tle.objects.filter(satellite=self).latest('updated')
-        return latest_tle
+        try:
+            latest_tle = Tle.objects.filter(satellite=self).latest('updated')
+            return latest_tle
+        except Tle.DoesNotExist:
+            return False
 
     @property
     def tle_epoch(self):
