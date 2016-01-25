@@ -14,10 +14,10 @@ handler500 = 'network.base.views.custom_500'
 
 urlpatterns = [
     # Base urls
-    url(r'^', include(base_urlpatterns, namespace='base')),
+    url(r'^', include(base_urlpatterns)),
 
     url(r'^admin/', admin.site.urls),
-    url(r'^users/', include(users_urlpatterns, namespace='users')),
+    url(r'^users/', include(users_urlpatterns)),
     url(r'^accounts/', include(allauth_urls)),
     url(r'^avatar/', include(avatar_urls)),
 
