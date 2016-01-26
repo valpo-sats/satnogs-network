@@ -26,12 +26,12 @@ class Command(BaseCommand):
             # Get latest satellite TLE and check if it changed
             tle = sat.tle()
             try:
-                latest_tle = obj.latest_tle
-                if latest_tle.tle1 == tle[1]:
+                latest_tle = obj.latest_tle.tle1
+                if latest_tle == tle[1]:
                     self.stdout.write(('Satellite {} with Identifier {} '
                                       'found [defer]').format(obj.name, obj.norad_cat_id))
                     continue
-            except Tle.DoesNotExist:
+            except:
                 pass
 
             Tle.objects.create(tle0=tle[0], tle1=tle[1], tle2=tle[2], satellite=obj)

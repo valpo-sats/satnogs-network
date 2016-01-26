@@ -175,9 +175,15 @@ def prediction_windows(request, sat_id, start_date, end_date):
         }
         return JsonResponse(data, safe=False)
 
-    satellite = ephem.readtle(str(sat.latest_tle.tle0),
-                              str(sat.latest_tle.tle1),
+    try:
+        satellite = ephem.readtle(str(sat.latest_tle.tle0),
+                                  str(sat.latest_tle.tle1),
                               str(sat.latest_tle.tle2))
+    except:
+        data = {
+            'error': 'No TLEs for this satellite yet.'
+        }
+        return JsonResponse(data, safe=False)
 
     end_date = datetime.strptime(end_date, '%Y-%m-%d %H:%M')
 
