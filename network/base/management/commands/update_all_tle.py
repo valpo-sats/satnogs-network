@@ -12,6 +12,8 @@ class Command(BaseCommand):
 
         satellites = Satellite.objects.all()
 
+        self.stdout.write("==Fetching TLEs==")
+
         for obj in satellites:
             try:
                 sat = satellite(obj.norad_cat_id)

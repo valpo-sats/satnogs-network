@@ -100,16 +100,18 @@ def settings_site(request):
     if request.method == 'POST':
         if request.POST['fetch']:
             try:
-                out = StringIO()
-                call_command('fetch_data', stdout=out)
-                request.session['fetch_out'] = out.getvalue()
+                data_out = StringIO()
+                tle_out = StringIO()
+                call_command('fetch_data', stdout=data_out)
+                call_command('update_all_tle', stdout=tle_out)
+                request.session['settings_out'] = data_out.getvalue() + tle_out.getvalue()
             except:
                 messages.error(request, 'fetch command failed.')
         return redirect(reverse('base:settings_site'))
 
-    fetch_out = request.session.get('fetch_out', False)
+    fetch_out = request.session.get('settings_out', False)
     if fetch_out:
-        del request.session['fetch_out']
+        del request.session['settings_out']
         return render(request, 'base/settings_site.html', {'fetch_data': fetch_out})
     return render(request, 'base/settings_site.html')
 
