@@ -1,6 +1,7 @@
 from django.conf import settings
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.contrib import admin
+from django.views.static import serve
 
 from avatar import urls as avatar_urls
 from allauth import urls as allauth_urls
@@ -24,12 +25,8 @@ urlpatterns = [
     url(r'^api/', include(api_urlpatterns))
 ]
 
-"""
 if settings.DEBUG:
     urlpatterns += [
-        url(r'^404/$', handler404),
-        url(r'^500/$', handler500),
-        url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+        url(r'^media/(?P<path>.*)$', serve,
             {'document_root': settings.MEDIA_ROOT}),
     ]
-"""

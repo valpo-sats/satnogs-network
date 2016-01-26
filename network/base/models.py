@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 from shortuuidfield import ShortUUIDField
 
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -8,7 +8,6 @@ from django.conf import settings
 from django.utils.html import format_html
 
 from network.users.models import User
-from network.base.helpers import tle_epoch_datetime, tle_set_number
 
 
 ANTENNA_BANDS = ['HF', 'VHF', 'UHF', 'L', 'S', 'C', 'X', 'KU']
@@ -120,14 +119,23 @@ class Satellite(models.Model):
             return False
 
     @property
-    def tle_epoch(self):
-        epoch = tle_epoch_datetime(self.latest_tle.tle1)
-        return epoch
+    def tle_no(self):
+        try:
+            line = self.latest_tle.tle1
+            return line[65:68]
+        except:
+            return False
 
     @property
-    def tle_no(self):
-        tle_no = tle_set_number(self.latest_tle.tle1)
-        return tle_no
+    def tle_epoch(self):
+        try:
+            line = self.latest_tle.tle1
+            yd, s = line[18:32].split('.')
+            epoch = (datetime.strptime(yd, "%y%j") +
+                     timedelta(seconds=float("." + s) * 24 * 60 * 60))
+            return epoch
+        except:
+            return False
 
     def __unicode__(self):
         return self.name
