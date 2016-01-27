@@ -16,6 +16,6 @@ You can take a look for the current status of development issues at our [Kanban 
 
 ## License
 
-&copy; 2014-2015 [Libre Space Foundation](http://librespacefoundation.org).
+&copy; 2014-2016 [Libre Space Foundation](http://librespacefoundation.org).
 
 Licensed under the [AGPLv3](LICENSE).
