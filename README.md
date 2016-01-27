@@ -12,10 +12,8 @@ See the [documentation](http://docs.satnogs.org/network/).
 
 You can take a look for the current status of development issues at our [Kanban board](https://huboard.com/satnogs/satnogs-network).
 
-[![Requirements Status](https://requires.io/github/satnogs/satnogs-network/requirements.svg?branch=dev)](https://requires.io/github/satnogs/satnogs-network/requirements/?branch=dev)
-
 ## License
 
-&copy; 2014-2015 [Libre Space Foundation](http://librespacefoundation.org).
+&copy; 2014-2016 [Libre Space Foundation](http://librespacefoundation.org).
 
 Licensed under the [AGPLv3](LICENSE).
