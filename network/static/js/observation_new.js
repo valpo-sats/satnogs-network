@@ -18,8 +18,8 @@ $(function () {
         $('#transmitter-selection option').hide();
         $('#transmitter-selection option[data-satellite="'+norad+'"]').show().prop('selected', true);
 
-        $('.epoch').hide();
-        $('.epoch[data-norad="'+norad+'"]').show();
+        $('.tle').hide();
+        $('.tle[data-norad="'+norad+'"]').show();
     });
 });
 

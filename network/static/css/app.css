@@ -288,8 +288,12 @@ code.log p {
     display: none;
 }
 
-.epoch {
+.tle {
     display: none;
+    margin-top: 5px;
+}
+
+.timezone {
     margin-top: 5px;
 }
 

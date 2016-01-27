@@ -46,14 +46,12 @@
           {% endfor %}
         </select>
         {% for satellite in satellites %}
-          <div class="epoch" data-norad="{{ satellite.norad_cat_id }}">
+          <small class="tle" data-norad="{{ satellite.norad_cat_id }}">
             {% if satellite.tle_no %}
               Using TLE {{ satellite.tle_no }} issued
-              <span id="epoch-datetime">
-                {{ satellite.tle_epoch|timesince }} ago
-              </span>
+              {{ satellite.tle_epoch|timesince }} ago
             {% endif %}
-          </div>
+          </small>
         {% endfor %}
       </div>
     </div>
@@ -89,9 +87,8 @@
             <span class="glyphicon glyphicon-calendar"></span>
           </span>
         </div>
-        <small class="pull-right">
-          <strong>IMPORTANT:</strong>
-          Timeframe is considered to be in UTC timezone.
+        <small class="timezone pull-right">
+          Timeframe is in <a href="http://www.timeanddate.com/worldclock/timezone/utc" target="_blank">UTC</a>
         </small>
       </div>
     </div>
