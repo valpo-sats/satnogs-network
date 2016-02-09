@@ -30,6 +30,8 @@
                   <span class="label
                                {% if observation.has_data %}
                                 label-success
+                               {% elif observation.is_future %}
+                                label-info
                                {% else %}
                                 label-danger
                                {% endif %}">
