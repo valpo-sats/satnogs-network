@@ -29,13 +29,17 @@ $(document).ready(function() {
                   .hover(function (d, i, datum) {
                       var div = $('#hoverRes');
                       var colors = chart.colors();
-                      div.find('.coloredDiv').css('background-color', colors(i))
+                      div.find('.coloredDiv').css('background-color', colors(i));
                       div.find('#name').text(datum.label);
                   })
                   .margin({left:140, right:10, top:0, bottom:50})
                   .tickFormat({format: d3.time.format("%H:%M"), tickTime: d3.time.minutes, tickInterval: 30, tickSize: 6});
 
-    var svg = d3.select("#timeline").append("svg").attr("width", 1140)
+    var svg_width = 1140;
+    if (screen.width < 1200) { svg_width = 940; }
+    if (screen.width < 992) { svg_width = 720; }
+    if (screen.width < 768) { svg_width = screen.width - 30; }
+    var svg = d3.select("#timeline").append("svg").attr("width", svg_width)
                 .datum(observation_data).call(chart);
 
     // Waveform loading
