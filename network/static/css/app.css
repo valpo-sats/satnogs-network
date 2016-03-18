@@ -306,3 +306,7 @@ code.log p {
 .tle-data {
     margin-bottom: 15px;
 }
+
+.panel-title.link {
+    color: #337ab7;
+}
