@@ -77,6 +77,25 @@
             </div>
           </div>
           <div class="form-group">
+            <label for="rig" class="col-sm-2 control-label">Rig</label>
+            <div class="col-sm-10">
+              <select class="form-control" name="rig">
+                <option value="" selected>---</option>
+                {% for rig in rigs %}
+                  <option value="{{ rig.id }}" {% ifequal station.rig rig %}selected{% endifequal %}>
+                    {{ rig }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group has-warning">
+            <label for="uuid" class="col-sm-2 control-label">UUID</label>
+            <div class="col-sm-10">
+              <input value="{{ form.uuid.value|default_if_none:"" }}" id="uuid" type="text" class="form-control" name="uuid" placeholder="UUID">
+            </div>
+          </div>
+          <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
               <div class="checkbox">
                 <input type="checkbox" name="active" {% if form.active.value %}checked="True"{% endif %}>

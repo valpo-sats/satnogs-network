@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from network.base.models import Data
+from network.base.models import Data, Station
 
 
 class DataSerializer(serializers.ModelSerializer):
@@ -32,3 +32,12 @@ class JobSerializer(serializers.ModelSerializer):
 
     def get_tle2(self, obj):
         return obj.observation.tle.tle2
+
+
+class SettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Station
+        fields = ('uuid', 'name', 'alt', 'lat', 'lng', 'rig',
+                  'active', 'antenna', 'id', 'apikey')
+
+    apikey = serializers.CharField(read_only=True)

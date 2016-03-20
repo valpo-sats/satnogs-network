@@ -8,8 +8,10 @@ from django.conf import settings
 from django.utils.html import format_html
 
 from network.users.models import User
+from network.base.helpers import get_apikey
 
 
+RIG_TYPES = ['Radio', 'SDR']
 ANTENNA_BANDS = ['HF', 'VHF', 'UHF', 'L', 'S', 'C', 'X', 'KU']
 ANTENNA_TYPES = (
     ('dipole', 'Dipole'),
@@ -18,6 +20,14 @@ ANTENNA_TYPES = (
     ('parabolic', 'Parabolic'),
     ('vertical', 'Verical'),
 )
+
+
+class Rig(models.Model):
+    name = models.CharField(choices=zip(RIG_TYPES, RIG_TYPES), max_length=10)
+    rictld_number = models.PositiveIntegerField(blank=True, null=True)
+
+    def __unicode__(self):
+        return '{0}: {1}'.format(self.name, self.rictld_number)
 
 
 class Mode(models.Model):
@@ -58,6 +68,8 @@ class Station(models.Model):
     active = models.BooleanField(default=False)
     last_seen = models.DateTimeField(null=True, blank=True)
     horizon = models.PositiveIntegerField(help_text='In degrees above 0', default=10)
+    uuid = models.CharField(db_index=True, max_length=100, blank=True)
+    rig = models.ForeignKey(Rig, blank=True, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         ordering = ['-active', '-last_seen']
@@ -90,6 +102,10 @@ class Station(models.Model):
             return int(100 * (float(success) / float(observations)))
         else:
             return False
+
+    @property
+    def apikey(self):
+        return get_apikey(user=self.owner)
 
     def __unicode__(self):
         return "%d - %s" % (self.pk, self.name)
