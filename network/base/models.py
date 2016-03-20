@@ -57,6 +57,7 @@ class Station(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=False)
     last_seen = models.DateTimeField(null=True, blank=True)
+    horizon = models.PositiveIntegerField(help_text='In degrees above 0', default=10)
 
     class Meta:
         ordering = ['-active', '-last_seen']

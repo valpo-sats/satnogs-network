@@ -213,49 +213,54 @@ def prediction_windows(request, sat_id, start_date, end_date):
                 }
                 break
 
-            if ephem.Date(tr).datetime() < end_date:
-                if ephem.Date(ts).datetime() > end_date:
-                    ts = end_date
-                    keep_digging = False
-                else:
-                    time_start_new = ephem.Date(ts).datetime() + timedelta(minutes=1)
-                    observer.date = time_start_new.strftime("%Y-%m-%d %H:%M:%S.%f")
+            # no match if the sat will not rise above the configured min horizon
+            elevation = format(math.degrees(altt), '.0f')
+            if float(elevation) >= station.horizon:
+                if ephem.Date(tr).datetime() < end_date:
+                    if ephem.Date(ts).datetime() > end_date:
+                        ts = end_date
+                        keep_digging = False
+                    else:
+                        time_start_new = ephem.Date(ts).datetime() + timedelta(minutes=1)
+                        observer.date = time_start_new.strftime("%Y-%m-%d %H:%M:%S.%f")
 
-                # Adjust or discard window if overlaps exist
-                window_start = make_aware(ephem.Date(tr).datetime(), utc)
-                window_end = make_aware(ephem.Date(ts).datetime(), utc)
-                window = _resolve_overlaps(station, window_start, window_end)
-                if window:
-                    if not station_match:
-                        station_windows = {
-                            'id': station.id,
-                            'name': station.name,
-                            'window': []
-                        }
-                        station_match = True
-                    window_start = window[0]
-                    window_end = window[1]
-                    station_windows['window'].append(
-                        {
-                            'start': window_start.strftime("%Y-%m-%d %H:%M:%S.%f"),
-                            'end': window_end.strftime("%Y-%m-%d %H:%M:%S.%f"),
-                            'az_start': azr
-                        })
-                    # In case our window was split in two
-                    try:
-                        window_start = window[2]
-                        window_end = window[3]
+                    # Adjust or discard window if overlaps exist
+                    window_start = make_aware(ephem.Date(tr).datetime(), utc)
+                    window_end = make_aware(ephem.Date(ts).datetime(), utc)
+                    window = _resolve_overlaps(station, window_start, window_end)
+                    if window:
+                        if not station_match:
+                            station_windows = {
+                                'id': station.id,
+                                'name': station.name,
+                                'window': []
+                            }
+                            station_match = True
+                        window_start = window[0]
+                        window_end = window[1]
                         station_windows['window'].append(
                             {
                                 'start': window_start.strftime("%Y-%m-%d %H:%M:%S.%f"),
                                 'end': window_end.strftime("%Y-%m-%d %H:%M:%S.%f"),
                                 'az_start': azr
                             })
-                    except:
-                        pass
-
+                        # In case our window was split in two
+                        try:
+                            window_start = window[2]
+                            window_end = window[3]
+                            station_windows['window'].append(
+                                {
+                                    'start': window_start.strftime("%Y-%m-%d %H:%M:%S.%f"),
+                                    'end': window_end.strftime("%Y-%m-%d %H:%M:%S.%f"),
+                                    'az_start': azr
+                                })
+                        except:
+                            pass
+                else:
+                    # window start outside of window bounds
+                    break
             else:
-                # window start outside of window bounds
+                # did not rise above user configured horizon
                 break
 
         if station_match:
@@ -370,9 +375,9 @@ def station_view(request, id):
                     azimuth = format(math.degrees(azr), '.0f')
                     passid += 1
 
-                    # show only if >= 10 degrees and in next 6 hours
+                    # show only if >= configured horizon and in next 6 hours
                     if tr < ephem.date(datetime.today() + timedelta(hours=6)):
-                        if float(elevation) >= 10:
+                        if float(elevation) >= station.horizon:
                             sat_pass = {'passid': passid,
                                         'mytime': str(observer.date),
                                         'debug': observer.next_pass(sat_ephem),
