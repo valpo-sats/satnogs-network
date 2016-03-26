@@ -125,6 +125,21 @@
                   {{ data.ground_station }}
                 </a>
               </h3>
+
+              <div class="vetting">
+                {% if not data.is_vetted and is_vetting_user %}
+                  <a href="{% url 'base:data_verify' id=data.id %}">
+                    <button id="verify-data" type="button" class="btn btn-default btn-xs">
+                      <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> Verify
+                    </button>
+                  </a>
+                  <a href="{% url 'base:data_mark_bad' id=data.id %}">
+                    <button id="bad-data" type="button" class="btn btn-default btn-xs">
+                      <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> No Data
+                    </button>
+                  </a>
+                {% endif %}
+              </div>
             </div>
             <div class="panel-body">
               {% if data.payload %}
@@ -148,24 +163,13 @@
 
                 <a href="{{ MEDIA_URL }}{{ data.payload }}"
                    target="_blank"
-                   download="">Data
+                   download="">
+                  <button type="button" class="btn btn-default btn-xs">
+                    <span class="glyphicon glyphicon-download"></span> Data
                   </button>
                 </a>
               {% else %}
                 &nbsp;
-              {% endif %}
-
-              {% if not data.is_vetted and is_vetting_user %}
-                <a href="{% url 'base:data_verify' id=data.id %}">
-                  <button id="verify-data" type="button" class="btn btn-default btn-xs">
-                    <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> Verify
-                  </button>
-                </a>
-                <a href="{% url 'base:data_mark_bad' id=data.id %}">
-                  <button id="bad-data" type="button" class="btn btn-default btn-xs">
-                    <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> No Data
-                  </button>
-                </a>
               {% endif %}
 
               <span class="pull-right hidden-xs">

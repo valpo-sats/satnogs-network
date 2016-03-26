@@ -281,14 +281,11 @@ code.log p {
 }
 
 .playback-time {
-    margin-right: 2px;
+    margin-right: 20px;
     padding: 0.3em;
     font-size: 1em;
-}
-
-.playpause,
-.download {
-    margin-right: 20px;
+    vertical-align: bottom;
+    display: inline-block;
 }
 
 #loading {
@@ -312,6 +309,10 @@ code.log p {
     display: inline-block;
 }
 
+.panel {
+    margin-bottom: 40px;
+}
+
 .panel-title > a {
     color: #337ab7;
 }
@@ -324,4 +325,15 @@ code.log p {
 .no_data {
     color: #cc3300;
     padding-right: 5px;
+}
+
+.vetting {
+    float: right;
+}
+
+@media screen and (max-width:835px) {
+    .vetting {
+        float: none;
+        margin-top: 5px;
+    }
 }
