@@ -32,11 +32,8 @@ class StationAdmin(admin.ModelAdmin):
 
 @admin.register(Satellite)
 class SatelliteAdmin(admin.ModelAdmin):
-    list_display = ('name', 'norad_cat_id', 'updated_date')
+    list_display = ('name', 'norad_cat_id')
     readonly_fields = ('name', 'names', 'image')
-
-    def updated_date(self, obj):
-        return obj.updated.strftime('%d.%m.%Y, %H:%M')
 
 
 @admin.register(Tle)
