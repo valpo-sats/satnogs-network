@@ -277,10 +277,11 @@ def observation_view(request, id):
     # not all users will be able to vet data within an observation, allow
     # staff, observation requestors, and station owners
     is_vetting_user = False
-    if request.user == observation.author or \
-        data.filter(ground_station__in=Station.objects.filter(owner=request.user)).count or \
-            request.user.is_staff:
-                is_vetting_user = True
+    if request.user.is_authenticated():
+        if request.user == observation.author or \
+            data.filter(ground_station__in=Station.objects.filter(owner=request.user)).count or \
+                request.user.is_staff:
+                    is_vetting_user = True
 
     if settings.ENVIRONMENT == 'production':
         discuss_slug = 'https://community.satnogs.org/t/observation-{0}-{1}-{2}' \

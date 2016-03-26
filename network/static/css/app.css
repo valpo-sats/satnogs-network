@@ -286,7 +286,8 @@ code.log p {
     font-size: 1em;
 }
 
-.playpause {
+.playpause,
+.download {
     margin-right: 20px;
 }
 
@@ -307,14 +308,20 @@ code.log p {
     margin-bottom: 15px;
 }
 
-.panel-title.link {
+.observation-data .panel-title {
+    display: inline-block;
+}
+
+.panel-title > a {
     color: #337ab7;
 }
 
 .verified {
     color: #009933;
+    padding-right: 5px;
 }
 
 .no_data {
     color: #cc3300;
+    padding-right: 5px;
 }

@@ -80,4 +80,6 @@ $(document).ready(function() {
             $(loading).hide();
         });
     });
+
+    $('[data-toggle="tooltip"]').tooltip();
 });
