@@ -6,7 +6,7 @@ from network.base.models import Data, Station
 class DataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Data
-        fields = ('id', 'start', 'end', 'observation', 'ground_station', 'payload')
+        fields = ('id', 'start', 'end', 'observation', 'ground_station', 'payload', 'payload_demode')
         read_only_fields = ['id', 'start', 'end', 'observation', 'ground_station']
 
 
