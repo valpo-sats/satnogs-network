@@ -298,7 +298,20 @@ code.log p {
 }
 
 .timezone {
-    margin-top: 5px;
+    margin: -5px 0 15px 2px;
+}
+
+#UTCModal .panel-default {
+    margin-bottom: 20px;
+}
+
+#UTCModal .panel-default:last-child {
+    margin-bottom: 0px;
+}
+
+#UTCModal .panel-body {
+    font-weight: bold;
+    font-size: 1.3em;
 }
 
 .tle-data {
