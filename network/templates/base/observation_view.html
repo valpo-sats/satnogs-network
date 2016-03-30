@@ -13,6 +13,10 @@
           data-end="{{ observation.end|date:"U"}}">
         Observation #{{ observation.id }}
       </h2>
+      <div class="timezone text-muted">
+        <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+        Timeframes are in <a href="#" data-toggle="modal" data-target="#UTCModal">UTC</a>
+      </div>
     </div>
     <div class="col-md-6 text-right">
       <h2>
@@ -191,25 +195,16 @@
     </div>
   </div>
 
+  <!-- UTC Modal -->
+  {% include 'includes/utc.html' %}
+
 {% endblock content %}
 
 {% block javascript %}
   <script src="{% static 'js/lib/d3.v3.min.js' %}"></script>
   <script src="{% static 'js/lib/d3-timeline.js' %}"></script>
   <script src="{% static 'js/lib/wavesurfer.min.js' %}"></script>
+  <script src="{% static 'js/lib/moment.min.js' %}"></script>
+  <script src="{% static 'js/utc.js' %}"></script>
   <script src="{% static 'js/observation_view.js' %}"></script>
-
-  <script type="text/javascript">
-      (function() {
-          var message = "Do you really want to delete this Observation?";
-          var actions = $('#obs-delete');
-          if (actions.length) {
-              actions[0].addEventListener("click", function(e) {
-                  if (! confirm(message)) {
-                      e.preventDefault();
-                  }
-              });
-          }
-      })();
-  </script>
 {% endblock javascript %}

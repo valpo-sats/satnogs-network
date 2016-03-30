@@ -93,7 +93,7 @@ function timeline_init( start, end, payload ){
                       div.find('#name').text(datum.label);
                   })
                   .margin({left:140, right:10, top:0, bottom:50})
-                  .tickFormat({format: d3.time.format('%H:%M'), tickTime: d3.time.minutes, tickInterval: 30, tickSize: 6});
+                  .tickFormat({format: d3.time.format.utc('%H:%M'), tickTime: d3.time.minutes, tickInterval: 30, tickSize: 6});
 
     var svg_width = 1140;
     if (screen.width < 1200) { svg_width = 940; }
