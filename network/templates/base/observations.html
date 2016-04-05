@@ -11,48 +11,26 @@
       <a class="btn btn-primary pull-right" href="{% url 'base:observation_new' %}">New Observation</a>
     {% endif %}
   </h1>
-  <div>
-    <div>
-      <a class="btn btn-default" role="button" data-toggle="collapse"
-        href="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters">
-       Filters <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-      </a>
-    </div>
-    <div class="collapse" id="collapseFilters">
-      <div class="row">
-        <div class="col-xs-2">
-          <span class="label label-danger">
-            Bad Data <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
-          </span>
-        </div>
-        <div class="btn-group btn-group-xs btn-toggle col-xs-2">
-          <button class="btn btn-primary active" data-toggle="collapse" data-target=".bad">On</button>
-          <button class="btn btn-default" data-toggle="collapse" data-target=".bad">Off</button>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-2">
-          <span class="label label-warning">
-            Unvetted <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-          </span>
-        </div>
-        <div class="btn-group btn-group-xs btn-toggle col-xs-2">
-          <button class="btn btn-primary active" data-toggle="collapse" data-target=".unvetted">On</button>
-          <button class="btn btn-default" data-toggle="collapse" data-target=".unvetted">Off</button>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-2">
-          <span class="label label-success">
-            Good Data <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
-          </span>
-        </div>
-        <div class="btn-group btn-group-xs btn-toggle col-xs-2">
-          <button class="btn btn-primary active" data-toggle="collapse" data-target=".good">On</button>
-          <button class="btn btn-default" data-toggle="collapse" data-target=".good">Off</button>
-        </div>
-      </div>
-    </div>
+
+  <button class="btn btn-default btn-sm" role="button" data-toggle="collapse"
+          href="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters">
+    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Filters
+  </button>
+
+  <div class="collapse" id="collapseFilters">
+    <span class="label label-default">Data:</span>
+    <button class="btn btn-default btn-xs active" data-toggle="collapse"
+            data-target=".bad" aria-expanded="true" aria-controls="bad">
+      Bad
+    </button>
+    <button class="btn btn-default btn-xs active" data-toggle="collapse" data-target=".unvetted"
+            data-target=".unvetted" aria-expanded="true" aria-controls="unvetted">
+      Unvetted
+    </button>
+    <button class="btn btn-default btn-xs active" data-toggle="collapse" data-target=".good"
+            data-target=".good" aria-expanded="true" aria-controls="good">
+      Good
+    </button>
   </div>
 
   <div class="row">
@@ -109,5 +87,5 @@
 {% endblock content %}
 
 {% block javascript %}
-  <script src="{% static 'js/btn_toggle.js' %}"></script>
+  <script src="{% static 'js/observations.js' %}"></script>
 {% endblock javascript %}

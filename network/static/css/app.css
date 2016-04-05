@@ -344,6 +344,24 @@ code.log p {
     float: right;
 }
 
+#collapseFilters {
+    padding: 10px;
+}
+
+#collapseFilters button,
+#collapseFilters span {
+    margin-right: 5px;
+}
+
+#collapseFilters button.active {
+    border: 1px solid #333;
+}
+
+#collapseFilters button:not(.active) {
+    color: #666;
+}
+
+
 @media screen and (max-width:835px) {
     .vetting {
         float: none;
