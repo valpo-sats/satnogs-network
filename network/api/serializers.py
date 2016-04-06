@@ -15,11 +15,12 @@ class JobSerializer(serializers.ModelSerializer):
     tle0 = serializers.SerializerMethodField()
     tle1 = serializers.SerializerMethodField()
     tle2 = serializers.SerializerMethodField()
+    mode = serializers.SerializerMethodField()
 
     class Meta:
         model = Data
         fields = ('id', 'start', 'end', 'ground_station', 'tle0', 'tle1', 'tle2',
-                  'frequency')
+                  'frequency', 'mode')
 
     def get_frequency(self, obj):
         return obj.observation.transmitter.downlink_low
@@ -32,6 +33,9 @@ class JobSerializer(serializers.ModelSerializer):
 
     def get_tle2(self, obj):
         return obj.observation.tle.tle2
+
+    def get_mode(self, obj):
+        return obj.observation.transmitter.mode.name
 
 
 class SettingsSerializer(serializers.ModelSerializer):
