@@ -18,19 +18,37 @@
   </button>
 
   <div class="collapse" id="collapseFilters">
-    <span class="label label-default">Data:</span>
-    <button class="btn btn-default btn-xs active" data-toggle="collapse"
-            data-target=".bad" aria-expanded="true" aria-controls="bad">
-      Bad
-    </button>
-    <button class="btn btn-default btn-xs active" data-toggle="collapse" data-target=".unvetted"
-            data-target=".unvetted" aria-expanded="true" aria-controls="unvetted">
-      Unvetted
-    </button>
-    <button class="btn btn-default btn-xs active" data-toggle="collapse" data-target=".good"
-            data-target=".good" aria-expanded="true" aria-controls="good">
-      Good
-    </button>
+    <div class="filter-section">
+      <h4>Data:</h4>
+      <button class="btn btn-default btn-sm active" data-toggle="collapse"
+              data-target=".bad" aria-expanded="true" aria-controls="bad">
+        Bad
+      </button>
+      <button class="btn btn-default btn-sm active" data-toggle="collapse" data-target=".unvetted"
+              data-target=".unvetted" aria-expanded="true" aria-controls="unvetted">
+        Unvetted
+      </button>
+      <button class="btn btn-default btn-sm active" data-toggle="collapse" data-target=".good"
+              data-target=".good" aria-expanded="true" aria-controls="good">
+        Good
+      </button>
+    </div>
+
+    <div class="filter-section">
+      <form id="satellite-filter" class="form-inline" methon="get" action="{% url 'base:observations_list' %}">
+        <div class="form-group">
+          <h4>Satellite:</h4>
+          <select class="form-control" name="norad" autocomplete="off" id="satellite-selection">
+            <option value="" selected>All</option>
+            {% for satellite in satellites %}
+              <option data-norad="{{ satellite.norad_cat_id }}" value="{{ satellite.norad_cat_id }}" {% ifequal satellite.norad_cat_id norad %}selected{% endifequal %}>
+                {{ satellite.norad_cat_id }} - {{ satellite.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </form>
+    </div>
   </div>
 
   <div class="row">
@@ -47,12 +65,13 @@
         <tbody>
           {% for observation in observations.all %}
             <tr{% if observation.has_no_data %}
-                  class="bad collapse in"
+                  class="satellite-row bad collapse in"
                 {% elif observation.has_verified_data %}
-                  class="good collapse in"
+                  class="satellite-row good collapse in"
                 {% elif observation.has_unvetted_data %}
-                  class="unvetted collapse in"
-                {% endif %}>
+                  class="satellite-row unvetted collapse in"
+                {% endif %}
+                data-norad="{{ observation.satellite.norad_cat_id }}">
               <td>
                 <a href="{% url 'base:observation_view' id=observation.id %}">
                   <span class="label

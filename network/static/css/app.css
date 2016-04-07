@@ -345,7 +345,17 @@ code.log p {
 }
 
 #collapseFilters {
-    padding: 10px;
+    padding: 15px;
+}
+
+.filter-section {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+#collapseFilters h4,
+#collapseFilters h3 {
+    display: inline-block;
 }
 
 #collapseFilters button,
@@ -360,7 +370,6 @@ code.log p {
 #collapseFilters button:not(.active) {
     color: #666;
 }
-
 
 @media screen and (max-width:835px) {
     .vetting {
