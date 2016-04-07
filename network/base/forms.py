@@ -10,3 +10,7 @@ class StationForm(forms.ModelForm):
                   'lat', 'lng', 'qthlocator',
                   'horizon', 'antenna', 'active']
         image = forms.ImageField(required=False)
+
+
+class SatelliteFilterForm(forms.Form):
+    norad = forms.IntegerField()

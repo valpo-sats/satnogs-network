@@ -20,7 +20,7 @@ from rest_framework import serializers, viewsets
 
 from network.base.models import (Station, Transmitter, Observation,
                                  Data, Satellite, Antenna, Tle, Rig)
-from network.base.forms import StationForm
+from network.base.forms import StationForm, SatelliteFilterForm
 from network.base.decorators import admin_required
 
 
@@ -119,8 +119,18 @@ def settings_site(request):
 def observations_list(request):
     """View to render Observations page."""
     observations = Observation.objects.all()
+    satellites = Satellite.objects.all()
 
-    return render(request, 'base/observations.html', {'observations': observations})
+    if request.method == 'GET':
+        form = SatelliteFilterForm(request.GET)
+        if form.is_valid():
+            norad = form.cleaned_data['norad']
+            observations = observations.filter(satellite__norad_cat_id=norad)
+            return render(request, 'base/observations.html',
+                          {'observations': observations, 'satellites': satellites, 'norad': int(norad)})
+
+    return render(request, 'base/observations.html',
+                  {'observations': observations, 'satellites': satellites})
 
 
 @login_required
