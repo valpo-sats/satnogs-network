@@ -170,9 +170,15 @@ def observation_new(request):
     satellites = Satellite.objects.filter(transmitters__alive=True).distinct()
     transmitters = Transmitter.objects.filter(alive=True)
 
+    norad = 0
+    if request.method == 'GET':
+        form = SatelliteFilterForm(request.GET)
+        if form.is_valid():
+            norad = form.cleaned_data['norad']
+
     return render(request, 'base/observation_new.html',
                   {'satellites': satellites,
-                   'transmitters': transmitters,
+                   'transmitters': transmitters, 'norad': norad,
                    'date_min_start': settings.DATE_MIN_START,
                    'date_max_range': settings.DATE_MAX_RANGE})
 
