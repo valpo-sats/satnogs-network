@@ -122,14 +122,14 @@ class Satellite(models.Model):
     norad_cat_id = models.PositiveIntegerField()
     name = models.CharField(max_length=45)
     names = models.TextField(blank=True)
-    image = models.ImageField(upload_to='satellites', blank=True)
+    image = models.CharField(max_length=100, blank=True)
 
     class Meta:
         ordering = ['norad_cat_id']
 
     def get_image(self):
-        if self.image and hasattr(self.image, 'url'):
-            return self.image.url
+        if self.image:
+            return self.image
         else:
             return settings.SATELLITE_DEFAULT_IMAGE
 

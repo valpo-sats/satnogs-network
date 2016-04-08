@@ -377,3 +377,31 @@ code.log p {
         margin-top: 5px;
     }
 }
+
+
+/* Satellites
+==================== */
+
+.satellite-info {
+    margin-bottom: 40px;
+}
+
+#SatelliteModal li {
+    margin-bottom: 5px;
+}
+
+.satellite-title {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.satellite-names {
+    margin-bottom: 5px;
+}
+
+.satellite-img-full {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 5px;
+}

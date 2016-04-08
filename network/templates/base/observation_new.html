@@ -30,7 +30,8 @@
           <select id="satellite-selection" class="form-control" name="satellite" autocomplete="off">
             <option value="" disabled selected>Select a satellite</option>
             {% for satellite in satellites %}
-              <option data-norad="{{ satellite.norad_cat_id }}" value="{{ satellite.norad_cat_id }}">
+              <option data-norad="{{ satellite.norad_cat_id }}" value="{{ satellite.norad_cat_id }}"
+                      {% ifequal satellite.norad_cat_id norad %}selected{% endifequal %}>
                 {{ satellite.norad_cat_id }} - {{ satellite.name }}
               </option>
             {% endfor %}
