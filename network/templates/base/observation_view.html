@@ -40,11 +40,9 @@
         <tbody>
             <tr>
               <td>
-                <a href="https://db.satnogs.org/satellite/{{ observation.satellite.norad_cat_id }}"
-                   target="_blank">
+                <a href="#" data-toggle="modal" data-target="#SatelliteModal">
                   {{ observation.satellite.norad_cat_id }}  - {{ observation.satellite.name }}
                 </a>
-                <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
               </td>
               <td>{{ observation.transmitter.downlink_low|frq }}</td>
               <td>{{ observation.transmitter.mode|default:"-" }}</td>
@@ -197,6 +195,11 @@
 
   <!-- UTC Modal -->
   {% include 'includes/utc.html' %}
+
+  <!-- Satellite Modal -->
+  {% with satellite=observation.satellite %}
+    {% include 'includes/satellite.html' %}
+  {% endwith %}
 
 {% endblock content %}
 
