@@ -89,7 +89,11 @@
                   </span>
                 </a>
               </td>
-              <td>{{ observation.satellite.name }}</td>
+              <td>
+                <a href="#" data-toggle="modal" data-target="#SatelliteModal" data-id="{{ observation.satellite.norad_cat_id }}">
+                  {{ observation.satellite.name }}
+                </a>
+              </td>
               <td>{{ observation.transmitter.downlink_low|frq }}</td>
               <td>{{ observation.transmitter.mode|default:"-" }}</td>
               <td>{{ observation.start|date:"Y-m-d H:i:s" }}</br>{{ observation.end|date:"Y-m-d H:i:s" }}</td>
@@ -104,8 +108,10 @@
       </table>
     </div>
   </div>
+  {% include 'includes/satellite.html' %}
 {% endblock content %}
 
 {% block javascript %}
   <script src="{% static 'js/observations.js' %}"></script>
+  <script src="{% static 'js/satellite.js' %}"></script>
 {% endblock javascript %}
