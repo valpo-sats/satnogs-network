@@ -35,7 +35,10 @@ class JobSerializer(serializers.ModelSerializer):
         return obj.observation.tle.tle2
 
     def get_mode(self, obj):
-        return obj.observation.transmitter.mode.name
+        try:
+            return obj.observation.transmitter.mode.name
+        except:
+            return ''
 
 
 class SettingsSerializer(serializers.ModelSerializer):
