@@ -40,7 +40,7 @@
         <tbody>
             <tr>
               <td>
-                <a href="#" data-toggle="modal" data-target="#SatelliteModal">
+                <a href="#" data-toggle="modal" data-target="#SatelliteModal" data-id="{{ observation.satellite.norad_cat_id }}">
                   {{ observation.satellite.norad_cat_id }}  - {{ observation.satellite.name }}
                 </a>
               </td>
@@ -197,9 +197,7 @@
   {% include 'includes/utc.html' %}
 
   <!-- Satellite Modal -->
-  {% with satellite=observation.satellite %}
-    {% include 'includes/satellite.html' %}
-  {% endwith %}
+  {% include 'includes/satellite.html' %}
 
 {% endblock content %}
 
@@ -210,4 +208,5 @@
   <script src="{% static 'js/lib/moment.min.js' %}"></script>
   <script src="{% static 'js/utc.js' %}"></script>
   <script src="{% static 'js/observation_view.js' %}"></script>
+  <script src="{% static 'js/satellite.js' %}"></script>
 {% endblock javascript %}

@@ -174,7 +174,9 @@
         {% for nextpass in nextpasses %}
           <tr>
             <td>
-              {{ nextpass.name }}
+              <a href="#" data-toggle="modal" data-target="#SatelliteModal" data-id="{{ nextpass.norad_cat_id }}">
+                {{ nextpass.name }}
+              </a>
             </td>
             <td>
               {{ nextpass.tr }} UTC
@@ -195,12 +197,14 @@
     <!-- Station Modal -->
     {% include 'includes/station_edit.html' %}
   {% endif %}
+  {% include 'includes/satellite.html' %}
 {% endblock content %}
 
 {% block javascript %}
   <script src="{% static 'js/lib/mapbox.js' %}"></script>
   <script src="{% static 'js/station_view.js' %}"></script>
   <script src="{% static 'js/gridsquare.js' %}"></script>
+  <script src="{% static 'js/satellite.js' %}"></script>
 
   <script type="text/javascript">
       (function() {

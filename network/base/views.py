@@ -67,7 +67,7 @@ def index(request):
         featured_station = None
 
     ctx = {
-        'latest_observations': observations.filter(end__lt=now()),
+        'latest_observations': observations.filter(end__lt=now()).order_by('-id')[:10],
         'scheduled_observations': observations.filter(end__gte=now()),
         'featured_station': featured_station,
         'mapbox_id': settings.MAPBOX_MAP_ID,
@@ -118,14 +118,14 @@ def settings_site(request):
 
 def observations_list(request):
     """View to render Observations page."""
-    observations = Observation.objects.all()
+    observations = Observation.objects.order_by('-id')[:20]
     satellites = Satellite.objects.all()
 
     if request.method == 'GET':
         form = SatelliteFilterForm(request.GET)
         if form.is_valid():
             norad = form.cleaned_data['norad']
-            observations = observations.filter(satellite__norad_cat_id=norad)
+            observations = Observation.objects.filter(satellite__norad_cat_id=norad)
             return render(request, 'base/observations.html',
                           {'observations': observations, 'satellites': satellites, 'norad': int(norad)})
 
@@ -441,6 +441,7 @@ def station_view(request, id):
                                         'debug': observer.next_pass(sat_ephem),
                                         'name': str(satellite.name),
                                         'id': str(satellite.id),
+                                        'norad_cat_id': str(satellite.norad_cat_id),
                                         'tr': tr,           # Rise time
                                         'azr': azimuth,     # Rise Azimuth
                                         'tt': tt,           # Max altitude time
@@ -504,3 +505,23 @@ def station_delete(request, id):
     station.delete()
     messages.success(request, 'Ground Station deleted successfully.')
     return redirect(reverse('users:view_user', kwargs={'username': me}))
+
+
+def satellite_view(request, id):
+    try:
+        sat = get_object_or_404(Satellite, norad_cat_id=id)
+    except:
+        data = {
+            'error': 'Unable to find that satellite.'
+        }
+        return JsonResponse(data, safe=False)
+
+    data = {
+        'id': id,
+        'name': sat.name,
+        'names': sat.names,
+        'image': sat.image,
+    }
+
+    return JsonResponse(data, safe=False)
+
