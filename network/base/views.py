@@ -492,7 +492,7 @@ def station_edit(request):
 
         return redirect(reverse('base:station_view', kwargs={'id': f.id}))
     else:
-        messages.error(request, 'Some fields missing on the form')
+        messages.error(request, 'Your Station submission had some errors.{0}'.format(form.errors))
         return redirect(reverse('users:view_user', kwargs={'username': request.user.username}))
 
 
