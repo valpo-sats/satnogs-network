@@ -140,9 +140,18 @@ def observation_new(request):
     if request.method == 'POST':
         sat_id = request.POST.get('satellite')
         trans_id = request.POST.get('transmitter')
-        start_time = datetime.strptime(request.POST.get('start-time'), '%Y-%m-%d %H:%M')
+        try:
+            start_time = datetime.strptime(request.POST.get('start-time'), '%Y-%m-%d %H:%M')
+            end_time = datetime.strptime(request.POST.get('end-time'), '%Y-%m-%d %H:%M')
+        except ValueError:
+            messages.error(request, 'Please use the datetime dialogs to submit valid values.')
+            return redirect(reverse('base:observation_new'))
+
+        if (end_time - start_time) > timedelta(minutes = int(settings.DATE_MAX_RANGE)):
+            messages.error(request, 'Please use the datetime dialogs to submit valid timeframe.')
+            return redirect(reverse('base:observation_new'))
+
         start = make_aware(start_time, utc)
-        end_time = datetime.strptime(request.POST.get('end-time'), '%Y-%m-%d %H:%M')
         end = make_aware(end_time, utc)
         sat = Satellite.objects.get(norad_cat_id=sat_id)
         trans = Transmitter.objects.get(id=trans_id)
