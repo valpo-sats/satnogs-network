@@ -19,6 +19,8 @@ base_urlpatterns = ([
         views.prediction_windows, name='prediction_windows'),
     url(r'^data_verify/(?P<id>[0-9]+)/$', views.data_verify, name='data_verify'),
     url(r'^data_mark_bad/(?P<id>[0-9]+)/$', views.data_mark_bad, name='data_mark_bad'),
+    url(r'^observations/data/(?P<id>[0-9]+)/$', views.observation_data_view,
+        name='observation_data_view'),
 
     # Stations
     url(r'^stations/$', views.stations_list, name='stations_list'),

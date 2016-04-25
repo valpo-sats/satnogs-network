@@ -525,3 +525,7 @@ def satellite_view(request, id):
 
     return JsonResponse(data, safe=False)
 
+
+def observation_data_view(request, id):
+    observation = get_object_or_404(Observation, data__id=id)
+    return redirect(reverse('base:observation_view', kwargs={'id': observation.id}) + '#{0}'.format(id))
