@@ -81,6 +81,12 @@ $(document).ready(function() {
         });
     });
 
+    // Hightlight Data block
+    var uri = URI(location.href);
+    var data_id = uri.hash();
+    $(data_id).addClass('panel-info');
+
+
     // Delete confirmation
     var message = "Do you really want to delete this Observation?";
     var actions = $('#obs-delete');

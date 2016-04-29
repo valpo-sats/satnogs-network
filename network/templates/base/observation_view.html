@@ -102,7 +102,7 @@
         </div>
 
         {% for data in data %}
-          <div class="panel panel-default observation-data"
+          <div class="panel panel-default observation-data" id="{{ data.id }}"
                data-start="{{ data.start|date:"U" }}"
                data-end="{{ data.end|date:"U" }}"
                data-groundstation="{{ data.ground_station }}">
@@ -206,6 +206,7 @@
   <script src="{% static 'js/lib/d3-timeline.js' %}"></script>
   <script src="{% static 'js/lib/wavesurfer.min.js' %}"></script>
   <script src="{% static 'js/lib/moment.min.js' %}"></script>
+  <script src="{% static 'js/lib/URI.js' %}"></script>
   <script src="{% static 'js/utc.js' %}"></script>
   <script src="{% static 'js/observation_view.js' %}"></script>
   <script src="{% static 'js/satellite.js' %}"></script>
