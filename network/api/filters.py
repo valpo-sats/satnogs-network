@@ -4,6 +4,8 @@ from network.base.models import Data
 
 
 class DataViewFilter(django_filters.FilterSet):
+    start = django_filters.IsoDateTimeFilter(name='start', lookup_type='gte')
+
     class Meta:
         model = Data
-        fields = ['start', 'end', 'ground_station']
+        fields = ['ground_station', 'start']
