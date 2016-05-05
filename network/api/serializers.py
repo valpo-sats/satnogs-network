@@ -1,6 +1,4 @@
 from rest_framework import serializers
-from django.contrib.sites.models import Site
-from django.core.urlresolvers import reverse
 
 from network.base.models import Data, Station, DemodData
 

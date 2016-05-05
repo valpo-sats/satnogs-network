@@ -8,9 +8,11 @@ MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
+
 # override for INTERNAL_IPS, for docker and envs where that is dynamic
 def show_toolbar(request):
     return True
+
 
 DEBUG_TOOLBAR_CONFIG = {
     'DISABLE_PANELS': [

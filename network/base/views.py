@@ -126,8 +126,8 @@ def observations_list(request):
         if form.is_valid():
             norad = form.cleaned_data['norad']
             observations = Observation.objects.filter(satellite__norad_cat_id=norad)
-            return render(request, 'base/observations.html',
-                          {'observations': observations, 'satellites': satellites, 'norad': int(norad)})
+            return render(request, 'base/observations.html', {'observations': observations,
+                          'satellites': satellites, 'norad': int(norad)})
 
     return render(request, 'base/observations.html',
                   {'observations': observations, 'satellites': satellites})
@@ -147,7 +147,7 @@ def observation_new(request):
             messages.error(request, 'Please use the datetime dialogs to submit valid values.')
             return redirect(reverse('base:observation_new'))
 
-        if (end_time - start_time) > timedelta(minutes = int(settings.DATE_MAX_RANGE)):
+        if (end_time - start_time) > timedelta(minutes=int(settings.DATE_MAX_RANGE)):
             messages.error(request, 'Please use the datetime dialogs to submit valid timeframe.')
             return redirect(reverse('base:observation_new'))
 
@@ -312,8 +312,9 @@ def observation_view(request, id):
         discuss_slug = 'https://community.satnogs.org/t/observation-{0}-{1}-{2}' \
             .format(observation.id, slugify(observation.satellite.name),
                     observation.satellite.norad_cat_id)
-        discuss_url = ('https://community.satnogs.org/new-topic?title=Observation {0}: {1} ({2})'
-                       '&body=Regarding [Observation {3}](http://{4}{5}) ...&category=observations') \
+        discuss_url = ('https://community.satnogs.org/new-topic?title=Observation {0}: {1}'
+                       ' ({2})&body=Regarding [Observation {3}](http://{4}{5}) ...'
+                       '&category=observations') \
             .format(observation.id, observation.satellite.name,
                     observation.satellite.norad_cat_id, observation.id,
                     request.get_host(), request.path)
@@ -528,4 +529,5 @@ def satellite_view(request, id):
 
 def observation_data_view(request, id):
     observation = get_object_or_404(Observation, data__id=id)
-    return redirect(reverse('base:observation_view', kwargs={'id': observation.id}) + '#{0}'.format(id))
+    return redirect(reverse('base:observation_view',
+                    kwargs={'id': observation.id}) + '#{0}'.format(id))

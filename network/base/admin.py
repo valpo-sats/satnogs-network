@@ -9,6 +9,7 @@ class RigAdmin(admin.ModelAdmin):
     list_display = ('name', 'rictld_number')
     list_filter = ('name', )
 
+
 @admin.register(Mode)
 class ModeAdmin(admin.ModelAdmin):
     list_display = ('name', )
