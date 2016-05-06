@@ -120,7 +120,7 @@
                   {% endif %}
                 {% endif %}
 
-                Data payload #{{ data.id }} ~
+                Data payload <a href="{% url 'base:observation_data_view' id=data.id %}">#{{ data.id }}</a> ~
 
                 Groud Station:
                 <a href="{% url 'base:station_view' id=data.ground_station.id %}">
