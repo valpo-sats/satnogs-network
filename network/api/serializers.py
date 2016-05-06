@@ -11,13 +11,15 @@ class DemodDataSerializer(serializers.ModelSerializer):
 
 class DataSerializer(serializers.ModelSerializer):
     transmitter = serializers.SerializerMethodField()
+    norad_cat_id = serializers.SerializerMethodField()
     demoddata = DemodDataSerializer(many=True)
 
     class Meta:
         model = Data
         fields = ('id', 'start', 'end', 'observation', 'ground_station', 'transmitter',
-                  'payload', 'demoddata')
-        read_only_fields = ['id', 'start', 'end', 'observation', 'ground_station']
+                  'norad_cat_id', 'payload', 'demoddata')
+        read_only_fields = ['id', 'start', 'end', 'observation', 'ground_station',
+                            'transmitter', 'norad_cat_id']
 
     def update(self, instance, validated_data):
         demod_data = validated_data.pop('demoddata')
@@ -31,6 +33,9 @@ class DataSerializer(serializers.ModelSerializer):
             return obj.observation.transmitter.uuid
         except AttributeError:
             return ''
+
+    def get_norad_cat_id(self, obj):
+        return obj.observation.satellite.norad_cat_id
 
 
 class JobSerializer(serializers.ModelSerializer):
