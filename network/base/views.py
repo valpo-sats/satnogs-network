@@ -31,7 +31,7 @@ class StationSerializer(serializers.ModelSerializer):
 
 
 class StationAllView(viewsets.ReadOnlyModelViewSet):
-    queryset = Station.objects.all()
+    queryset = Station.objects.filter(active=True)
     serializer_class = StationSerializer
 
 
