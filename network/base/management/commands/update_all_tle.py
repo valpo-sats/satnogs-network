@@ -10,7 +10,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        satellites = Satellite.objects.all()
+        satellites = Satellite.objects.exclude(manual_tle=True)
 
         self.stdout.write("==Fetching TLEs==")
 

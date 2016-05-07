@@ -123,6 +123,7 @@ class Satellite(models.Model):
     name = models.CharField(max_length=45)
     names = models.TextField(blank=True)
     image = models.CharField(max_length=100, blank=True, null=True)
+    manual_tle = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['norad_cat_id']
