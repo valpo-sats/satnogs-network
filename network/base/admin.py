@@ -39,7 +39,6 @@ class SatelliteAdmin(admin.ModelAdmin):
 @admin.register(Tle)
 class TleAdmin(admin.ModelAdmin):
     list_display = ('tle0', 'tle1', 'updated_date')
-    readonly_fields = ('tle0', 'tle1', 'tle2')
 
     def updated_date(self, obj):
         return obj.updated.strftime('%d.%m.%Y, %H:%M')
