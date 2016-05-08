@@ -67,8 +67,9 @@ class Station(models.Model):
     qthlocator = models.CharField(max_length=255, blank=True)
     location = models.CharField(max_length=255, blank=True)
     antenna = models.ManyToManyField(Antenna, blank=True,
-                                     help_text=('If you want to add a new Antenna '
-                                                'contact SatNOGS Team'))
+                                     help_text=('If you want to add a new Antenna contact '
+                                                '<a href="https://community.satnogs.org/" '
+                                                'target="_blank">SatNOGS Team</a>'))
     featured_date = models.DateField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=False)

@@ -9,6 +9,7 @@ class RigAdmin(admin.ModelAdmin):
     list_display = ('name', 'rictld_number')
     list_filter = ('name', )
 
+
 @admin.register(Mode)
 class ModeAdmin(admin.ModelAdmin):
     list_display = ('name', )
@@ -49,7 +50,7 @@ class TransmitterAdmin(admin.ModelAdmin):
     list_display = ('uuid', 'description', 'satellite', 'uplink_low',
                     'uplink_high', 'downlink_low', 'downlink_high')
     search_fields = ('satellite', 'uuid')
-    list_filter = ('mode', 'invert', 'uuid')
+    list_filter = ('mode', 'invert')
     readonly_fields = ('uuid', 'description', 'satellite', 'uplink_low', 'uplink_high',
                        'downlink_low', 'downlink_high', 'baud', 'invert', 'alive', 'mode')
 
