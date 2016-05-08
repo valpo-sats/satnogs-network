@@ -5,13 +5,23 @@ import factory
 from factory import fuzzy
 from django.utils.timezone import now
 
-from network.base.models import (ANTENNA_BANDS, ANTENNA_TYPES, Mode, Antenna,
-                                 Satellite, Station, Transmitter, Observation)
+from network.base.models import (ANTENNA_BANDS, ANTENNA_TYPES, RIG_TYPES, OBSERVATION_STATUSES,
+                                 Rig, Mode, Antenna, Satellite, Station, Transmitter, Observation,
+                                 Data, DemodData)
 from network.users.tests import UserFactory
 
 
+class RigFactory(factory.django.DjangoModelFactory):
+    """Rig model factory."""
+    name = fuzzy.FuzzyChoice(choices=RIG_TYPES)
+    rictld_number = fuzzy.FuzzyInteger(1, 3)
+
+    class Meta:
+        model = Rig
+
+
 class ModeFactory(factory.django.DjangoModelFactory):
-    """Antenna model factory."""
+    """Mode model factory."""
     name = fuzzy.FuzzyText()
 
     class Meta:
@@ -38,7 +48,9 @@ class StationFactory(factory.django.DjangoModelFactory):
     lng = fuzzy.FuzzyFloat(-180, 180)
     featured_date = fuzzy.FuzzyDateTime(now() - timedelta(days=10), now())
     active = fuzzy.FuzzyChoice(choices=[True, False])
-    last_seen = fuzzy.FuzzyDateTime(now() - timedelta(days=10), now())
+    last_seen = fuzzy.FuzzyDateTime(now() - timedelta(days=3), now())
+    horizon = fuzzy.FuzzyInteger(10, 20)
+    rig = factory.SubFactory(RigFactory)
 
     @factory.post_generation
     def antennas(self, create, extracted, **kwargs):
@@ -82,14 +94,44 @@ class TransmitterFactory(factory.django.DjangoModelFactory):
 
 class ObservationFactory(factory.django.DjangoModelFactory):
     """Observation model factory."""
-    satellite = factory.SubFactory(SatelliteFactory)
+    satellite = factory.Iterator(Satellite.objects.all())
     author = factory.SubFactory(UserFactory)
     start = fuzzy.FuzzyDateTime(now() - timedelta(days=3),
                                 now() + timedelta(days=3))
     end = factory.LazyAttribute(
         lambda x: x.start + timedelta(hours=random.randint(1, 8))
     )
-    transmitter = factory.Iterator(Transmitter.objects.all())
+
+    @factory.lazy_attribute
+    def transmitter(self):
+        return self.satellite.transmitters.all().order_by('?')[0]
 
     class Meta:
         model = Observation
+
+
+class DataFactory(factory.django.DjangoModelFactory):
+    start = fuzzy.FuzzyDateTime(now() - timedelta(days=3),
+                                now() + timedelta(days=3))
+    end = factory.LazyAttribute(
+        lambda x: x.start + timedelta(minutes=random.randint(1, 20))
+    )
+    observation = factory.SubFactory(ObservationFactory)
+    ground_station = factory.Iterator(Station.objects.all())
+    payload = factory.django.FileField(filename='data.ogg')
+    vetted_datetime = factory.LazyAttribute(
+        lambda x: x.end + timedelta(hours=random.randint(1, 20))
+    )
+    vetted_user = factory.SubFactory(UserFactory)
+    vetted_status = fuzzy.FuzzyChoice(choices=OBSERVATION_STATUSES)
+
+    class Meta:
+        model = Data
+
+
+class DemodDataFactory(factory.django.DjangoModelFactory):
+    data = factory.Iterator(Data.objects.all())
+    payload_demod = factory.django.FileField()
+
+    class Meta:
+        model = DemodData
