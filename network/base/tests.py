@@ -1,5 +1,5 @@
 import random
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 import factory
 from factory import fuzzy
@@ -9,6 +9,28 @@ from network.base.models import (ANTENNA_BANDS, ANTENNA_TYPES, RIG_TYPES, OBSERV
                                  Rig, Mode, Antenna, Satellite, Station, Transmitter, Observation,
                                  Data, DemodData)
 from network.users.tests import UserFactory
+
+
+def generate_payload():
+    payload = '{0:b}'.format(random.randint(500000000, 510000000))
+    digits = 1824
+    while digits:
+        digit = random.randint(0, 1)
+        payload += str(digit)
+        digits -= 1
+    return payload
+
+
+def generate_payload_name():
+    filename = datetime.strftime(fuzzy.FuzzyDateTime(now() - timedelta(days=10), now()).fuzz(),
+                                 '%Y%m%dT%H%M%SZ')
+    return filename
+
+
+def get_valid_satellites():
+    qs = Transmitter.objects.all()
+    satellites = Satellite.objects.filter(transmitters__in=qs).distinct()
+    return satellites
 
 
 class RigFactory(factory.django.DjangoModelFactory):
@@ -94,7 +116,7 @@ class TransmitterFactory(factory.django.DjangoModelFactory):
 
 class ObservationFactory(factory.django.DjangoModelFactory):
     """Observation model factory."""
-    satellite = factory.Iterator(Satellite.objects.all())
+    satellite = factory.Iterator(get_valid_satellites())
     author = factory.SubFactory(UserFactory)
     start = fuzzy.FuzzyDateTime(now() - timedelta(days=3),
                                 now() + timedelta(days=3))
