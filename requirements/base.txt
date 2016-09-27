@@ -26,5 +26,5 @@ git+https://github.com/comzeradd/orbit.git@cache##egg=orbit
 
 # API
 djangorestframework==3.4.7
-Markdown==2.6.6
+Markdown==2.6.7
 django-filter==0.15.0
