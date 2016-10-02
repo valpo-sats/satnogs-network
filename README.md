@@ -10,12 +10,12 @@ See the [documentation](http://docs.satnogs.org/network/).
 
 ## Join
 
-[![irc](https://img.shields.io/badge/IRC-%23satnogs%20on%20freenode-5996FF.svg)](https://webchat.freenode.net/?channels=satnogs)
+[![irc](https://img.shields.io/badge/IRC-%23satnogs%20on%20freenode-blue.svg)](https://webchat.freenode.net/?channels=satnogs)
 [![irc](https://img.shields.io/badge/forum-discourse-blue.svg)](https://community.satnogs.org/)
 
 ## Current Development
 
-[![kanban](https://img.shields.io/badge/kanban-board-red.svg)](https://huboard.com/satnogs/satnogs-network)
+[![kanban](https://img.shields.io/badge/kanban-board-gray.svg)](https://huboard.com/satnogs/satnogs-network)
 [![travis](https://img.shields.io/travis/satnogs/satnogs-network/dev.svg?label=tests)](http://travis-ci.org/satnogs/satnogs-network/)
 [![requirements](https://img.shields.io/requires/github/satnogs/satnogs-network.svg?branch=dev)](https://requires.io/github/satnogs/satnogs-network/requirements/?branch=dev)
 

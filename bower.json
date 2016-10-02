@@ -1,0 +1,21 @@
+{
+  "name": "satnogs-network",
+  "description": "SatNOGS Network is a web app",
+  "version": "0.0.1",
+  "homepage": "https://github.com/satnogs/satnogs-network",
+  "license": "AGPL",
+  "dependencies": {
+    "jquery": "2.0.3",
+    "bootstrap": "3.3.6",
+    "bootstrap-datetimepicker": "0.0.11",
+    "d3": "3.5.17",
+    "d3-timeline": "*",
+    "mapbox.js": "2.2.x",
+    "moment": "*",
+    "wavesurfer.js": "*",
+    "uri.js": "*"
+  },
+  "resolutions": {
+    "bootstrap": "2.3.2"
+  }
+}
