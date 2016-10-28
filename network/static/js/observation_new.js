@@ -1,12 +1,13 @@
 $( document ).ready( function(){
     var minstart = $('#datetimepicker-start').data('date-minstart');
+    var minend = $('#datetimepicker-end').data('date-minend');
     var maxrange = $('#datetimepicker-end').data('date-maxrange');
     $('#datetimepicker-start').datetimepicker();
-    $('#datetimepicker-start').data('DateTimePicker').minDate(moment.utc().add(minstart,'m'));
+    $('#datetimepicker-start').data('DateTimePicker').minDate(moment.utc().add(minstart, 'm'));
     $('#datetimepicker-end').datetimepicker();
-    $('#datetimepicker-end').data('DateTimePicker').minDate(moment.utc().add(minstart,'m'));
+    $('#datetimepicker-end').data('DateTimePicker').minDate(moment.utc().add(minend, 'm'));
     $("#datetimepicker-start").on('dp.change',function (e) {
-        //Setting default, minimum and maximum for end
+        // Setting default, minimum and maximum for end
         $('#datetimepicker-end').data('DateTimePicker').defaultDate(moment.utc(e.date).add(60, 'm'));
         $('#datetimepicker-end').data('DateTimePicker').minDate(e.date);
         $('#datetimepicker-end').data('DateTimePicker').maxDate(moment.utc(e.date).add(maxrange, 'm'));
@@ -15,10 +16,10 @@ $( document ).ready( function(){
     function select_proper_transmitters(norad) {
         $('#transmitter-selection').prop('disabled', false);
         $('#transmitter-selection option').hide();
-        $('#transmitter-selection option[data-satellite="'+norad+'"]').show().prop('selected', true);
+        $('#transmitter-selection option[data-satellite="' + norad + '"]').show().prop('selected', true);
 
         $('.tle').hide();
-        $('.tle[data-norad="'+norad+'"]').show();
+        $('.tle[data-norad="' + norad + '"]').show();
     }
 
     var norad = $(this).find(':selected').data('norad');
@@ -48,26 +49,25 @@ $( document ).ready( function(){
                 console.log(data.error);
                 $('#windows-data').html('<span class="text-danger">' + error_msg + '</span>');
             } else {
-                var dc = 0; //Data counter
+                var dc = 0; // Data counter
                 var suggested_data = [];
                 $('#windows-data').empty();
-                $.each(data, function( i,k ){
+                $.each(data, function(i, k){
                     label = k.id + ' - ' + k.name;
                     var times = [];
-                    $.each(k.window, function( m,n ){
+                    $.each(k.window, function(m, n){
                         var starting_time = moment.utc(n.start).valueOf();
                         var ending_time = moment.utc(n.end).valueOf();
-                        console.log(starting_time + '-' + ending_time);
-                        $('#windows-data').append('<input type="hidden" name="'+dc+'-starting_time" value="'+n.start+'">');
-                        $('#windows-data').append('<input type="hidden" name="'+dc+'-ending_time" value="'+n.end+'">');
-                        $('#windows-data').append('<input type="hidden" name="'+dc+'-station" value="'+k.id+'">');
+                        $('#windows-data').append('<input type="hidden" name="' + dc + '-starting_time" value="' + n.start + '">');
+                        $('#windows-data').append('<input type="hidden" name="' + dc + '-ending_time" value="' + n.end + '">');
+                        $('#windows-data').append('<input type="hidden" name="' + dc + '-station" value="' + k.id + '">');
                         times.push({starting_time: starting_time, ending_time: ending_time});
                         dc = dc + 1;
                     });
-                    suggested_data.push({label : label, times : times});
+                    suggested_data.push({label: label, times: times});
                 });
 
-                $('#windows-data').append('<input type="hidden" name="total" value="'+dc+'">');
+                $('#windows-data').append('<input type="hidden" name="total" value="' + dc + '">');
                 if (dc > 0) {
                     timeline_init(start_time, end_time, suggested_data);
                 } else {
@@ -78,7 +78,7 @@ $( document ).ready( function(){
         });
     });
 
-    function timeline_init( start, end, payload ){
+    function timeline_init(start, end, payload){
         var start_time_timeline = moment.utc(start).valueOf();
         var end_time_timeline = moment.utc(end).valueOf();
 
@@ -87,7 +87,6 @@ $( document ).ready( function(){
         $('#name').empty();
 
         var chart = d3.timeline()
-                      .stack()
                       .beginning(start_time_timeline)
                       .ending(end_time_timeline)
                       .hover(function (d, i, datum) {
@@ -97,7 +96,8 @@ $( document ).ready( function(){
                           div.find('#name').text(datum.label);
                       })
                       .margin({left:140, right:10, top:0, bottom:50})
-                      .tickFormat({format: d3.time.format.utc('%H:%M'), tickTime: d3.time.minutes, tickInterval: 30, tickSize: 6});
+                      .tickFormat({format: d3.time.format.utc('%H:%M'), tickTime: d3.time.minutes, tickInterval: 30, tickSize: 6})
+                      .stack();
 
         var svg_width = 1140;
         if (screen.width < 1200) { svg_width = 940; }

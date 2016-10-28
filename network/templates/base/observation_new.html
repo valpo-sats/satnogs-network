@@ -82,7 +82,8 @@
         <label class="col-sm-3 control-label">End Time</label>
         <div class="col-sm-9">
           <div class='input-group date' id="datetimepicker-end"
-               data-date-maxrange="{{ date_max_range }}">
+               data-date-maxrange="{{ date_max_range }}"
+               data-date-minend="{{ date_min_end }}">
             <input type="text"
                    class="form-control"
                    name="end-time"
@@ -109,8 +110,7 @@
     <div class="col-md-12">
       <h3>Calculated Timeline</h3>
       <div id="loading" class="notice">Calculating</div>
-      <div id="timeline">
-      </div>
+      <div id="timeline"></div>
       <div id="hoverRes">
         <div class="coloredDiv"></div>
         <div id="name"></div>

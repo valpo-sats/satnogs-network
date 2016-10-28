@@ -189,6 +189,7 @@ def observation_new(request):
                   {'satellites': satellites,
                    'transmitters': transmitters, 'norad': norad,
                    'date_min_start': settings.DATE_MIN_START,
+                   'date_min_end': settings.DATE_MIN_END,
                    'date_max_range': settings.DATE_MAX_RANGE})
 
 

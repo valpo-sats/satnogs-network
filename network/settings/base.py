@@ -212,6 +212,7 @@ MAPBOX_TOKEN = getenv('MAPBOX_TOKEN', '')
 
 # Observations datetimes in minutes
 DATE_MIN_START = '15'
+DATE_MIN_END = '75'
 DATE_MAX_RANGE = '480'
 
 # Station heartbeat in minutes
