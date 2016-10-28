@@ -9,7 +9,7 @@
     "bootstrap": "3.3.x",
     "bootstrap3-datetimepicker": "4.17.x",
     "d3": "3.5.x",
-    "d3-timeline": "0.0.x",
+    "d3-timeline": "0.0.4",
     "mapbox.js": "2.2.x",
     "moment": "2.15.x",
     "wavesurfer.js": "1.2.x",
