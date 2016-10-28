@@ -5,17 +5,14 @@
   "homepage": "https://github.com/satnogs/satnogs-network",
   "license": "AGPL",
   "dependencies": {
-    "jquery": "2.0.3",
-    "bootstrap": "3.3.6",
-    "bootstrap-datetimepicker": "0.0.11",
-    "d3": "3.5.17",
-    "d3-timeline": "*",
+    "jquery": "2.0.x",
+    "bootstrap": "3.3.x",
+    "bootstrap3-datetimepicker": "4.17.x",
+    "d3": "3.5.x",
+    "d3-timeline": "0.0.x",
     "mapbox.js": "2.2.x",
-    "moment": "*",
-    "wavesurfer.js": "*",
-    "uri.js": "*"
-  },
-  "resolutions": {
-    "bootstrap": "2.3.2"
+    "moment": "2.15.x",
+    "wavesurfer.js": "1.2.x",
+    "uri.js": "1.18.x"
   }
 }

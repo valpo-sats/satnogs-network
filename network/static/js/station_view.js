@@ -1,10 +1,10 @@
 $(document).ready(function() {
+    'use strict';
+
     // Reading data for station
     var station_info = $('#station-info').data();
 
     // Init the map
-    'use strict';
-
     var mapboxid = $('div#map-station').data('mapboxid');
     var mapboxtoken = $('div#map-station').data('mapboxtoken');
 
