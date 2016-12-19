@@ -28,4 +28,5 @@ class User(AbstractUser):
     def __unicode__(self):
         return self.username
 
+
 post_save.connect(gen_token, sender=User)
