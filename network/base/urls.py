@@ -10,7 +10,7 @@ base_urlpatterns = ([
     url(r'^settings_site/$', views.settings_site, name='settings_site'),
 
     # Observations
-    url(r'^observations/$', views.observations_list, name='observations_list'),
+    url(r'^observations/$', views.ObservationListView.as_view(), name='observations_list'),
     url(r'^observations/(?P<id>[0-9]+)/$', views.observation_view, name='observation_view'),
     url(r'^observations/(?P<id>[0-9]+)/delete/$', views.observation_delete,
         name='observation_delete'),
