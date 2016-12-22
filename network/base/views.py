@@ -16,6 +16,8 @@ from django.http import JsonResponse, HttpResponseNotFound, HttpResponseServerEr
 from django.contrib.auth.decorators import login_required
 from django.core.management import call_command
 
+from django.views.generic import ListView
+
 from rest_framework import serializers, viewsets
 
 from network.base.models import (Station, Transmitter, Observation,
@@ -116,21 +118,36 @@ def settings_site(request):
     return render(request, 'base/settings_site.html')
 
 
-def observations_list(request):
-    """View to render Observations page."""
-    observations = Observation.objects.order_by('-id')[:20]
-    satellites = Satellite.objects.all()
+class ObservationListView(ListView):
+    """
+    Displays a list of observations with pagination
+    """
+    model = Observation
+    ordering = '-id'
+    context_object_name = "observations"
+    paginate_by = settings.ITEMS_PER_PAGE
+    template_name = 'base/observations.html'
 
-    if request.method == 'GET':
-        form = SatelliteFilterForm(request.GET)
-        if form.is_valid():
-            norad = form.cleaned_data['norad']
-            observations = Observation.objects.filter(satellite__norad_cat_id=norad)
-            return render(request, 'base/observations.html', {'observations': observations,
-                          'satellites': satellites, 'norad': int(norad)})
+    def get_queryset(self):
+        """
+        Optionally filter based on norad get argument
+        """
+        norad_cat_id = self.request.GET.get('norad', None)
+        if norad_cat_id is None or norad_cat_id == '':
+            return Observation.objects.all()
+        else:
+            return Observation.objects.filter(satellite__norad_cat_id=norad_cat_id)
 
-    return render(request, 'base/observations.html',
-                  {'observations': observations, 'satellites': satellites})
+    def get_context_data(self, **kwargs):
+        """
+        Need to add a list of satellites to the context for the template
+        """
+        context = super(ObservationListView, self).get_context_data(**kwargs)
+        context['satellites'] = Satellite.objects.all()
+        norad_cat_id = self.request.GET.get('norad', None)
+        if norad_cat_id is not None and norad_cat_id != '':
+            context['norad'] = int(norad_cat_id)
+        return context
 
 
 @login_required
