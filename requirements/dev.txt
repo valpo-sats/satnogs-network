@@ -3,5 +3,14 @@
 
 # Debug & Testing
 sqlparse==0.2.2
-flake8==3.2.1
-factory-boy==2.8.1
+flake8==3.0.4
+factory-boy==2.7.0
+pytest==3.0.1
+pytest-cov==2.3.1
+pytest-django==3.0.0
+pytest-xdist==1.15.0
+python-coveralls==2.9.0
+coverage==4.2
+faker
+docopts
+mock==2.0.0
