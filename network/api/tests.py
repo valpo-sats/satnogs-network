@@ -33,7 +33,7 @@ class JobViewApiTest(TestCase):
     def test_job_view_api(self):
         response = self.client.get('/api/jobs/')
         response_json = json.loads(response.content)
-        self.assertEqual(response_json['results'], [])
+        self.assertEqual(response_json, [])
 
 
 @pytest.mark.django_db(transaction=True)
