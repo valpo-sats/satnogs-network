@@ -1,4 +1,18 @@
+## 0.8
+
+* Add basic form validation on Stations and Observations
+* Add modal with Satellite information and DB link
+* Create permalink to hightlight observation data blocks
+* Add DemodData model to handle multiple demodulated payload
+* Add option for adding TLEs manually
+* Add travis support
+* Switch to bower for static
+* Add pagination to API
+* Add pagination to Observations
+* Add initial tests to get 75% coverage
+
 ## 0.7
+
 * Display current playback time for observation data
 * Observation timeline adapt to mobile
 * Collapse station next satellite passes
