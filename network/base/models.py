@@ -255,6 +255,7 @@ class Data(models.Model):
     observation = models.ForeignKey(Observation)
     ground_station = models.ForeignKey(Station)
     payload = models.FileField(upload_to='data_payloads', blank=True, null=True)
+    waterfall = models.ImageField(upload_to='data_waterfalls', blank=True, null=True)
     vetted_datetime = models.DateTimeField(null=True, blank=True)
     vetted_user = models.ForeignKey(User, related_name="vetted_user_set", null=True, blank=True)
     vetted_status = models.CharField(choices=OBSERVATION_STATUSES,

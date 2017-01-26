@@ -17,7 +17,7 @@ class DataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Data
         fields = ('id', 'start', 'end', 'observation', 'ground_station', 'transmitter',
-                  'norad_cat_id', 'payload', 'demoddata')
+                  'norad_cat_id', 'payload', 'waterfall', 'demoddata')
         read_only_fields = ['id', 'start', 'end', 'observation', 'ground_station',
                             'transmitter', 'norad_cat_id']
 
