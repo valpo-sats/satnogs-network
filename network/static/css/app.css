@@ -354,6 +354,15 @@ code.log p {
     float: right;
 }
 
+.waterfall {
+    margin-top: 5px;
+}
+
+.waterfall img {
+    margin: auto;
+    padding: 5px;
+}
+
 #collapseFilters {
     padding: 15px;
 }

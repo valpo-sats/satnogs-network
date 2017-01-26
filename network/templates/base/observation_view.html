@@ -154,8 +154,16 @@
                   Waiting for data
                 </div>
               {% endif %}
+              {% if data.waterfall %}
+                <div id="waterfall-{{ data.id }}" class="collapse well waterfall">
+                  <img class="img-responsive waterfall" src="{{ MEDIA_URL }}{{ data.waterfall }}" alt="waterfall">
+                </div>
+              {% endif %}
             </div>
             <div class="panel-footer">
+              {% if not data.payload and not data.waterfall  %}
+                &nbsp;
+              {% endif %}
               {% if data.payload %}
                 <button type="button" class="btn btn-primary btn-xs playpause">
                   <span class="glyphicon glyphicon-play"></span>
@@ -170,8 +178,13 @@
                     <span class="glyphicon glyphicon-download"></span> Data
                   </button>
                 </a>
-              {% else %}
-                &nbsp;
+              {% endif %}
+              {% if data.waterfall %}
+                <button type="button" class="btn btn-default btn-xs" role="button"
+                        data-toggle="collapse" href="#waterfall-{{ data.id }}" aria-expanded="false"
+                        aria-controls="waterfall-{{ data.id }}">
+                  <span class="glyphicon glyphicon-picture"></span> Waterfall
+                </button>
               {% endif %}
 
               <span class="pull-right hidden-xs">
