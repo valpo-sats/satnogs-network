@@ -43,7 +43,6 @@ $(document).ready( function(){
         $('#timeline').empty();
         $('#hoverRes').hide();
         $('#windows-data').empty();
-        satellite = $('#satellite-selection').val();
         var start_time = $('#datetimepicker-start input').val();
         var end_time = $('#datetimepicker-end input').val();
 

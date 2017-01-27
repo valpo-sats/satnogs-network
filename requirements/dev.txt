@@ -5,12 +5,12 @@
 sqlparse==0.2.2
 flake8==3.2.1
 factory-boy==2.8.1
-pytest==3.0.5
+pytest==3.0.6
 pytest-cov==2.4.0
 pytest-django==3.1.2
 pytest-xdist==1.15.0
 python-coveralls==2.9.0
-coverage==4.3.1
+coverage==4.3.4
 faker
 docopts
 mock==2.0.0
