@@ -437,24 +437,16 @@ def station_view(request, id):
                     if tr is None:
                         break
 
-                    # bug in pyephem causes overhead sats to appear in the result
-                    # mixing next-pass data with current pass data, resulting in
-                    # satnogs/satnogs-network#199. As a workaround, pyephem does
-                    # return set time for current pass while rise time for next
-                    # pass so when this happens we want to toss the entry out
-                    # not a break as this sat might have another valid pass
-                    if ts < tr:
-                        pass
-
                     # using the angles module convert the sexagesimal degree into
                     # something more easily read by a human
                     elevation = format(math.degrees(altt), '.0f')
                     azimuth = format(math.degrees(azr), '.0f')
                     passid += 1
 
-                    # show only if >= configured horizon and in next 6 hours
+                    # show only if >= configured horizon and in next 6 hours,
+                    # and not directly overhead (tr < ts see issue 199)
                     if tr < ephem.date(datetime.today() + timedelta(hours=6)):
-                        if float(elevation) >= station.horizon:
+                        if (float(elevation) >= station.horizon and tr < ts):
                             sat_pass = {'passid': passid,
                                         'mytime': str(observer.date),
                                         'debug': observer.next_pass(sat_ephem),
