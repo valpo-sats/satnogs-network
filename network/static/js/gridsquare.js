@@ -5,7 +5,7 @@
  * valid. -cshields
  */
 function gridsquare() {
-    var FIELD_IDENTIFIERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'H', 'K', 'L', 'M',
+    var FIELD_IDENTIFIERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
                              'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
     // starting points, the fields from the Station form
