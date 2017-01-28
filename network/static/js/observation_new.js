@@ -11,11 +11,15 @@ $(document).ready( function(){
     var satellite;
 
     var obs_filter = $('#form-obs').data('obs-filter');
+    var obs_filter_dates = $('#form-obs').data('obs-filter-dates');
+    var obs_filter_station = $('#form-obs').data('obs-filter-station');
 
     if (obs_filter) {
         satellite = $('input[name="satellite"]').val();
         ground_station = $('input[name="ground_station"]').val();
-    } else {
+    }
+
+    if (!obs_filter_dates) {
         var minstart = $('#datetimepicker-start').data('date-minstart');
         var minend = $('#datetimepicker-end').data('date-minend');
         var maxrange = $('#datetimepicker-end').data('date-maxrange');
@@ -48,7 +52,7 @@ $(document).ready( function(){
 
         var url = '/prediction_windows/' + satellite + '/' + start_time + '/' + end_time + '/';
 
-        if (obs_filter) {
+        if (obs_filter_station) {
             url = '/prediction_windows/' + satellite + '/' + start_time + '/' + end_time + '/' + ground_station + '/';
         }
 
