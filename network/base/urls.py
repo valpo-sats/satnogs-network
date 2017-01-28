@@ -34,4 +34,6 @@ base_urlpatterns = ([
 
     # Satellites
     url(r'^satellites/(?P<id>[0-9]+)/$', views.satellite_view, name='satellite_view'),
+    url(r'^satellite_position/(?P<sat_id>[0-9]+)/$', views.satellite_position,
+        name='satellite_position'),
 ], 'base')
