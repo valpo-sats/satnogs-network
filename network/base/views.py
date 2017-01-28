@@ -200,15 +200,22 @@ def observation_new(request):
     if request.method == 'GET':
         filter_form = SatelliteFilterForm(request.GET)
         if filter_form.is_valid():
-            start_date = datetime.strptime(filter_form.cleaned_data['start_date'],
-                                           '%Y/%m/%d %H:%M').strftime('%Y-%m-%d %H:%M')
-            end_date = (datetime.strptime(filter_form.cleaned_data['end_date'], '%Y/%m/%d %H:%M') +
-                        timedelta(minutes=1)).strftime('%Y-%m-%d %H:%M')
+            start_date = filter_form.cleaned_data['start_date']
+            end_date = filter_form.cleaned_data['end_date']
+            ground_station = filter_form.cleaned_data['ground_station']
+            norad = filter_form.cleaned_data['norad']
+
+            if start_date:
+                start_date = datetime.strptime(start_date,
+                                               '%Y/%m/%d %H:%M').strftime('%Y-%m-%d %H:%M')
+            if end_date:
+                end_date = (datetime.strptime(end_date, '%Y/%m/%d %H:%M') +
+                            timedelta(minutes=1)).strftime('%Y-%m-%d %H:%M')
             obs_filter['exists'] = True
-            obs_filter['norad'] = filter_form.cleaned_data['norad']
+            obs_filter['norad'] = norad
             obs_filter['start_date'] = start_date
             obs_filter['end_date'] = end_date
-            obs_filter['ground_station'] = filter_form.cleaned_data['ground_station']
+            obs_filter['ground_station'] = ground_station
         else:
             obs_filter['exists'] = False
 

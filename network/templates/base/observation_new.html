@@ -22,13 +22,14 @@
   </div>
 
   <form class="form-horizontal" role="form" action="{% url 'base:observation_new' %}"
-        method="post" data-obs-filter="{{ obs_filter.exists|lower }}" id="form-obs">{% csrf_token %}
+        method="post" data-obs-filter="{{ obs_filter.exists|lower }}" data-obs-filter-station="{{ obs_filter.ground_station }}"
+        data-obs-filter-dates="{{ obs_filter.start_date }}" id="form-obs">{% csrf_token %}
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
           <label class="col-sm-3 control-label">Satellite</label>
           <div class="col-sm-9">
-            {% if obs_filter.exists %}
+            {% if obs_filter.norad %}
               {% for satellite in satellites %}
                 {% ifequal satellite.norad_cat_id obs_filter.norad %}
                   <input type="text" class="form-control" name="satellite-name"
@@ -77,7 +78,7 @@
           <div class="col-sm-9">
             <div class='input-group date' id="datetimepicker-start"
                  data-date-minstart="{{ date_min_start }}">
-              {% if obs_filter.exists %}
+              {% if obs_filter.start_date %}
                 <input type="text" class="form-control" name="start-time"
                        value="{{ obs_filter.start_date}}" readonly>
               {% else %}
@@ -99,7 +100,7 @@
             <div class='input-group date' id="datetimepicker-end"
                  data-date-maxrange="{{ date_max_range }}"
                  data-date-minend="{{ date_min_end }}">
-              {% if obs_filter.exists %}
+              {% if obs_filter.end_date %}
                 <input type="text" class="form-control" name="end-time"
                        value="{{ obs_filter.end_date}}" readonly>
               {% else %}
@@ -118,7 +119,7 @@
       </div>
     </div>
 
-    {% if obs_filter.exists %}
+    {% if obs_filter.ground_station %}
       <input type="hidden" name="ground_station" value="{{ obs_filter.ground_station }}">
     {% endif %}
 
