@@ -139,7 +139,6 @@ class ObservationListView(ListView):
     Displays a list of observations with pagination
     """
     model = Observation
-    ordering = '-id'
     context_object_name = "observations"
     paginate_by = settings.ITEMS_PER_PAGE
     template_name = 'base/observations.html'
@@ -147,12 +146,44 @@ class ObservationListView(ListView):
     def get_queryset(self):
         """
         Optionally filter based on norad get argument
+        Optionally filter based on good/bad/unvetted
         """
-        norad_cat_id = self.request.GET.get('norad', None)
-        if norad_cat_id is None or norad_cat_id == '':
-            return Observation.objects.all()
+        norad_cat_id = self.request.GET.get('norad', '')
+        bad = self.request.GET.get('bad', '1')
+        if bad == '0':
+            bad = False
         else:
-            return Observation.objects.filter(satellite__norad_cat_id=norad_cat_id)
+            bad = True
+        good = self.request.GET.get('good', '1')
+        if good == '0':
+            good = False
+        else:
+            good = True
+        unvetted = self.request.GET.get('unvetted', '1')
+        if unvetted == '0':
+            unvetted = False
+        else:
+            unvetted = True
+
+        if norad_cat_id == '':
+            observations = Observation.objects.all().order_by('-id')
+        else:
+            observations = Observation.objects.filter(
+                satellite__norad_cat_id=norad_cat_id).order_by('-id')
+
+        # Good/Bad/Unvetted are properties of the model not fields
+        # so cannot use queryset filtering
+        resultset = []
+        for ob in observations:
+            if ob.has_unvetted_data > 0:
+                print ob.has_unvetted_data
+            if bad and ob.has_no_data:
+                resultset.append(ob)
+            elif good and ob.has_verified_data:
+                resultset.append(ob)
+            elif unvetted and ob.has_unvetted_data:
+                resultset.append(ob)
+        return resultset
 
     def get_context_data(self, **kwargs):
         """
@@ -161,6 +192,9 @@ class ObservationListView(ListView):
         context = super(ObservationListView, self).get_context_data(**kwargs)
         context['satellites'] = Satellite.objects.all()
         norad_cat_id = self.request.GET.get('norad', None)
+        context['bad'] = self.request.GET.get('bad', '1')
+        context['good'] = self.request.GET.get('good', '1')
+        context['unvetted'] = self.request.GET.get('unvetted', '1')
         if norad_cat_id is not None and norad_cat_id != '':
             context['norad'] = int(norad_cat_id)
         return context

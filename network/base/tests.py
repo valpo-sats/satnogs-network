@@ -7,7 +7,7 @@ from mock import Mock, patch
 import factory
 from factory import fuzzy
 from django.utils.timezone import now
-
+from django.db import transaction
 from django.test import TestCase, Client
 from django.conf import settings
 
@@ -250,25 +250,45 @@ class ObservationsListViewTest(TestCase):
     transmitters = []
 
     def setUp(self):
-        for x in xrange(1, 10):
-            self.satellites.append(SatelliteFactory())
-        for x in xrange(1, 10):
-            self.transmitters.append(TransmitterFactory())
-        if Observation.objects.all().count() < 10:
-            self.observations = Observation.objects.all()
-        else:
+        # Clear the data and create some new random data
+        with transaction.atomic():
+            Observation.objects.all().delete()
+            Transmitter.objects.all().delete()
+            Satellite.objects.all().delete()
+        self.satellites = []
+        self.observations = []
+        self.transmitters = []
+        with transaction.atomic():
             for x in xrange(1, 10):
-                self.observations.append(ObservationFactory())
+                self.satellites.append(SatelliteFactory())
+            for x in xrange(1, 10):
+                self.transmitters.append(TransmitterFactory(satellite=self.satellites[0]))
+            for x in xrange(1, 10):
+                self.observations.append(ObservationFactory(satellite=self.satellites[0]))
 
     def test_observations_list(self):
         response = self.client.get('/observations/')
 
-        print response.content
         for x in self.observations:
-            print x.satellite.name
-        print Satellite.objects.all().count()
+            self.assertContains(response, x.transmitter.mode.name)
+
+    def test_observations_list_deselect_bad(self):
+        response = self.client.get('/observations/?bad=0')
+        print response
+
         for x in self.observations:
-            self.assertContains(response, x.satellite.name)
+            self.assertNotContains(response, x.transmitter.mode.name)
+
+    def test_observations_list_deselect_good(self):
+        response = self.client.get('/observations/?good=0')
+
+        for x in self.observations:
+            self.assertContains(response, x.transmitter.mode.name)
+
+    def test_observations_list_deselect_unvetted(self):
+        response = self.client.get('/observations/?unvetted=0')
+
+        for x in self.observations:
             self.assertContains(response, x.transmitter.mode.name)
 
 

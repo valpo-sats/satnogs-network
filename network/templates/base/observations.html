@@ -19,24 +19,20 @@
 
   <div class="collapse{% if norad %} in{% endif %}" id="collapseFilters">
     <div class="filter-section">
-      <h4>Data:</h4>
-      <button class="btn btn-default btn-sm active" data-toggle="collapse"
-              data-target=".bad" aria-expanded="true" aria-controls="bad">
-        Bad
-      </button>
-      <button class="btn btn-default btn-sm active" data-toggle="collapse" data-target=".unvetted"
-              data-target=".unvetted" aria-expanded="true" aria-controls="unvetted">
-        Unvetted
-      </button>
-      <button class="btn btn-default btn-sm active" data-toggle="collapse" data-target=".good"
-              data-target=".good" aria-expanded="true" aria-controls="good">
-        Good
-      </button>
-    </div>
-
-    <div class="filter-section">
       <form id="satellite-filter" class="form-inline" methon="get" action="{% url 'base:observations_list' %}">
         <div class="form-group">
+          <h4>Data:</h4>
+          <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-default btn-sm {% if bad == '1' %}active{% endif %}"  aria-expanded="true" aria-controls="bad">
+              <input type="checkbox" name="bad" {% if bad == '1' %}checked{% endif %} autocomplete="off">Bad
+            </label>
+            <label class="btn btn-default btn-sm {% if unvetted == '1' %}active{% endif %}"  aria-expanded="true" aria-controls="unvetted">
+              <input type="checkbox" name="unvetted" {% if unvetted == '1' %}checked{% endif %} autocomplete="off">Unvetted
+            </label>
+            <label class="btn btn-default btn-sm {% if good == '1' %}active{% endif %}"  aria-expanded="true" aria-controls="good">
+              <input type="checkbox" name="good" {% if good == '1' %}checked{% endif %} autocomplete="off">Good
+            </label>
+          </div>
           <h4>Satellite:</h4>
           <select class="form-control" name="norad" autocomplete="off" id="satellite-selection">
             <option value="" selected>All</option>
@@ -64,15 +60,8 @@
           <th>Observer</th>
         </thead>
         <tbody>
-          {% for observation in observations.all %}
-            <tr{% if observation.has_no_data %}
-                  class="satellite-row bad collapse in"
-                {% elif observation.has_verified_data %}
-                  class="satellite-row good collapse in"
-                {% elif observation.has_unvetted_data %}
-                  class="satellite-row unvetted collapse in"
-                {% endif %}
-                data-norad="{{ observation.satellite.norad_cat_id }}">
+          {% for observation in observations %}
+            <tr data-norad="{{ observation.satellite.norad_cat_id }}">
               <td>
                 <a href="{% url 'base:observation_view' id=observation.id %}">
                   <span class="label
@@ -106,44 +95,7 @@
           {% endfor %}
         </tbody>
       </table>
-      {% if is_paginated %}
-        <nav>
-          <ul class="pagination">
-            {% if page_obj.has_previous %}
-              <li>
-                <a href="?page={{ page_obj.previous_page_number }}">
-                  <span>&laquo;</span>
-                </a>
-              </li>
-            {% else %}
-              <li class="disabled">
-                <a href="#">
-                  <span>&laquo;</span>
-                </a>
-              </li>
-            {% endif %}
-
-            {% for page in paginator.page_range %}
-              <li {% if page == page_obj.number %}class="active"{% endif %}>
-                <a href="?page={{ page }}">{{ page }}</a>
-              </li>
-            {% endfor %}
-            {% if page_obj.has_next %}
-              <li>
-                <a href="?page={{ page_obj.next_page_number }}">
-                  <span>&raquo;</span>
-                </a>
-              </li>
-            {% else %}
-              <li {% if not page_obj.has_next %}class="disabled"{% endif %}>
-                <a href="#">
-                  <span>&raquo;</span>
-                </a>
-              </li>
-            {% endif %}
-          </ul>
-        </nav>
-      {% endif %}
+      {% if is_paginated %}{% load paginator %}{% paginator request 3 %}{% endif %}
     </div>
   </div>
   {% include 'includes/satellite.html' %}
