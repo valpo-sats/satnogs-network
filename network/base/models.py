@@ -232,17 +232,18 @@ class Observation(models.Model):
     # observaton has at least 1 payload that has been verified good
     @property
     def has_verified_data(self):
-        return self.data_set.filter(vetted_status='verified').count()
+        return self.data_set.filter(vetted_status=u"('verified', 'Verified')").count()
 
     # observation is vetted to be all bad data
     @property
     def has_no_data(self):
-        return self.data_set.filter(vetted_status='no_data').count() == self.data_set.count()
+        return self.data_set.filter(
+            vetted_status=u"('no_data', 'No Data')").count() == self.data_set.count()
 
     # observation has at least 1 payload left unvetted
     @property
     def has_unvetted_data(self):
-        return self.data_set.filter(vetted_status='unknown').count()
+        return self.data_set.filter(vetted_status=u"('unknown', 'Unknown')").count()
 
     def __unicode__(self):
         return '{0}'.format(self.id)
@@ -259,7 +260,7 @@ class Data(models.Model):
     vetted_datetime = models.DateTimeField(null=True, blank=True)
     vetted_user = models.ForeignKey(User, related_name="vetted_user_set", null=True, blank=True)
     vetted_status = models.CharField(choices=OBSERVATION_STATUSES,
-                                     max_length=10, default='unknown')
+                                     max_length=20, default='unknown')
 
     @property
     def is_past(self):
