@@ -17,6 +17,12 @@ from network.base.models import (ANTENNA_BANDS, ANTENNA_TYPES, RIG_TYPES, OBSERV
 from network.users.tests import UserFactory
 
 
+RIG_TYPE_IDS = [c[0] for c in RIG_TYPES]
+ANTENNA_BAND_IDS = [c[0] for c in ANTENNA_BANDS]
+ANTENNA_TYPE_IDS = [c[0] for c in ANTENNA_TYPES]
+OBSERVATION_STATUS_IDS = [c[0] for c in OBSERVATION_STATUSES]
+
+
 def generate_payload():
     payload = '{0:b}'.format(random.randint(500000000, 510000000))
     digits = 1824
@@ -41,7 +47,7 @@ def get_valid_satellites():
 
 class RigFactory(factory.django.DjangoModelFactory):
     """Rig model factory."""
-    name = fuzzy.FuzzyChoice(choices=RIG_TYPES)
+    name = fuzzy.FuzzyChoice(choices=RIG_TYPE_IDS)
     rictld_number = fuzzy.FuzzyInteger(1, 3)
 
     class Meta:
@@ -59,8 +65,8 @@ class ModeFactory(factory.django.DjangoModelFactory):
 class AntennaFactory(factory.django.DjangoModelFactory):
     """Antenna model factory."""
     frequency = fuzzy.FuzzyFloat(200, 500)
-    band = fuzzy.FuzzyChoice(choices=ANTENNA_BANDS)
-    antenna_type = fuzzy.FuzzyChoice(choices=ANTENNA_TYPES)
+    band = fuzzy.FuzzyChoice(choices=ANTENNA_BAND_IDS)
+    antenna_type = fuzzy.FuzzyChoice(choices=ANTENNA_TYPE_IDS)
 
     class Meta:
         model = Antenna
@@ -163,7 +169,7 @@ class DataFactory(factory.django.DjangoModelFactory):
         lambda x: x.end + timedelta(hours=random.randint(1, 20))
     )
     vetted_user = factory.SubFactory(UserFactory)
-    vetted_status = fuzzy.FuzzyChoice(choices=OBSERVATION_STATUSES)
+    vetted_status = fuzzy.FuzzyChoice(choices=OBSERVATION_STATUS_IDS)
 
     class Meta:
         model = Data

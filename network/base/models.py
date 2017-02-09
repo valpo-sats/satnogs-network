@@ -232,18 +232,18 @@ class Observation(models.Model):
     # observaton has at least 1 payload that has been verified good
     @property
     def has_verified_data(self):
-        return self.data_set.filter(vetted_status=u"('verified', 'Verified')").count()
+        return self.data_set.filter(vetted_status='verified').count()
 
     # observation is vetted to be all bad data
     @property
     def has_no_data(self):
         return self.data_set.filter(
-            vetted_status=u"('no_data', 'No Data')").count() == self.data_set.count()
+            vetted_status='no_data').count() == self.data_set.count()
 
     # observation has at least 1 payload left unvetted
     @property
     def has_unvetted_data(self):
-        return self.data_set.filter(vetted_status=u"('unknown', 'Unknown')").count()
+        return self.data_set.filter(vetted_status='unknown').count()
 
     def __unicode__(self):
         return '{0}'.format(self.id)
