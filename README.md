@@ -6,7 +6,7 @@ It features multiple observers to multiple intrumentation functionality and mana
 
 ## Install and Contribute
 
-See the [documentation](http://docs.satnogs.org/network/).
+See the [documentation](http://docs.satnogs.org/en/stable/network/).
 
 ## Join
 
