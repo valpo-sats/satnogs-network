@@ -29,3 +29,6 @@ nosetests.xml
 media
 /staticfiles/*
 network/static/lib/
+
+# Jetbrains IDE
+.idea
