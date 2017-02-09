@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta
 from shortuuidfield import ShortUUIDField
 
@@ -220,9 +221,14 @@ class Observation(models.Model):
         return self.end > now()
 
     @property
-    def is_deletable(self):
+    def is_deletable_before_start(self):
         deletion = self.start - timedelta(minutes=int(settings.OBSERVATION_MAX_DELETION_RANGE))
         return deletion > now()
+
+    @property
+    def is_deletable_after_end(self):
+        deletion = self.end + timedelta(minutes=int(settings.OBSERVATION_MIN_DELETION_RANGE))
+        return deletion < now()
 
     # observation has at least 1 payload submitted, no verification taken into account
     @property
@@ -280,6 +286,17 @@ class Data(models.Model):
     @property
     def is_no_data(self):
         return self.vetted_status == 'no_data'
+
+    @property
+    def payload_exists(self):
+        """ Run some checks on the payload for existence of data """
+        if self.payload is None:
+            return False
+        if not os.path.isfile(os.path.join(settings.MEDIA_ROOT, self.payload.name)):
+            return False
+        if self.payload.size == 0:
+            return False
+        return True
 
     class Meta:
         ordering = ['-start', '-end']
