@@ -3,7 +3,7 @@
 
 # Debug & Testing
 sqlparse==0.2.2
-flake8==3.2.1
+flake8==3.3.0
 factory-boy==2.8.1
 pytest==3.0.6
 pytest-cov==2.4.0
