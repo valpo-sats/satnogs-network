@@ -288,3 +288,7 @@ class Data(models.Model):
 class DemodData(models.Model):
     data = models.ForeignKey(Data, related_name='demoddata')
     payload_demod = models.FileField(upload_to='data_payloads', blank=True, null=True)
+
+    def display_payload(self):
+        with open(self.payload_demod.path) as fp:
+            return fp.read()

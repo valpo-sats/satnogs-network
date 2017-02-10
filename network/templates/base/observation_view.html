@@ -144,47 +144,92 @@
               </div>
             </div>
             <div class="panel-body">
-              {% if data.payload %}
-                <div id="loading" class="notice">Loading data</div>
-                <div class="wave" id="data-{{ data.id }}"
-                     data-id="{{ data.id }}"
-                     data-payload="{{ MEDIA_URL }}{{ data.payload }}"></div>
-              {% else %}
-                <div class="notice">
-                  Waiting for data
+              <ul class="nav nav-tabs data-tabs" role="tablist">
+                <li role="presentation" class="active">
+                  <a href="#tab-waterfall-{{ data.id }}"
+                     aria-controls="tab-waterfall-{{ data.id }}"
+                     role="tab"
+                     data-toggle="tab">Watefall</a>
+                </li>
+                <li role="presentation">
+                  <a href="#tab-audio-{{ data.id }}"
+                     aria-controls="tab-audio-{{ data.id }}"
+                     role="tab"
+                     data-toggle="tab">Audio</a>
+                </li>
+                <li role="presentation">
+                  <a href="#tab-data-{{ data.id }}"
+                     aria-controls="tab-data-{{ data.id }}"
+                     role="tab"
+                     data-toggle="tab">Data</a>
+                </li>
+              </ul>
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="tab-waterfall-{{ data.id }}">
+                  {% if data.waterfall %}
+                    <div id="waterfall-{{ data.id }}" class="waterfall">
+                      <img class="img-responsive waterfall" src="{{ MEDIA_URL }}{{ data.waterfall }}" alt="waterfall">
+                    </div>
+                  {% else %}
+                    <div class="notice">
+                      Waiting for waterfall
+                    </div>
+                  {% endif %}
                 </div>
-              {% endif %}
-              {% if data.waterfall %}
-                <div id="waterfall-{{ data.id }}" class="collapse well waterfall">
-                  <img class="img-responsive waterfall" src="{{ MEDIA_URL }}{{ data.waterfall }}" alt="waterfall">
+                <div role="tabpanel" class="tab-pane" id="tab-audio-{{ data.id }}">
+                  {% if data.payload %}
+                    <div id="loading" class="notice">Loading data</div>
+                    <div class="wave tab-data" id="data-{{ data.id }}"
+                         data-id="{{ data.id }}"
+                         data-payload="{{ MEDIA_URL }}{{ data.payload }}"></div>
+                   <button type="button" class="btn btn-primary btn-xs playpause">
+                     <span class="glyphicon glyphicon-play"></span>
+                     <span class="glyphicon glyphicon-pause"></span>
+                   </button>
+                   <span id="playback-time-{{ data.id }}" class="label label-info playback-time"></span>
+                  {% else %}
+                    <div class="notice">
+                      Waiting for audio
+                    </div>
+                  {% endif %}
                 </div>
-              {% endif %}
+                <div role="tabpanel" class="tab-pane tab-data" id="tab-data-{{ data.id }}">
+                  {% if data.demoddata.all %}
+                    {% for demoddata in data.demoddata.all %}
+                    <span class="label label-default">{{ demoddata.payload_demod }}</span>
+                    <div class="well well-sm data-well">
+                      {{ demoddata.display_payload }}
+                    </div>
+                    {% endfor %}
+                  {% else %}
+                    <div class="notice">
+                      Waiting for demoded data
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
             </div>
             <div class="panel-footer">
               {% if not data.payload and not data.waterfall  %}
                 &nbsp;
               {% endif %}
               {% if data.payload %}
-                <button type="button" class="btn btn-primary btn-xs playpause">
-                  <span class="glyphicon glyphicon-play"></span>
-                  <span class="glyphicon glyphicon-pause"></span>
-                </button>
-                <span id="playback-time-{{ data.id }}" class="label label-info playback-time"></span>
-
                 <a href="{{ MEDIA_URL }}{{ data.payload }}"
                    target="_blank"
                    download="">
                   <button type="button" class="btn btn-default btn-xs">
-                    <span class="glyphicon glyphicon-download"></span> Data
+                    <span class="glyphicon glyphicon-download"></span> Audio
                   </button>
                 </a>
               {% endif %}
               {% if data.waterfall %}
-                <button type="button" class="btn btn-default btn-xs" role="button"
-                        data-toggle="collapse" href="#waterfall-{{ data.id }}" aria-expanded="false"
-                        aria-controls="waterfall-{{ data.id }}">
-                  <span class="glyphicon glyphicon-picture"></span> Waterfall
-                </button>
+                <a href="{{ MEDIA_URL }}{{ data.waterfall }}"
+                   target="_blank"
+                   download="">
+                  <button type="button" class="btn btn-default btn-xs">
+                    <span class="glyphicon glyphicon-download"></span> Waterfall
+                  </button>
+                </a>
               {% endif %}
 
               <span class="pull-right hidden-xs">
