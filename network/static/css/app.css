@@ -184,8 +184,17 @@ footer {
 }
 
 .notice {
+    margin: 40px;
     text-align: center;
     color: #888;
+}
+
+.tab-data {
+    padding-top: 25px;
+}
+
+.data-well {
+    word-break: break-all;
 }
 
 .stage-notice {
