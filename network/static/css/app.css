@@ -284,6 +284,10 @@ code.log p {
     font-size: 12px;
 }
 
+.label-warning {
+    background-color: darkorange;
+}
+
 #timeline2 .axis {
     transform: translate(0, 30px);
     -ms-transform: translate(0, 30px); /* IE 9 */
