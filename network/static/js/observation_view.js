@@ -51,7 +51,7 @@ $(document).ready(function() {
         var wavesurfer = Object.create(WaveSurfer);
         var data_payload_url = $this.data('payload');
         var container_el = '#data-' + wid;
-        var loading = '#loading';
+        var loading = '#loading-' + wid;
         var $playbackTime = $('#playback-time-' + wid);
 
         wavesurfer.init({
