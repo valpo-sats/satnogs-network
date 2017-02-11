@@ -346,12 +346,14 @@ class ObservationViewTest(TestCase):
         response = self.client.get('/observations/%d/' % self.observation.id)
         self.assertContains(response, self.observation.author.username)
         self.assertContains(response, self.observation.transmitter.mode.name)
-        self.assertNotContains(response, 'Delete Observation')
+        if not self.observation.is_deletable_before_start:
+            self.assertNotContains(response, 'Delete Observation')
 
     def test_observation_staff(self):
         self.client.force_login(self.user)
         response = self.client.get('/observations/%d/' % self.observation.id)
-        self.assertContains(response, 'Delete Observation')
+        if self.observation.is_deletable_after_end:
+            self.assertContains(response, 'Delete Observation')
 
 
 @pytest.mark.django_db(transaction=True)
