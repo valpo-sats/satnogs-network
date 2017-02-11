@@ -1,3 +1,5 @@
+/* global L */
+
 $(document).ready(function() {
     'use strict';
 
@@ -20,8 +22,8 @@ $(document).ready(function() {
         geometry: {
             type: 'Point',
             coordinates: [
-              parseFloat(station_info.lng),
-              parseFloat(station_info.lat)
+                parseFloat(station_info.lng),
+                parseFloat(station_info.lat)
             ]
         },
         properties: {

@@ -1,3 +1,5 @@
+/* global d3 WaveSurfer URI */
+
 $(document).ready(function() {
     'use strict';
 
@@ -14,7 +16,7 @@ $(document).ready(function() {
         return String(minute + ':' + second); // combine minute and second in string
     };
 
-    $('.observation-data').each(function( index ){
+    $('.observation-data').each(function(){
         var $this = $(this);
         var data_groundstation = $this.data('groundstation');
         var data_time_start = 1000 * $this.data('start');
@@ -33,17 +35,17 @@ $(document).ready(function() {
                       div.find('#name').text(datum.label);
                   })
                   .margin({left:140, right:10, top:0, bottom:50})
-                  .tickFormat({format: d3.time.format.utc("%H:%M"), tickTime: d3.time.minutes, tickInterval: 30, tickSize: 6});
+                  .tickFormat({format: d3.time.format.utc('%H:%M'), tickTime: d3.time.minutes, tickInterval: 30, tickSize: 6});
 
     var svg_width = 1140;
     if (screen.width < 1200) { svg_width = 940; }
     if (screen.width < 992) { svg_width = 720; }
     if (screen.width < 768) { svg_width = screen.width - 30; }
-    var svg = d3.select("#timeline").append("svg").attr("width", svg_width)
-                .datum(observation_data).call(chart);
+    d3.select('#timeline').append('svg').attr('width', svg_width)
+        .datum(observation_data).call(chart);
 
     // Waveform loading
-    $('.wave').each(function( index ){
+    $('.wave').each(function(){
         var $this = $(this);
         var wid = $this.data('id');
         var wavesurfer = Object.create(WaveSurfer);
@@ -53,9 +55,9 @@ $(document).ready(function() {
         var $playbackTime = $('#playback-time-' + wid);
 
         wavesurfer.init({
-          container: container_el,
-          waveColor: '#bf7fbf',
-          progressColor: 'purple'
+            container: container_el,
+            waveColor: '#bf7fbf',
+            progressColor: 'purple'
         });
 
         wavesurfer.on('loading', function() {
@@ -82,16 +84,16 @@ $(document).ready(function() {
     });
 
     // Hightlight Data block
-    var uri = URI(location.href);
+    var uri = new URI(location.href);
     var data_id = uri.hash();
     $(data_id).addClass('panel-info');
 
 
     // Delete confirmation
-    var message = "Do you really want to delete this Observation?";
+    var message = 'Do you really want to delete this Observation?';
     var actions = $('#obs-delete');
     if (actions.length) {
-        actions[0].addEventListener("click", function(e) {
+        actions[0].addEventListener('click', function(e) {
             if (! confirm(message)) {
                 e.preventDefault();
             }

@@ -1,3 +1,5 @@
+/* global moment, d3 */
+
 $(document).ready( function(){
     function select_proper_transmitters(satellite) {
         $('#transmitter-selection').prop('disabled', false);
@@ -16,7 +18,7 @@ $(document).ready( function(){
 
     if (obs_filter) {
         satellite = $('input[name="satellite"]').val();
-        ground_station = $('input[name="ground_station"]').val();
+        var ground_station = $('input[name="ground_station"]').val();
     }
 
     if (!obs_filter_dates) {
@@ -27,7 +29,7 @@ $(document).ready( function(){
         $('#datetimepicker-start').data('DateTimePicker').minDate(moment.utc().add(minstart, 'm'));
         $('#datetimepicker-end').datetimepicker();
         $('#datetimepicker-end').data('DateTimePicker').minDate(moment.utc().add(minend, 'm'));
-        $("#datetimepicker-start").on('dp.change',function (e) {
+        $('#datetimepicker-start').on('dp.change',function (e) {
             // Setting default, minimum and maximum for end
             $('#datetimepicker-end').data('DateTimePicker').defaultDate(moment.utc(e.date).add(60, 'm'));
             $('#datetimepicker-end').data('DateTimePicker').minDate(e.date);
@@ -63,11 +65,11 @@ $(document).ready( function(){
             $('#loading').hide();
             if (data.error) {
                 var error_msg = data.error;
-                console.log(data.error);
                 $('#windows-data').html('<span class="text-danger">' + error_msg + '</span>');
             } else {
                 var dc = 0; // Data counter
                 var suggested_data = [];
+                var label = '';
                 $('#windows-data').empty();
                 $.each(data, function(i, k){
                     label = k.id + ' - ' + k.name;
@@ -120,8 +122,8 @@ $(document).ready( function(){
         if (screen.width < 1200) { svg_width = 940; }
         if (screen.width < 992) { svg_width = 720; }
         if (screen.width < 768) { svg_width = screen.width - 30; }
-        var svg = d3.select('#timeline').append('svg').attr('width', svg_width)
-                    .datum(payload).call(chart);
+        d3.select('#timeline').append('svg').attr('width', svg_width)
+            .datum(payload).call(chart);
 
         $('#hoverRes').show();
         $('#schedule-observation').removeAttr('disabled');

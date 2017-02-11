@@ -1,14 +1,14 @@
 $(document).ready(function() {
     'use strict';
 
-    $("#satellite-filter").submit(function () {
+    $('#satellite-filter').submit(function () {
         var the_form = $(this);
 
         the_form.find('input[type="checkbox"]').each( function () {
             var the_checkbox = $(this);
 
 
-            if( the_checkbox.is(":checked") === true ) {
+            if( the_checkbox.is(':checked') === true ) {
                 the_checkbox.attr('value','1');
             } else {
                 the_checkbox.prop('checked',true);

@@ -4,11 +4,11 @@ python:
   - "2.7"
 install:
   - pip install -r requirements/dev.txt
-  - npm install -g jshint stylelint
+  - npm install -g eslint stylelint
 script:
   - flake8 .
-  - jshint .
   - pytest
+  - eslint 'network/static/js/*.js'
   - stylelint 'network/static/css/*.css'
 after_success:
   - coveralls
