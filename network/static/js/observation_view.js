@@ -93,6 +93,13 @@ $(document).ready(function() {
 
         wavesurfer.on('ready', function() {
             hideProgress();
+            var spectrogram = Object.create(WaveSurfer.Spectrogram);
+            spectrogram.init({
+                wavesurfer: wavesurfer,
+                container: '#wave-spectrogram-' + wid,
+                fftSamples: 256,
+                windowFunc: 'hann'
+            });
 
             $playbackTime.text(formatTime(wavesurfer.getCurrentTime()));
 
