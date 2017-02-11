@@ -20,7 +20,7 @@
     </div>
     <div class="col-md-6 text-right">
       <h2>
-        {% if observation.author == request.user and observation.is_deletable %}
+        {% if is_deletable %}
           <a href="{% url 'base:observation_delete' id=observation.id %}" id="obs-delete" class="btn btn-danger">Delete Observation</a>
         {% endif %}
       </h2>
@@ -101,7 +101,7 @@
           </div>
         </div>
 
-        {% for data in data %}
+        {% for data in dataset %}
           <div class="panel panel-default observation-data" id="{{ data.id }}"
                data-start="{{ data.start|date:"U" }}"
                data-end="{{ data.end|date:"U" }}"
@@ -231,7 +231,6 @@
                   </button>
                 </a>
               {% endif %}
-
               <span class="pull-right hidden-xs">
                 <span class="label label-default">Timeframe</span>
                 {{ data.start|date:"Y-m-d H:i:s" }} - {{ data.end|date:"Y-m-d H:i:s" }}

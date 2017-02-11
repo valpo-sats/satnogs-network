@@ -10,6 +10,7 @@ from django.utils.timezone import now
 from django.db import transaction
 from django.test import TestCase, Client
 from django.conf import settings
+from django.contrib.auth.models import Permission
 
 from network.base.models import (ANTENNA_BANDS, ANTENNA_TYPES, RIG_TYPES, OBSERVATION_STATUSES,
                                  Rig, Mode, Antenna, Satellite, Tle, Station, Transmitter,
@@ -329,8 +330,12 @@ class ObservationViewTest(TestCase):
     observation = None
     satellites = []
     transmitters = []
+    user = None
 
     def setUp(self):
+        self.user = UserFactory()
+        self.user.user_permissions.add(
+            Permission.objects.get(codename='delete_observation'))
         for x in xrange(1, 10):
             self.satellites.append(SatelliteFactory())
         for x in xrange(1, 10):
@@ -341,6 +346,12 @@ class ObservationViewTest(TestCase):
         response = self.client.get('/observations/%d/' % self.observation.id)
         self.assertContains(response, self.observation.author.username)
         self.assertContains(response, self.observation.transmitter.mode.name)
+        self.assertNotContains(response, 'Delete Observation')
+
+    def test_observation_staff(self):
+        self.client.force_login(self.user)
+        response = self.client.get('/observations/%d/' % self.observation.id)
+        self.assertContains(response, 'Delete Observation')
 
 
 @pytest.mark.django_db(transaction=True)
@@ -366,9 +377,25 @@ class ObservationDeleteTest(TestCase):
         # observations in progress cannot be deleted
         self.observation.start = datetime.now() + timedelta(
             minutes=(2 * int(settings.OBSERVATION_MAX_DELETION_RANGE)))
+        self.observation.end = datetime.now() - timedelta(
+            minutes=(2 * int(settings.OBSERVATION_MIN_DELETION_RANGE)))
         self.observation.save()
 
-    def test_observation_delete(self):
+    def test_observation_delete_author(self):
+        """Deletion OK when user is the author of the observation"""
+        response = self.client.get('/observations/%d/delete/' % self.observation.id)
+        self.assertRedirects(response, '/observations/')
+        response = self.client.get('/observations/')
+        with self.assertRaises(Observation.DoesNotExist):
+            _lookup = Observation.objects.get(pk=self.observation.id)       # noqa:F841
+
+    def test_observation_delete_staff(self):
+        """Deletion OK when user is staff and there is no data"""
+        self.user = UserFactory()
+        self.user.user_permissions.add(
+            Permission.objects.get(codename='delete_observation'))
+        self.user.save()
+        self.client.force_login(self.user)
         response = self.client.get('/observations/%d/delete/' % self.observation.id)
         self.assertRedirects(response, '/observations/')
         response = self.client.get('/observations/')
@@ -537,6 +564,8 @@ class ObservationModelTest(TestCase):
     observation = None
     satellites = []
     transmitters = []
+    user = None
+    admin = None
 
     def setUp(self):
         for x in xrange(1, 10):
@@ -553,6 +582,22 @@ class ObservationModelTest(TestCase):
     def test_is_passed(self):
         self.assertTrue(self.observation.is_past)
 
+    def test_is_deletable_before_start(self):
+        self.observation.start = now() - timedelta(minutes=2)
+        self.observation.save()
+        self.assertFalse(self.observation.is_deletable_before_start)
+        self.observation.start = now() + timedelta(minutes=100)
+        self.observation.save()
+        self.assertTrue(self.observation.is_deletable_before_start)
+
+    def test_is_deletable_after_end(self):
+        self.observation.end = now()
+        self.observation.save()
+        self.assertFalse(self.observation.is_deletable_after_end)
+        self.observation.end = now() - timedelta(minutes=200)
+        self.observation.save()
+        self.assertTrue(self.observation.is_deletable_after_end)
+
 
 @pytest.mark.django_db(transaction=True)
 class DataModelTest(TestCase):
@@ -560,6 +605,7 @@ class DataModelTest(TestCase):
     Test various properties of the Observation Model
     """
     data = None
+    data2 = None
     satellites = []
     transmitters = []
 
@@ -572,9 +618,13 @@ class DataModelTest(TestCase):
         self.data.end = now()
         self.data.vetted_status = 'no_data'
         self.data.save()
+        self.data2 = DataFactory(payload=None)
 
     def test_is_no_data(self):
         self.assertTrue(self.data.is_no_data)
 
     def test_is_passed(self):
         self.assertTrue(self.data.is_past)
+
+    def test_payload_exists(self):
+        self.assertFalse(self.data.payload_exists)

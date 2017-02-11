@@ -175,8 +175,6 @@ class ObservationListView(ListView):
         # so cannot use queryset filtering
         resultset = []
         for ob in observations:
-            if ob.has_unvetted_data > 0:
-                print ob.has_unvetted_data
             if bad and ob.has_no_data:
                 resultset.append(ob)
             elif good and ob.has_verified_data:
@@ -384,16 +382,31 @@ def prediction_windows(request, sat_id, start_date, end_date, station_id=None):
 def observation_view(request, id):
     """View for single observation page."""
     observation = get_object_or_404(Observation, id=id)
-    data = Data.objects.filter(observation=observation)
+    dataset = Data.objects.filter(observation=observation)
 
     # not all users will be able to vet data within an observation, allow
     # staff, observation requestors, and station owners
     is_vetting_user = False
     if request.user.is_authenticated():
         if request.user == observation.author or \
-            data.filter(ground_station__in=Station.objects.filter(owner=request.user)).count or \
+            dataset.filter(
+                ground_station__in=Station.objects.filter(owner=request.user)).count or \
                 request.user.is_staff:
                     is_vetting_user = True
+
+    # Determine if there is no valid payload file in the observation dataset
+    if request.user.has_perm('base.delete_observation'):
+        data_payload_exists = False
+        for data in dataset:
+            if data.payload_exists:
+                data_payload_exists = True
+    # This context flag will determine if a delete button appears for the observation.
+    is_deletable = False
+    if observation.author == request.user and observation.is_deletable_before_start:
+        is_deletable = True
+    if request.user.has_perm('base.delete_observation') and not data_payload_exists and \
+            observation.is_deletable_after_end:
+        is_deletable = True
 
     if settings.ENVIRONMENT == 'production':
         discuss_slug = 'https://community.satnogs.org/t/observation-{0}-{1}-{2}' \
@@ -413,12 +426,14 @@ def observation_view(request, id):
             has_comments = False
 
         return render(request, 'base/observation_view.html',
-                      {'observation': observation, 'data': data, 'has_comments': has_comments,
-                       'discuss_url': discuss_url, 'discuss_slug': discuss_slug,
-                       'is_vetting_user': is_vetting_user})
+                      {'observation': observation, 'dataset': dataset,
+                       'has_comments': has_comments, 'discuss_url': discuss_url,
+                       'discuss_slug': discuss_slug, 'is_vetting_user': is_vetting_user,
+                       'is_deletable': is_deletable})
 
     return render(request, 'base/observation_view.html',
-                  {'observation': observation, 'data': data, 'is_vetting_user': is_vetting_user})
+                  {'observation': observation, 'dataset': dataset,
+                   'is_vetting_user': is_vetting_user, 'is_deletable': is_deletable})
 
 
 @login_required
@@ -426,7 +441,14 @@ def observation_delete(request, id):
     """View for deleting observation."""
     me = request.user
     observation = get_object_or_404(Observation, id=id)
-    if observation.author == me and observation.is_deletable:
+    # Having non-existent data is also grounds for deletion if user is staff
+    data_payload_exists = False
+    for data in observation.data_set.all():
+        if data.payload_exists:
+            data_payload_exists = True
+    if (observation.author == me and observation.is_deletable_before_start) or \
+            (request.user.has_perm('base.delete_observation') and
+             not data_payload_exists and observation.is_deletable_after_end):
         observation.delete()
         messages.success(request, 'Observation deleted successfully.')
     else:
