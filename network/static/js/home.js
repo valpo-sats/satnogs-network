@@ -1,3 +1,5 @@
+/*global L*/
+
 $(document).ready(function() {
     'use strict';
 
@@ -10,8 +12,8 @@ $(document).ready(function() {
     var map = L.mapbox.map('map', mapboxid, {
         zoomControl: false
     }).setView([40, 0], 3);
-    var LocLayer = L.mapbox.featureLayer().addTo(map);
-    
+    L.mapbox.featureLayer().addTo(map);
+
     $.ajax({
         url: stations
     }).done(function(data) {
@@ -21,8 +23,8 @@ $(document).ready(function() {
                 geometry: {
                     type: 'Point',
                     coordinates: [
-                      parseFloat(m.lng),
-                      parseFloat(m.lat)
+                        parseFloat(m.lng),
+                        parseFloat(m.lat)
                     ]
                 },
                 properties: {
