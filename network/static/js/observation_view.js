@@ -51,8 +51,25 @@ $(document).ready(function() {
         var wavesurfer = Object.create(WaveSurfer);
         var data_payload_url = $this.data('payload');
         var container_el = '#data-' + wid;
+        $(container_el).css('opacity', '0');
         var loading = '#loading-' + wid;
         var $playbackTime = $('#playback-time-' + wid);
+        var progressDiv = $('#progress-bar-' + wid);
+        var progressBar = $('.progress-bar', progressDiv);
+
+        var showProgress = function (percent) {
+            if (percent == 100) {
+                $(loading).text('Analyzing data...');
+            }
+            progressDiv.css('display', 'block');
+            progressBar.css('width', percent + '%');
+            progressBar.text(percent + '%');
+        };
+
+        var hideProgress = function () {
+            progressDiv.css('display', 'none');
+        };
+
 
         wavesurfer.init({
             container: container_el,
@@ -60,7 +77,11 @@ $(document).ready(function() {
             progressColor: 'purple'
         });
 
-        wavesurfer.on('loading', function() {
+        wavesurfer.on('destroy', hideProgress);
+        wavesurfer.on('error', hideProgress);
+
+        wavesurfer.on('loading', function(percent) {
+            showProgress(percent);
             $(loading).show();
         });
 
@@ -71,6 +92,8 @@ $(document).ready(function() {
         wavesurfer.load(data_payload_url);
 
         wavesurfer.on('ready', function() {
+            hideProgress();
+
             $playbackTime.text(formatTime(wavesurfer.getCurrentTime()));
 
             wavesurfer.on('audioprocess', function(evt) {
@@ -80,6 +103,7 @@ $(document).ready(function() {
                 $playbackTime.text(formatTime(wavesurfer.getDuration() * evt));
             });
             $(loading).hide();
+            $(container_el).css('opacity', '1');
         });
     });
 

@@ -179,6 +179,9 @@
                 <div role="tabpanel" class="tab-pane" id="tab-audio-{{ data.id }}">
                   {% if data.payload %}
                     <div id="loading-{{ data.id }}" class="notice">Loading data...</div>
+                    <div class="progress progress-striped active" id="progress-bar-{{ data.id }}">
+                      <div class="progress-bar progress-bar-info"></div>
+                    </div>
                     <div class="wave tab-data" id="data-{{ data.id }}"
                          data-id="{{ data.id }}"
                          data-payload="{{ MEDIA_URL }}{{ data.payload }}"></div>
