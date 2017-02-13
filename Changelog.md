@@ -1,3 +1,12 @@
+## 0.9
+
+* Add a satellite current position endpoint for DB to consume
+* Fix long paginator on Observations list
+* Add linters for css/js
+* Add option for deleting empty observations
+* Rearrange data view in observation view with tabs
+* Add spectrogram generation on audio tab
+
 ## 0.8
 
 * Add basic form validation on Stations and Observations
