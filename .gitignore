@@ -2,7 +2,6 @@
 *.py[cod]
 *.pyc
 __pycache__
-env
 .env
 .cache
 
@@ -15,11 +14,6 @@ pip-log.txt
 .tox
 nosetests.xml
 
-# Vim
-*~
-*.swp
-*.swo
-
 # Sqlite
 *.db
 *.sqlite
@@ -29,6 +23,3 @@ nosetests.xml
 media
 /staticfiles/*
 network/static/lib/
-
-# Jetbrains IDE
-.idea
