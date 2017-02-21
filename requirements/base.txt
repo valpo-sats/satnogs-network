@@ -1,8 +1,6 @@
-# Basic stuff
+# Basic
 django==1.10.5
 django-shortuuidfield==0.1.3
-django_compressor==2.1.1
-django-bower==5.2.0
 
 # Configuration
 unicode-slugify==0.1.3
@@ -13,9 +11,12 @@ opbeat==3.5.2
 
 # Security
 django-braces==1.11.0
+django-csp==3.2
 
 # Images
 Pillow==4.0.0
+django_compressor==2.1.1
+django-bower==5.2.0
 
 # Users
 django-allauth==0.30.0
