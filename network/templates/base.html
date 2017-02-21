@@ -123,9 +123,8 @@
       <script src="{% static 'js/app.js' %}"></script>
       {% block javascript %}
       {% endblock javascript %}
-    {% endcompress %}
 
-    <!-- Google Analytics -->
-    {{ analytics_code }}
+      {{ analytics_code }}
+    {% endcompress %}
 </body>
 </html>
