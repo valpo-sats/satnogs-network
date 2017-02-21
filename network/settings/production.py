@@ -12,6 +12,18 @@ INSTALLED_APPS = INSTALLED_APPS + (
     'opbeat.contrib.django',
 )
 
+# Cache
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': 'unix://var/run/redis/redis.sock',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient'
+        },
+        'KEY_PREFIX': 'network-{0}'.format(ENVIRONMENT)
+    }
+}
+
 # Disable registration
 ACCOUNT_ADAPTER = 'network.users.adapter.NoSignupsAdapter'
 

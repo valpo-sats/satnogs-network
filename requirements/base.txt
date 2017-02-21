@@ -9,6 +9,10 @@ django_dotenv==1.4.1
 dj-database-url==0.4.2
 opbeat==3.5.2
 
+# Cache
+redis==2.10.5
+django-redis-cache==1.7.1
+
 # Security
 django-braces==1.11.0
 django-csp==3.2

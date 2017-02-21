@@ -63,6 +63,7 @@ CACHES = {
         'LOCATION': 'unique-snowflake'
     }
 }
+CACHE_TTL = int(getenv('CACHE_TTL', 300))
 
 # Internationalization
 TIME_ZONE = 'UTC'
