@@ -7,15 +7,16 @@ from StringIO import StringIO
 
 from django.conf import settings
 from django.contrib import messages
-from django.views.decorators.http import require_POST
-from django.shortcuts import get_object_or_404, render, redirect
 from django.core.urlresolvers import reverse
-from django.utils.timezone import now, make_aware, utc
-from django.utils.text import slugify
-from django.http import JsonResponse, HttpResponseNotFound, HttpResponseServerError, HttpResponse
+
 from django.contrib.auth.decorators import login_required
 from django.core.management import call_command
-
+from django.http import JsonResponse, HttpResponseNotFound, HttpResponseServerError, HttpResponse
+from django.shortcuts import get_object_or_404, render, redirect
+from django.utils.timezone import now, make_aware, utc
+from django.utils.text import slugify
+from django.views.decorators.http import require_POST
+from django.views.decorators.cache import cache_page
 from django.views.generic import ListView
 
 from rest_framework import serializers, viewsets
@@ -76,6 +77,7 @@ def _resolve_overlaps(station, start, end):
     return start, end
 
 
+@cache_page(settings.CACHE_TTL)
 def index(request):
     """View to render index page."""
     observations = Observation.objects.all()

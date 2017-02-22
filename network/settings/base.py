@@ -22,6 +22,7 @@ THIRD_PARTY_APPS = (
     'allauth.account',
     'compressor',
     'djangobower',
+    'csp',
 )
 LOCAL_APPS = (
     'network.users',
@@ -42,6 +43,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'csp.middleware.CSPMiddleware',
 )
 
 # Email
@@ -61,6 +63,7 @@ CACHES = {
         'LOCATION': 'unique-snowflake'
     }
 }
+CACHE_TTL = int(getenv('CACHE_TTL', 300))
 
 # Internationalization
 TIME_ZONE = 'UTC'
@@ -202,6 +205,21 @@ REST_FRAMEWORK = {
 
 # Security
 SECRET_KEY = getenv('SECRET_KEY', 'changeme')
+CSP_DEFAULT_SRC = (
+    "'self'",
+    'https://*.mapbox.com',
+)
+CSP_SCRIPT_SRC = (
+    "'self'",
+    'https://*.google-analytics.com',
+)
+CSP_IMG_SRC = (
+    "'self'",
+    'https://*.gravatar.com',
+    'https://*.mapbox.com',
+    'https://*.satnogs.org',
+)
+
 
 # Database
 DATABASE_URL = getenv('DATABASE_URL', 'sqlite:///db.sqlite3')

@@ -3,8 +3,25 @@
 $(document).ready(function() {
     'use strict';
 
+    // Render Station success rate
+    var success_rate = $('.progress-bar-success').data('success-rate');
+    var percentagerest = $('.progress-bar-danger').data('percentagerest');
+    $('.progress-bar-success').css('width', success_rate + '%');
+    $('.progress-bar-danger').css('width', percentagerest + '%');
+
     // Reading data for station
     var station_info = $('#station-info').data();
+
+    // Confirm station deletion
+    var message = 'Do you really want to delete this Ground Station?';
+    var actions = $('#station-delete');
+    if (actions.length) {
+        actions[0].addEventListener('click', function(e) {
+            if (! confirm(message)) {
+                e.preventDefault();
+            }
+        });
+    }
 
     // Init the map
     var mapboxid = $('div#map-station').data('mapboxid');

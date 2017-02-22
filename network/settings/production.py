@@ -12,6 +12,18 @@ INSTALLED_APPS = INSTALLED_APPS + (
     'opbeat.contrib.django',
 )
 
+# Cache
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': 'unix://var/run/redis/redis.sock',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient'
+        },
+        'KEY_PREFIX': 'network-{0}'.format(ENVIRONMENT)
+    }
+}
+
 # Disable registration
 ACCOUNT_ADAPTER = 'network.users.adapter.NoSignupsAdapter'
 
@@ -37,4 +49,3 @@ OPBEAT = {
     'APP_ID': os.getenv('OPBEAT_APPID', None),
     'SECRET_TOKEN': os.getenv('OPBEAT_SECRET', None),
 }
-GOOGLE_ANALYTICS_KEY = os.getenv('GOOGLE_ANALYTICS_KEY', None)
