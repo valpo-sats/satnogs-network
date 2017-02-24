@@ -18,6 +18,7 @@ from django.utils.text import slugify
 from django.views.decorators.http import require_POST
 from django.views.decorators.cache import cache_page
 from django.views.generic import ListView
+from django.db.models import Count, Case, When, F
 
 from rest_framework import serializers, viewsets
 
@@ -173,16 +174,34 @@ class ObservationListView(ListView):
             observations = Observation.objects.filter(
                 satellite__norad_cat_id=norad_cat_id).order_by('-id')
 
-        # Good/Bad/Unvetted are properties of the model not fields
-        # so cannot use queryset filtering
-        resultset = []
-        for ob in observations:
-            if bad and ob.has_no_data:
-                resultset.append(ob)
-            elif good and ob.has_verified_data:
-                resultset.append(ob)
-            elif unvetted and ob.has_unvetted_data:
-                resultset.append(ob)
+        # Add the data subqueries as annotations
+        observations = observations.annotate(
+            data_count=Count('data', distinct=True),
+            nodata_count=Count(
+                Case(
+                    When(data__vetted_status='no_data', then=1)
+                ), distinct=True
+            ),
+            unknown_count=Count(
+                Case(
+                    When(data__vetted_status='unknown', then=1)
+                ), distinct=True
+            ),
+            vetted_count=Count(
+                Case(
+                    When(data__vetted_status='verified', then=1)
+                ), distinct=True
+            )
+        )
+
+        # Start with an empty queryset and add each filter as an or/union
+        resultset = Observation.objects.none()
+        if bad:
+            resultset |= observations.filter(nodata_count=F('data_count'))
+        if good:
+            resultset |= observations.filter(vetted_count__gt=0)
+        if unvetted:
+            resultset |= observations.filter(unknown_count__gt=0)
         return resultset
 
     def get_context_data(self, **kwargs):
