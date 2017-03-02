@@ -112,11 +112,11 @@
                   {% if data.is_verified %}
                     <span class="glyphicon glyphicon-ok-sign {{ data.vetted_status }}" aria-hidden="true"
                           data-toggle="tooltip" data-placement="right"
-                          title="Verified good on {{ data.vetted_datetime|date:"Y-m-d H:i:s" }} by {{ data.vetted_user }}"></span>
+                          title="Verified good on {{ data.vetted_datetime|date:"Y-m-d H:i:s" }} by {{ data.vetted_user.displayname }}"></span>
                   {% else %}
                     <span class="glyphicon glyphicon-remove-sign {{ data.vetted_status }}" aria-hidden="true"
                           data-toggle="tooltip" data-placement="right"
-                          title="Verified bad on {{ data.vetted_datetime|date:"Y-m-d H:i:s" }} by {{ data.vetted_user }}"></span>
+                          title="Verified bad on {{ data.vetted_datetime|date:"Y-m-d H:i:s" }} by {{ data.vetted_user.displayname }}"></span>
                   {% endif %}
                 {% endif %}
 

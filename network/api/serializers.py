@@ -12,14 +12,19 @@ class DemodDataSerializer(serializers.ModelSerializer):
 class DataSerializer(serializers.ModelSerializer):
     transmitter = serializers.SerializerMethodField()
     norad_cat_id = serializers.SerializerMethodField()
+    station_name = serializers.SerializerMethodField()
+    station_lat = serializers.SerializerMethodField()
+    station_lng = serializers.SerializerMethodField()
     demoddata = DemodDataSerializer(many=True)
 
     class Meta:
         model = Data
         fields = ('id', 'start', 'end', 'observation', 'ground_station', 'transmitter',
-                  'norad_cat_id', 'payload', 'waterfall', 'demoddata')
+                  'norad_cat_id', 'payload', 'waterfall', 'demoddata', 'station_name',
+                  'station_lat', 'station_lng')
         read_only_fields = ['id', 'start', 'end', 'observation', 'ground_station',
-                            'transmitter', 'norad_cat_id']
+                            'transmitter', 'norad_cat_id', 'station_name',
+                            'station_lat', 'station_lng']
 
     def update(self, instance, validated_data):
         demod_data = validated_data.pop('demoddata')
@@ -36,6 +41,15 @@ class DataSerializer(serializers.ModelSerializer):
 
     def get_norad_cat_id(self, obj):
         return obj.observation.satellite.norad_cat_id
+
+    def get_station_name(self, obj):
+        return obj.ground_station.name
+
+    def get_station_lat(self, obj):
+        return obj.ground_station.lat
+
+    def get_station_lng(self, obj):
+        return obj.ground_station.lng
 
 
 class JobSerializer(serializers.ModelSerializer):
