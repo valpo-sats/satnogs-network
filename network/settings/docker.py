@@ -1,3 +1,4 @@
+import os
 from base import *  # flake8: noqa
 
 ENVIRONMENT = 'dev'
@@ -21,3 +22,7 @@ CACHES = {
         'KEY_PREFIX': 'network-{0}'.format(ENVIRONMENT)
     }
 }
+
+ALLOWED_HOSTS = [
+    os.getenv('ALLOWED_HOSTS', '*')
+]
