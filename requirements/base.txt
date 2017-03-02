@@ -1,6 +1,7 @@
 # Basic
-django==1.10.5 \
-    --hash=sha256:4541a60834f28f308ee7b6e96400feca905fb0de473eb9dad6847e98a36d86d4
+Django==1.10.6 \
+    --hash=sha256:2cfb83859bfaa10e2bd586340bead27c69fdcaa21fa683a008cc712482c26726 \
+    --hash=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 django-shortuuidfield==0.1.3 \
     --hash=sha256:a292c0fe5538abe947b131e2b914edd9ac44afcc6a40eaec71448e6231a3ef00
 
@@ -15,7 +16,6 @@ dj-database-url==0.4.2 \
     --hash=sha256:e16d94c382ea0564c48038fa7fe8d9c890ef1ab1a8ec4cb48e732c124b9482fd
 opbeat==3.5.2 \
     --hash=sha256:085f42cd2efd8fb4a394ab635fd35d0c270897b6a7303f5d347d7442f0d2bfbd
-
 
 # Cache
 redis==2.10.5 \
@@ -38,8 +38,8 @@ django-bower==5.2.0 \
     --hash=sha256:f1cf649842c0cb28f8aa28617e99fc7fb7773bac4e8886ee4e36962a38c99a6e
 
 # Users
-django-allauth==0.30.0 \
-    --hash=sha256:231f1e980dee8ee56be4f64e6a4b77cb32b41d977e6ea6bd310b2c8c0bc354bb
+django-allauth==0.31.0 \
+    --hash=sha256:edfff4599cd5431e4af380ddb9fc66e7b923157dcac67cceb5604b3c58003907
 django-avatar==3.1.0 \
     --hash=sha256:0e29c99e488061f9ef9cc1fb52306e31d849379fb63aa5acd2adeb400a106e84
 django-crispy-forms==1.6.1 \
@@ -76,8 +76,6 @@ rcssmin==1.0.6 \
     --hash=sha256:ca87b695d3d7864157773a61263e5abb96006e9ff0e021eff90cbe0e1ba18270
 rjsmin==1.0.12 \
     --hash=sha256:dd9591aa73500b08b7db24367f8d32c6470021f39d5ab4e50c7c02e4401386f1
-rcssmin==1.0.6 \
-    --hash=sha256:ca87b695d3d7864157773a61263e5abb96006e9ff0e021eff90cbe0e1ba18270
 requests==2.13.0 \
     --hash=sha256:1a720e8862a41aa22e339373b526f508ef0c8988baf48b84d3fc891a8e237efb
 requests_cache==0.4.13 \
