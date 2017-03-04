@@ -246,6 +246,12 @@ def observation_new(request):
                           author=me, start=start, end=end)
         obs.save()
 
+        sat_ephem = ephem.readtle(str(sat.latest_tle.tle0),
+                                  str(sat.latest_tle.tle1),
+                                  str(sat.latest_tle.tle2))
+        observer = ephem.Observer()
+        observer.date = str(start)
+
         total = int(request.POST.get('total'))
 
         for item in range(total):
@@ -257,8 +263,16 @@ def observation_new(request):
             )
             station_id = request.POST.get('{}-station'.format(item))
             ground_station = Station.objects.get(id=station_id)
+            observer.lon = str(ground_station.lng)
+            observer.lat = str(ground_station.lat)
+            observer.elevation = ground_station.alt
+            tr, azr, tt, altt, ts, azs = observer.next_pass(sat_ephem)
+
             Data.objects.create(start=make_aware(start, utc), end=make_aware(end, utc),
-                                ground_station=ground_station, observation=obs)
+                                ground_station=ground_station, observation=obs,
+                                rise_azimuth=format(math.degrees(azr), '.0f'),
+                                max_altitude=format(math.degrees(altt), '.0f'),
+                                set_azimuth=format(math.degrees(azs), '.0f'))
 
         return redirect(reverse('base:observation_view', kwargs={'id': obs.id}))
 
