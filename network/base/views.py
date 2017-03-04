@@ -284,7 +284,8 @@ def observation_new(request):
             obs_filter['norad'] = norad
             obs_filter['start_date'] = start_date
             obs_filter['end_date'] = end_date
-            obs_filter['ground_station'] = ground_station
+            if ground_station:
+                obs_filter['ground_station'] = ground_station
         else:
             obs_filter['exists'] = False
 
