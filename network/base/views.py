@@ -41,17 +41,21 @@ class StationAllView(viewsets.ReadOnlyModelViewSet):
 
 def satellite_position(request, sat_id):
     sat = get_object_or_404(Satellite, norad_cat_id=sat_id)
-    satellite = ephem.readtle(
-        str(sat.latest_tle.tle0),
-        str(sat.latest_tle.tle1),
-        str(sat.latest_tle.tle2)
-    )
-    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    satellite.compute(now)
-    data = {
-        'lon': '{0}'.format(satellite.sublong),
-        'lat': '{0}'.format(satellite.sublat)
-    }
+    try:
+        satellite = ephem.readtle(
+            str(sat.latest_tle.tle0),
+            str(sat.latest_tle.tle1),
+            str(sat.latest_tle.tle2)
+        )
+    except:
+        data = {}
+    else:
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        satellite.compute(now)
+        data = {
+            'lon': '{0}'.format(satellite.sublong),
+            'lat': '{0}'.format(satellite.sublat)
+        }
     return JsonResponse(data, safe=False)
 
 
