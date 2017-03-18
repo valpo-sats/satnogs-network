@@ -576,7 +576,8 @@ def station_view(request, id):
 
                     # show only if >= configured horizon and in next 6 hours,
                     # and not directly overhead (tr < ts see issue 199)
-                    if tr < ephem.date(datetime.today() + timedelta(hours=6)):
+                    if tr < ephem.date(datetime.today() +
+                                       timedelta(hours=settings.STATION_UPCOMING_END)):
                         if (float(elevation) >= station.horizon and tr < ts):
                             valid = True
                             if tr < ephem.Date(datetime.now() +

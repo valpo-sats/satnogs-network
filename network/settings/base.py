@@ -230,15 +230,20 @@ MAPBOX_GEOCODE_URL = 'https://api.tiles.mapbox.com/v4/geocode/mapbox.places/'
 MAPBOX_MAP_ID = getenv('MAPBOX_MAP_ID', '')
 MAPBOX_TOKEN = getenv('MAPBOX_TOKEN', '')
 
-# Observations datetimes in minutes
+# Observations settings
+# Datetimes in minutes for scheduling OPTIONS
+# Deletion range in minutes
 DATE_MIN_START = '15'
 DATE_MIN_END = '75'
 DATE_MAX_RANGE = '480'
-
-# Station heartbeat in minutes
-STATION_HEARTBEAT_TIME = getenv('STATION_HEARTBEAT_TIME', 60)
 OBSERVATION_MAX_DELETION_RANGE = getenv('OBSERVATION_MAX_DELETION_RANGE', 10)
 OBSERVATION_MIN_DELETION_RANGE = getenv('OBSERVATION_MIN_DELETION_RANGE', 60)
+
+# Station settings
+# Heartbeat for keeping a station online in minutes
+# Maximum window for upcoming passes in hours
+STATION_HEARTBEAT_TIME = getenv('STATION_HEARTBEAT_TIME', 60)
+STATION_UPCOMING_END = getenv('STATION_UPCOMING_END', 12)
 
 # DB API
 DB_API_ENDPOINT = getenv('DB_API_ENDPOINT', 'https://db.satnogs.org/api/')
