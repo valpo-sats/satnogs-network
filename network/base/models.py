@@ -267,6 +267,9 @@ class Data(models.Model):
     vetted_user = models.ForeignKey(User, related_name="vetted_user_set", null=True, blank=True)
     vetted_status = models.CharField(choices=OBSERVATION_STATUSES,
                                      max_length=20, default='unknown')
+    rise_azimuth = models.FloatField(blank=True, null=True)
+    max_altitude = models.FloatField(blank=True, null=True)
+    set_azimuth = models.FloatField(blank=True, null=True)
 
     @property
     def is_past(self):
