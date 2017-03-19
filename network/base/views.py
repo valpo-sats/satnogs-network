@@ -529,6 +529,7 @@ def stations_list(request):
                   {'stations': stations, 'form': form, 'antennas': antennas})
 
 
+@cache_page(settings.CACHE_TTL)
 def station_view(request, id):
     """View for single station page."""
     station = get_object_or_404(Station, id=id)
