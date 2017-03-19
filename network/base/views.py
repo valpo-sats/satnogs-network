@@ -26,6 +26,7 @@ from network.base.models import (Station, Transmitter, Observation,
                                  Data, Satellite, Antenna, Tle, Rig)
 from network.base.forms import StationForm, SatelliteFilterForm
 from network.base.decorators import admin_required
+from network.base.helpers import calculate_polar_data
 
 
 class StationSerializer(serializers.ModelSerializer):
@@ -571,7 +572,8 @@ def station_view(request, id):
                     # using the angles module convert the sexagesimal degree into
                     # something more easily read by a human
                     elevation = format(math.degrees(altt), '.0f')
-                    azimuth = format(math.degrees(azr), '.0f')
+                    azimuth_r = format(math.degrees(azr), '.0f')
+                    azimuth_s = format(math.degrees(azs), '.0f')
                     passid += 1
 
                     # show only if >= configured horizon and in next 6 hours,
@@ -583,6 +585,10 @@ def station_view(request, id):
                             if tr < ephem.Date(datetime.now() +
                                                timedelta(minutes=int(settings.DATE_MIN_START))):
                                 valid = False
+                            polar_data = calculate_polar_data(observer,
+                                                              sat_ephem,
+                                                              tr.datetime(),
+                                                              ts.datetime(), 10)
                             sat_pass = {'passid': passid,
                                         'mytime': str(observer.date),
                                         'debug': observer.next_pass(sat_ephem),
@@ -590,12 +596,13 @@ def station_view(request, id):
                                         'id': str(satellite.id),
                                         'norad_cat_id': str(satellite.norad_cat_id),
                                         'tr': str(tr),      # Rise time
-                                        'azr': azimuth,     # Rise Azimuth
+                                        'azr': azimuth_r,     # Rise Azimuth
                                         'tt': tt,           # Max altitude time
                                         'altt': elevation,  # Max altitude
                                         'ts': str(ts),      # Set time
-                                        'azs': azs,         # Set azimuth
-                                        'valid': valid}
+                                        'azs': azimuth_s,   # Set azimuth
+                                        'valid': valid,
+                                        'polar_data': polar_data}
                             nextpasses.append(sat_pass)
                         observer.date = ephem.Date(ts).datetime() + timedelta(minutes=1)
                         continue
