@@ -47,12 +47,15 @@ class Mode(models.Model):
 class Antenna(models.Model):
     """Model for antennas tracked with SatNOGS."""
     frequency = models.FloatField(validators=[MinValueValidator(0)])
+    frequency_max = models.FloatField(validators=[MinValueValidator(0)])
     band = models.CharField(choices=zip(ANTENNA_BANDS, ANTENNA_BANDS),
                             max_length=5)
     antenna_type = models.CharField(choices=ANTENNA_TYPES, max_length=15)
 
     def __unicode__(self):
-        return '{0} - {1} - {2}'.format(self.band, self.antenna_type, self.frequency)
+        return '{0} - {1} - {2} - {3}'.format(self.band, self.antenna_type,
+                                              self.frequency,
+                                              self.frequency_max)
 
 
 class Station(models.Model):
