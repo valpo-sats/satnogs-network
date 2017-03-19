@@ -233,6 +233,10 @@ code.log p {
     padding: 5px;
 }
 
+span.datetime-time {
+    margin-left: 10px;
+}
+
 /* Stations
 ==================== */
 

@@ -110,7 +110,6 @@
               <th>Frequency</th>
               <th>Encoding</th>
               <th>Timeframe</th>
-              <th>Observer</th>
             </thead>
             <tbody>
               {% for observation in latest_observations.all %}
@@ -139,13 +138,10 @@
                   <td>{{ observation.transmitter.downlink_low|frq }}</td>
                   <td>{{ observation.transmitter.mode|default:"-" }}</td>
                   <td>
-                    {{ observation.start|date:"Y-m-d H:i:s" }}<br>
-                    {{ observation.end|date:"Y-m-d H:i:s" }}
-                  </td>
-                  <td>
-                    <a href="{% url 'users:view_user' username=observation.author.username %}">
-                      {{ observation.author.displayname }}
-                    </a>
+                    <span class="datetime-date">{{ observation.start|date:"Y-m-d" }}</span>
+                    <span class="datetime-time">{{ observation.start|date:"H:i:s" }}</span><br>
+                    <span class="datetime-date">{{ observation.end|date:"Y-m-d" }}</span>
+                    <span class="datetime-time">{{ observation.end|date:"H:i:s" }}</span>
                   </td>
                 </tr>
               {% endfor %}
@@ -160,7 +156,6 @@
               <th>Frequency</th>
               <th>Encoding</th>
               <th>Timeframe</th>
-              <th>Observer</th>
             </thead>
             <tbody>
               {% for observation in scheduled_observations.all %}
@@ -179,11 +174,11 @@
                   </td>
                   <td>{{ observation.transmitter.downlink_low|frq }}</td>
                   <td>{{ observation.transmitter.mode }}</td>
-                  <td>{{ observation.start|date:"Y-m-d H:i:s" }}</br>{{ observation.end|date:"Y-m-d H:i:s" }}</td>
                   <td>
-                    <a href="{% url 'users:view_user' username=observation.author.username %}">
-                      {{ observation.author.displayname }}
-                    </a>
+                    <span class="datetime-date">{{ observation.start|date:"Y-m-d" }}</span>
+                    <span class="datetime-time">{{ observation.start|date:"H:i:s" }}</span><br>
+                    <span class="datetime-date">{{ observation.end|date:"Y-m-d" }}</span>
+                    <span class="datetime-time">{{ observation.end|date:"H:i:s" }}</span>
                   </td>
                 </tr>
               {% endfor %}
