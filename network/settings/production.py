@@ -4,11 +4,11 @@ from base import *  # flake8: noqa
 ENVIRONMENT = 'production'
 
 # Opbeat
-MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + (
+MIDDLEWARE += (
     'opbeat.contrib.django.middleware.OpbeatAPMMiddleware',
     'opbeat.contrib.django.middleware.Opbeat404CatchMiddleware',
 )
-INSTALLED_APPS = INSTALLED_APPS + (
+INSTALLED_APPS += (
     'opbeat.contrib.django',
 )
 
