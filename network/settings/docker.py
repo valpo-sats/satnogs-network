@@ -1,5 +1,5 @@
 import os
-from base import *  # flake8: noqa
+from dev import *  # flake8: noqa
 
 ENVIRONMENT = 'dev'
 
