@@ -3,7 +3,8 @@
     "fields": {
         "antenna_type": "yagi",
         "band": "VHF",
-        "frequency": 144800000
+        "frequency": 144800000,
+        "frequency_max": 150000000
     },
     "model": "base.antenna",
     "pk": 1
@@ -12,7 +13,8 @@
     "fields": {
         "antenna_type": "yagi",
         "band": "UHF",
-        "frequency": 433000000
+        "frequency": 433000000,
+        "frequency_max": 450000000
     },
     "model": "base.antenna",
     "pk": 2
@@ -21,7 +23,8 @@
     "fields": {
         "antenna_type": "dipole",
         "band": "HF",
-        "frequency": 433000000
+        "frequency": 433000000,
+        "frequency_max": 450000000
     },
     "model": "base.antenna",
     "pk": 3
