@@ -30,3 +30,24 @@ def calculate_polar_data(observer, satellite, start, end, points):
     data.append([float(format(math.degrees(satellite.alt), '.4f')),
                  float(format(math.degrees(satellite.az), '.4f'))])
     return data
+
+
+def resolve_overlaps(station, gs_data, start, end):
+    if gs_data:
+        for datum in gs_data:
+            if datum.is_past:
+                continue
+            if datum.start <= end and start <= datum.end:
+                if datum.start <= start and datum.end >= end:
+                    return False
+                if start < datum.start and end > datum.end:
+                    start1 = start
+                    end1 = datum.start
+                    start2 = datum.end
+                    end2 = end
+                    return start1, end1, start2, end2
+                if datum.start <= start:
+                    start = datum.end
+                if datum.end >= end:
+                    end = datum.start
+    return start, end
