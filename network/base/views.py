@@ -5,12 +5,12 @@ from operator import itemgetter
 from datetime import datetime, timedelta
 from StringIO import StringIO
 
+from django.db.models import Count, Case, When, F
 from django.conf import settings
 from django.contrib import messages
-from django.core.urlresolvers import reverse
-
 from django.contrib.auth.decorators import login_required
 from django.core.management import call_command
+from django.core.urlresolvers import reverse
 from django.http import JsonResponse, HttpResponseNotFound, HttpResponseServerError, HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils.timezone import now, make_aware, utc
@@ -18,7 +18,6 @@ from django.utils.text import slugify
 from django.views.decorators.http import require_POST
 from django.views.decorators.cache import cache_page
 from django.views.generic import ListView
-from django.db.models import Count, Case, When, F
 
 from rest_framework import serializers, viewsets
 
@@ -26,7 +25,7 @@ from network.base.models import (Station, Transmitter, Observation,
                                  Data, Satellite, Antenna, Tle, Rig)
 from network.base.forms import StationForm, SatelliteFilterForm
 from network.base.decorators import admin_required
-from network.base.helpers import calculate_polar_data
+from network.base.helpers import calculate_polar_data, resolve_overlaps
 
 
 class StationSerializer(serializers.ModelSerializer):
@@ -58,29 +57,6 @@ def satellite_position(request, sat_id):
             'lat': '{0}'.format(satellite.sublat)
         }
     return JsonResponse(data, safe=False)
-
-
-def _resolve_overlaps(station, start, end):
-    data = Data.objects.filter(ground_station=station)
-
-    if data:
-        for datum in data:
-            if datum.is_past:
-                continue
-            if datum.start <= end and start <= datum.end:
-                if datum.start <= start and datum.end >= end:
-                    return False
-                if start < datum.start and end > datum.end:
-                    start1 = start
-                    end1 = datum.start
-                    start2 = datum.end
-                    end2 = end
-                    return start1, end1, start2, end2
-                if datum.start <= start:
-                    start = datum.end
-                if datum.end >= end:
-                    end = datum.start
-    return start, end
 
 
 @cache_page(settings.CACHE_TTL)
@@ -316,7 +292,8 @@ def observation_new(request):
                    'date_max_range': settings.DATE_MAX_RANGE})
 
 
-def prediction_windows(request, sat_id, start_date, end_date, station_id=None):
+def prediction_windows(request, sat_id, transmitter, start_date, end_date,
+                       station_id=None):
     try:
         sat = Satellite.objects.filter(transmitters__alive=True). \
             distinct().get(norad_cat_id=sat_id)
@@ -338,6 +315,14 @@ def prediction_windows(request, sat_id, start_date, end_date, station_id=None):
         }
         return JsonResponse(data, safe=False)
 
+    try:
+        downlink = Transmitter.objects.get(id=int(transmitter)).downlink_low
+    except:
+        data = {
+            'error': 'You should select a Transmitter first.'
+        }
+        return JsonResponse(data, safe=False)
+
     end_date = datetime.strptime(end_date, '%Y-%m-%d %H:%M')
 
     data = []
@@ -348,6 +333,17 @@ def prediction_windows(request, sat_id, start_date, end_date, station_id=None):
     for station in stations:
         if not station.online:
             continue
+
+        # Skip if this station is not capable of receiving the frequency
+        if not downlink:
+            continue
+        frequency_supported = False
+        for gs_antenna in station.antenna.all():
+            if (gs_antenna.frequency <= downlink <= gs_antenna.frequency_max):
+                frequency_supported = True
+        if not frequency_supported:
+            continue
+
         observer = ephem.Observer()
         observer.lon = str(station.lng)
         observer.lat = str(station.lat)
@@ -378,7 +374,11 @@ def prediction_windows(request, sat_id, start_date, end_date, station_id=None):
                     # Adjust or discard window if overlaps exist
                     window_start = make_aware(ephem.Date(tr).datetime(), utc)
                     window_end = make_aware(ephem.Date(ts).datetime(), utc)
-                    window = _resolve_overlaps(station, window_start, window_end)
+
+                    # Check if overlaps with existing scheduled observations
+                    gs_data = Data.objects.filter(ground_station=station)
+                    window = resolve_overlaps(station, gs_data, window_start, window_end)
+
                     if window:
                         if not station_match:
                             station_windows = {
@@ -535,6 +535,7 @@ def station_view(request, id):
     form = StationForm(instance=station)
     antennas = Antenna.objects.all()
     rigs = Rig.objects.all()
+    unsupported_frequencies = request.GET.get('unsupported_frequencies', '0')
 
     try:
         satellites = Satellite.objects.filter(transmitters__alive=True).distinct()
@@ -552,78 +553,92 @@ def station_view(request, id):
     passid = 0
 
     for satellite in satellites:
+        # look for a match between transmitters from the satellite and
+        # ground station antenna frequency capabilities
+        if int(unsupported_frequencies) == 0:
+            frequency_supported = False
+            transmitters = Transmitter.objects.filter(satellite=satellite)
+            for gs_antenna in station.antenna.all():
+                for transmitter in transmitters:
+                    if transmitter.downlink_low:
+                        if (gs_antenna.frequency <=
+                                transmitter.downlink_low <=
+                                gs_antenna.frequency_max):
+                            frequency_supported = True
+            if not frequency_supported:
+                continue
+
         observer.date = ephem.date(datetime.today())
 
         try:
             sat_ephem = ephem.readtle(str(satellite.latest_tle.tle0),
                                       str(satellite.latest_tle.tle1),
                                       str(satellite.latest_tle.tle2))
-
-            # Here we are going to iterate over each satellite to
-            # find its appropriate passes within a given time constraint
-            keep_digging = True
-            while keep_digging:
-                try:
-                    tr, azr, tt, altt, ts, azs = observer.next_pass(sat_ephem)
-
-                    if tr is None:
-                        break
-
-                    # using the angles module convert the sexagesimal degree into
-                    # something more easily read by a human
-                    elevation = format(math.degrees(altt), '.0f')
-                    azimuth_r = format(math.degrees(azr), '.0f')
-                    azimuth_s = format(math.degrees(azs), '.0f')
-                    passid += 1
-
-                    # show only if >= configured horizon and in next 6 hours,
-                    # and not directly overhead (tr < ts see issue 199)
-                    if tr < ephem.date(datetime.today() +
-                                       timedelta(hours=settings.STATION_UPCOMING_END)):
-                        if (float(elevation) >= station.horizon and tr < ts):
-                            valid = True
-                            if tr < ephem.Date(datetime.now() +
-                                               timedelta(minutes=int(settings.DATE_MIN_START))):
-                                valid = False
-                            polar_data = calculate_polar_data(observer,
-                                                              sat_ephem,
-                                                              tr.datetime(),
-                                                              ts.datetime(), 10)
-                            sat_pass = {'passid': passid,
-                                        'mytime': str(observer.date),
-                                        'debug': observer.next_pass(sat_ephem),
-                                        'name': str(satellite.name),
-                                        'id': str(satellite.id),
-                                        'norad_cat_id': str(satellite.norad_cat_id),
-                                        'tr': str(tr),      # Rise time
-                                        'azr': azimuth_r,     # Rise Azimuth
-                                        'tt': tt,           # Max altitude time
-                                        'altt': elevation,  # Max altitude
-                                        'ts': str(ts),      # Set time
-                                        'azs': azimuth_s,   # Set azimuth
-                                        'valid': valid,
-                                        'polar_data': polar_data}
-                            nextpasses.append(sat_pass)
-                        observer.date = ephem.Date(ts).datetime() + timedelta(minutes=1)
-                        continue
-                    else:
-                        keep_digging = False
-                    continue
-                except ValueError:
-                    break  # there will be sats in our list that fall below horizon, skip
-                except TypeError:
-                    break  # if there happens to be a non-EarthSatellite object in the list
-                except Exception:
-                    break
         except (ValueError, AttributeError):
-            pass  # TODO: if something does not have a proper TLE line we need to know/fix
+            continue
+
+        # Here we are going to iterate over each satellite to
+        # find its appropriate passes within a given time constraint
+        keep_digging = True
+        while keep_digging:
+            try:
+                tr, azr, tt, altt, ts, azs = observer.next_pass(sat_ephem)
+            except ValueError:
+                break  # there will be sats in our list that fall below horizon, skip
+            except TypeError:
+                break  # if there happens to be a non-EarthSatellite object in the list
+            except Exception:
+                break
+
+            if tr is None:
+                break
+
+            # using the angles module convert the sexagesimal degree into
+            # something more easily read by a human
+            elevation = format(math.degrees(altt), '.0f')
+            azimuth_r = format(math.degrees(azr), '.0f')
+            azimuth_s = format(math.degrees(azs), '.0f')
+            passid += 1
+
+            # show only if >= configured horizon and in next 6 hours,
+            # and not directly overhead (tr < ts see issue 199)
+            if tr < ephem.date(datetime.today() +
+                               timedelta(hours=settings.STATION_UPCOMING_END)):
+                if (float(elevation) >= station.horizon and tr < ts):
+                    valid = True
+                    if tr < ephem.Date(datetime.now() +
+                                       timedelta(minutes=int(settings.DATE_MIN_START))):
+                        valid = False
+                    polar_data = calculate_polar_data(observer,
+                                                      sat_ephem,
+                                                      tr.datetime(),
+                                                      ts.datetime(), 10)
+                    sat_pass = {'passid': passid,
+                                'mytime': str(observer.date),
+                                'debug': observer.next_pass(sat_ephem),
+                                'name': str(satellite.name),
+                                'id': str(satellite.id),
+                                'norad_cat_id': str(satellite.norad_cat_id),
+                                'tr': tr.datetime(),  # Rise time
+                                'azr': azimuth_r,     # Rise Azimuth
+                                'tt': tt,             # Max altitude time
+                                'altt': elevation,    # Max altitude
+                                'ts': ts.datetime(),  # Set time
+                                'azs': azimuth_s,     # Set azimuth
+                                'valid': valid,
+                                'polar_data': polar_data}
+                    nextpasses.append(sat_pass)
+                observer.date = ephem.Date(ts).datetime() + timedelta(minutes=1)
+            else:
+                keep_digging = False
 
     return render(request, 'base/station_view.html',
                   {'station': station, 'form': form, 'antennas': antennas,
                    'mapbox_id': settings.MAPBOX_MAP_ID,
                    'mapbox_token': settings.MAPBOX_TOKEN,
                    'nextpasses': sorted(nextpasses, key=itemgetter('tr')),
-                   'rigs': rigs})
+                   'rigs': rigs,
+                   'unsupported_frequencies': unsupported_frequencies})
 
 
 @require_POST

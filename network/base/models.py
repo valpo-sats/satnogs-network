@@ -46,8 +46,8 @@ class Mode(models.Model):
 
 class Antenna(models.Model):
     """Model for antennas tracked with SatNOGS."""
-    frequency = models.FloatField(validators=[MinValueValidator(0)])
-    frequency_max = models.FloatField(validators=[MinValueValidator(0)])
+    frequency = models.PositiveIntegerField()
+    frequency_max = models.PositiveIntegerField()
     band = models.CharField(choices=zip(ANTENNA_BANDS, ANTENNA_BANDS),
                             max_length=5)
     antenna_type = models.CharField(choices=ANTENNA_TYPES, max_length=15)

@@ -29,7 +29,7 @@ $(document).ready(function() {
         var centerY = ctx.canvas.height / 2;
         var canvasSize = Math.min(ctx.canvas.width, ctx.canvas.height);
         var altUnit = canvasSize/(2.5 * 90);
-        var fontRatio = 0.06;
+        var fontRatio = 0.07;
         var radius;
         var radians;
 
@@ -46,8 +46,8 @@ $(document).ready(function() {
             }
         }
 
-        ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#444444';
+        ctx.lineWidth = 1;
         ctx.stroke();
         //Draw axis and letters
         radius = 96 * altUnit;
@@ -82,8 +82,6 @@ $(document).ready(function() {
         radians = (Math.PI/180) * (data[0][1] - 90);
         radius = (90 - data[0][0]) * altUnit;
         ctx.moveTo(centerΧ + radius * Math.cos(radians),centerY + radius * Math.sin(radians));
-        ctx.lineTo(centerΧ + radius * Math.cos(radians),centerY + radius * Math.sin(radians));
-
 
         var dataLength = data.length;
         for (var j=1; j< dataLength; j++) {
@@ -91,10 +89,22 @@ $(document).ready(function() {
             radius = (90 - data[j][0] ) * altUnit;
             ctx.lineTo(centerΧ + radius * Math.cos(radians),centerY + radius * Math.sin(radians));
         }
-
-        ctx.strokeStyle = '#0000FF';
+        ctx.strokeStyle = 'rgb(0, 0, 255)';
         ctx.lineWidth = 2;
         ctx.stroke();
+
+        //Draw start and end
+        radians = (Math.PI/180) * (data[0][1] - 90);
+        ctx.beginPath();
+        ctx.arc(centerΧ + radius * Math.cos(radians),centerY + radius * Math.sin(radians), 3, 0, 2 * Math.PI, false);
+        ctx.fillStyle = 'lightgreen';
+        ctx.fill();
+
+        radians = (Math.PI/180) * (data[dataLength-1][1] - 90);
+        ctx.beginPath();
+        ctx.arc(centerΧ + radius * Math.cos(radians),centerY + radius * Math.sin(radians), 3, 0, 2 * Math.PI, false);
+        ctx.fillStyle = 'red';
+        ctx.fill();
     }
 
     $('canvas').each(function(){
@@ -128,4 +138,26 @@ $(document).ready(function() {
             'marker-color': '#666',
         }
     }).addTo(map);
+
+    // Filters
+    $('#antenna-filter').submit(function () {
+        var the_form = $(this);
+
+        the_form.find('input[type="checkbox"]').each( function () {
+            var the_checkbox = $(this);
+
+
+            if( the_checkbox.is(':checked') === true ) {
+                the_checkbox.attr('value','1');
+            } else {
+                the_checkbox.prop('checked',true);
+                // Check the checkbox but change it's value to 0
+                the_checkbox.attr('value','0');
+            }
+        });
+    });
+
+    $('.filter-section input[type=checkbox]').change(function() {
+        $('#antenna-filter').submit();
+    });
 });
