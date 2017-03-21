@@ -9,9 +9,9 @@ flake8==3.3.0 \
     --hash=sha256:83905eadba99f73fbfe966598aaf1682b3eb6755d2263c5b33a4e8367d60b0d1
 factory-boy==2.8.1 \
     --hash=sha256:246f7da9caf9bf855aaa73b4963353ccb147fdd3adcbc419fa29422c5b69dd4c
-pytest==3.0.6 \
-    --hash=sha256:da0ab50c7eec0683bc24f1c1137db1f4111752054ecdad63125e7ec71316b813 \
-    --hash=sha256:643434a9f1a188271da35e20064cb8b6c5440976c5bb541dc7b5b0e3cf75d940
+pytest==3.0.7 \
+    --hash=sha256:66f332ae62593b874a648b10a8cb106bfdacd2c6288ed7dec3713c3a808a6017 \
+    --hash=sha256:b70696ebd1a5e6b627e7e3ac1365a4bc60aaf3495e843c1e70448966c5224cab
 pytest-cov==2.4.0 \
     --hash=sha256:10e37e876f49ddec80d6c83a54b657157f1387ebc0f7755285f8c156130014a1
 pytest-django==3.1.2 \
