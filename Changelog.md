@@ -1,3 +1,14 @@
+## 1.0
+* Add CSP support
+* Add dnt-helper for handling DNT
+* Add redis support
+* Use hashes for pip
+* Add station information on Data API endpoint
+* Add pass details to payload frame
+* Add max freq range to antenna
+* Add polar plot on upcoming observations
+* Filter and not predict on missing frequency capabilities
+
 ## 0.9
 
 * Add a satellite current position endpoint for DB to consume
