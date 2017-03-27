@@ -218,6 +218,7 @@ CSP_IMG_SRC = (
     'https://*.gravatar.com',
     'https://*.mapbox.com',
     'https://*.satnogs.org',
+    'https://*.google-analytics.com',
 )
 
 
