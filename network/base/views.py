@@ -9,6 +9,7 @@ from django.db.models import Count, Case, When, F
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from django.http import JsonResponse, HttpResponseNotFound, HttpResponseServerError, HttpResponse
@@ -16,7 +17,6 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.utils.timezone import now, make_aware, utc
 from django.utils.text import slugify
 from django.views.decorators.http import require_POST
-from django.views.decorators.cache import cache_page
 from django.views.generic import ListView
 
 from rest_framework import serializers, viewsets
@@ -59,10 +59,12 @@ def satellite_position(request, sat_id):
     return JsonResponse(data, safe=False)
 
 
-@cache_page(settings.CACHE_TTL)
 def index(request):
     """View to render index page."""
-    observations = Observation.objects.all()
+    observations = cache.get('observations')
+    if not observations:
+        observations = Observation.objects.all()
+        cache.set('observations', observations, settings.CACHE_TTL)
     try:
         featured_station = Station.objects.filter(active=True).latest('featured_date')
     except Station.DoesNotExist:
@@ -529,7 +531,6 @@ def stations_list(request):
                   {'stations': stations, 'form': form, 'antennas': antennas})
 
 
-@cache_page(settings.CACHE_TTL)
 def station_view(request, id):
     """View for single station page."""
     station = get_object_or_404(Station, id=id)
