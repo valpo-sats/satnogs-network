@@ -455,7 +455,7 @@ def observation_view(request, id):
         discuss_slug = 'https://community.satnogs.org/t/observation-{0}-{1}-{2}' \
             .format(observation.id, slugify(observation.satellite.name),
                     observation.satellite.norad_cat_id)
-        discuss_url = ('https://community.satnogs.org/new-topic?title=Observation {0}: {1}'
+        discuss_url = ('https://community.libre.space/new-topic?title=Observation {0}: {1}'
                        ' ({2})&body=Regarding [Observation {3}](http://{4}{5}) ...'
                        '&category=observations') \
             .format(observation.id, observation.satellite.name,
