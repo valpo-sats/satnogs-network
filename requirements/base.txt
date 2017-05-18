@@ -80,8 +80,6 @@ Pillow==4.1.0 \
     --hash=sha256:8f89d56cba1a0214e91e8205cf6f23be75bb18cd65a15820a1e1e4497759f9c2
 django_compressor==2.1.1 \
     --hash=sha256:6483f6091d614b2f3ddaa0d5061849e7bd40528f4f1fdf0d74e48df09e7c6699
-django-bower==5.2.0 \
-    --hash=sha256:f1cf649842c0cb28f8aa28617e99fc7fb7773bac4e8886ee4e36962a38c99a6e
 
 # Users
 django-allauth==0.31.0 \

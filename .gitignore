@@ -22,4 +22,5 @@ nosetests.xml
 # Media & Static
 media
 /staticfiles/*
-network/static/lib/
+bower_components
+node_modules
