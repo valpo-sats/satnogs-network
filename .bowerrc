@@ -1,5 +1,4 @@
 {
-    "directory": "network/static/lib",
     "interactive": false,
     "allow_root": true
 }

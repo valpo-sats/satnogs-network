@@ -2,13 +2,12 @@ FROM centos:7
 RUN yum makecache
 RUN yum -y install epel-release
 RUN yum -y install python python-pip python-devel git gcc libjpeg-turbo-devel \
-                   libxml2-devel libxslt-devel mysql-devel mysql npm
+                   libxml2-devel libxslt-devel mysql-devel mysql
 RUN yum -y clean all
-RUN npm install -g bower
 RUN pip install --upgrade pip
 
 COPY ./requirements/ /tmp/requirements/
-RUN pip install --no-cache-dir --require-hashes --no-deps -r /tmp/requirements/docker.txt
+RUN pip install --no-cache-dir --require-hashes --no-deps -r /tmp/requirements/dev.txt
 
 WORKDIR /app
 COPY . /app

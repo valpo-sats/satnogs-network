@@ -18,7 +18,8 @@ See the [documentation](http://docs.satnogs.org/en/stable/network/).
 [![kanban](https://img.shields.io/badge/kanban-board-lightgray.svg)](https://github.com/satnogs/satnogs-network/projects/2)
 [![travis](https://img.shields.io/travis/satnogs/satnogs-network/dev.svg?label=tests)](http://travis-ci.org/satnogs/satnogs-network/)
 [![coveralls](https://img.shields.io/coveralls/satnogs/satnogs-network/dev.svg)](https://coveralls.io/github/satnogs/satnogs-network)
-[![requirements](https://img.shields.io/requires/github/satnogs/satnogs-network.svg?branch=dev)](https://requires.io/github/satnogs/satnogs-network/requirements/?branch=dev)
+[![updates](https://pyup.io/repos/github/satnogs/satnogs-network/shield.svg)](https://pyup.io/repos/github/satnogs/satnogs-network/)
+[![Python 3](https://pyup.io/repos/github/satnogs/satnogs-network/python-3-shield.svg)](https://pyup.io/repos/github/satnogs/satnogs-network/)
 
 ## License
 

@@ -14,10 +14,6 @@ class Command(BaseCommand):
         self.stdout.write("Creating database...")
         call_command('migrate')
 
-        # Bower
-        self.stdout.write("Downloading frontend libraries...")
-        call_command('bower_install')
-
         #  Initial data
         call_command('loaddata', 'antennas')
         call_command('fetch_data')

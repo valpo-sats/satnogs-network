@@ -21,15 +21,12 @@ THIRD_PARTY_APPS = (
     'allauth',
     'allauth.account',
     'compressor',
-    'djangobower',
     'csp',
 )
 LOCAL_APPS = (
     'network.users',
     'network.base',
     'network.api',
-)
-BOWER_INSTALLED_APPS = (
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -111,7 +108,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
-    'djangobower.finders.BowerFinder',
 )
 MEDIA_ROOT = path.join(path.dirname(BASE_DIR), 'media')
 MEDIA_URL = '/media/'
