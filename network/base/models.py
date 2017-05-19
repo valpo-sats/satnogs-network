@@ -20,6 +20,10 @@ ANTENNA_TYPES = (
     ('helical', 'Helical'),
     ('parabolic', 'Parabolic'),
     ('vertical', 'Verical'),
+    ('turnstile', 'Turnstile'),
+    ('quadrafilar', 'Quadrafilar'),
+    ('eggbeater', 'Eggbeater'),
+    ('lindenblad', 'Lindenblad'),
 )
 OBSERVATION_STATUSES = (
     ('unknown', 'Unknown'),
