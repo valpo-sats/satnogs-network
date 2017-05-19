@@ -9,7 +9,6 @@ from django.db.models import Count, Case, When, F
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.cache import cache
 from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from django.http import JsonResponse, HttpResponseNotFound, HttpResponseServerError, HttpResponse
@@ -61,10 +60,7 @@ def satellite_position(request, sat_id):
 
 def index(request):
     """View to render index page."""
-    observations = cache.get('observations')
-    if not observations:
-        observations = Observation.objects.all()
-        cache.set('observations', observations, settings.CACHE_TTL)
+    observations = Observation.objects.all()
     try:
         featured_station = Station.objects.filter(active=True).latest('featured_date')
     except Station.DoesNotExist:
