@@ -156,10 +156,141 @@
   <hr>
 
   <div>
-    <a class="btn btn-default" role="button" data-toggle="collapse"
-       href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-      Upcoming satellite passes <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-    </a>
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="active">
+        <a href="#observations" class="toggle" role="tab" data-toggle="tab">Recent Observations</a>
+      </li>
+      <li>
+        <a href="#satellites" class="toggle" role="tab" data-toggle="tab">Upcoming passes</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="observations">
+        <table class="table table-hover">
+          <thead>
+            <th>ID</th>
+            <th>Satellite</th>
+            <th>Frequency</th>
+            <th>Encoding</th>
+            <th>Timeframe</th>
+            <th>Observer</th>
+            <th>Stations</th>
+          </thead>
+          <tbody>
+            {% regroup station.data_set.all by observation as observations %}
+            {% for observation in observations %}
+              <tr>
+                <td>
+                  <a href="{% url 'base:observation_view' id=observation.grouper.id %}">
+                    {% if observation.grouper.has_verified_data %}
+                      <span class="label label-success" title="There is known good data in this observation"
+                    {% elif observation.grouper.is_future %}
+                      <span class="label label-info" title="This observation is in the future"
+                    {% elif observation.grouper.has_unvetted_data %}
+                      <span class="label label-warning" title="There is data that needs vetting in this observation"
+                    {% else %}
+                      <span class="label label-danger" title="No good data in this observation"
+                    {% endif %}>
+                    {{ observation.grouper.id }}
+                    </span>
+                  </a>
+                </td>
+                <td>
+                  <a href="#" data-toggle="modal" data-target="#SatelliteModal" data-id="{{ observation.grouper.satellite.norad_cat_id }}">
+                    {{ observation.grouper.satellite.name }}
+                  </a>
+                </td>
+                <td>{{ observation.grouper.transmitter.downlink_low|frq }}</td>
+                <td>{{ observation.grouper.transmitter.mode|default:"-" }}</td>
+                <td>
+                  <span class="datetime-date">{{ observation.grouper.start|date:"Y-m-d" }}</span>
+                  <span class="datetime-time">{{ observation.grouper.start|date:"H:i:s" }}</span><br>
+                  <span class="datetime-date">{{ observation.grouper.end|date:"Y-m-d" }}</span>
+                  <span class="datetime-time">{{ observation.grouper.end|date:"H:i:s" }}</span>
+                </td>
+                <td>
+                  <a href="{% url 'users:view_user' username=observation.grouper.author.username %}">
+                    {{ observation.grouper.author.displayname }}
+                  </a>
+                </td>
+                <td>
+                  {% regroup observation.grouper.data_set.all by ground_station as station_list %}
+                  {% for station in station_list %}
+                    <a href="{% url 'base:station_view' id=station.grouper.id %}">
+                      <span class="label label-primary" title="{{ station.grouper.name }}" data-toggle="tooltip">{{ station.grouper.id }}</span>
+                    </a>
+                  {% endfor %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane" id="satellites">
+        <div class="collapse in" id="collapseFilters">
+          <div class="filter-section">
+            <form id="antenna-filter" class="form-inline" method="get" action="{% url 'base:station_view' id=station.id %}#satellites">
+              <div class="form-group">
+                <div class="btn-group" data-toggle="buttons">
+                  <label class="btn btn-default btn-sm {% if unsupported_frequencies == '1' %}active{% endif %}"  aria-expanded="true" aria-controls="unsupported_frequencies">
+                    <input type="checkbox" name="unsupported_frequencies" {% if unsupported_frequencies == '1' %}checked{% endif %} autocomplete="off">
+                    <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Include unsupported satellites
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <table class="table table-hover table-responsive">
+          <thead>
+            <th>Name</th>
+            <th>Timeframe</th>
+            <th>⤉Rise°</th>
+            <th>⇴Max°</th>
+            <th>⤈Set°</th>
+            <th>Polar</th>
+            <th></th>
+          </thead>
+          <tbody>
+            {% for nextpass in nextpasses %}
+            <tr>
+              <td>
+                <a href="#" data-toggle="modal" data-target="#SatelliteModal" data-id="{{ nextpass.norad_cat_id }}">
+                  {{ nextpass.norad_cat_id }} - {{ nextpass.name }}
+                </a>
+              </td>
+              <td>
+                <span class="datetime-date">{{ nextpass.tr|date:"Y-m-d" }}</span>
+                <span class="datetime-time">{{ nextpass.tr|date:"H:i:s" }}</span><br>
+                <span class="datetime-date">{{ nextpass.ts|date:"Y-m-d" }}</span>
+                <span class="datetime-time">{{ nextpass.ts|date:"H:i:s" }}</span>
+              </td>
+              <td>
+                <span class="lightgreen">⤉</span>{{ nextpass.azr }}°
+              </td>
+              <td>
+                ⇴{{ nextpass.altt }}°
+              </td>
+              <td>
+                <span class="red">⤈</span>{{ nextpass.azs }}°
+              </td>
+              <td>
+                <canvas width="100" height="100" data-points="{{ nextpass.polar_data }}"></canvas>
+              </td>
+              <td>
+                {% if nextpass.valid %}
+                <a href="{% url 'base:observation_new' %}?norad={{ nextpass.norad_cat_id }}&ground_station={{ station.id }}&start_date={{ nextpass.tr|date:"Y/m/d H:i" }}&end_date={{ nextpass.ts|date:"Y/m/d H:i" }}"
+                class="btn btn-default">schedule</a>
+                {% else %}
+                <a href="#" class="btn btn-default" disabled>schedule</a>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <div class="collapse" id="collapseExample">
@@ -236,6 +367,7 @@
 
 {% block javascript %}
   <script src="{% static 'lib/mapbox.js/mapbox.js' %}"></script>
+  <script src="{% static 'lib/uri.js/src/URI.min.js' %}"></script>
   <script src="{% static 'js/station_view.js' %}"></script>
   <script src="{% static 'js/gridsquare.js' %}"></script>
   <script src="{% static 'js/satellite.js' %}"></script>
