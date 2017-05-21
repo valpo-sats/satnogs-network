@@ -1,4 +1,4 @@
-/* global L */
+/* global L, URI */
 
 $(document).ready(function() {
     'use strict';
@@ -160,4 +160,9 @@ $(document).ready(function() {
     $('.filter-section input[type=checkbox]').change(function() {
         $('#antenna-filter').submit();
     });
+
+    // Hightlight Data block
+    var uri = new URI(location.href);
+    var tab = uri.hash();
+    $('ul.nav a[href="' + tab + '"]').tab('show');
 });
