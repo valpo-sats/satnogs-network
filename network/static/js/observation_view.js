@@ -44,6 +44,10 @@ $(document).ready(function() {
     d3.select('#timeline').append('svg').attr('width', svg_width)
         .datum(observation_data).call(chart);
 
+    // Set width for not selected tabs
+    var panelWidth = $('.panel-body').first().width();
+    $('.tab-pane').css('width', panelWidth);
+
     // Waveform loading
     $('.wave').each(function(){
         var $this = $(this);

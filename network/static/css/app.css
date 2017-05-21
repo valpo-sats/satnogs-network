@@ -442,3 +442,17 @@ span.datetime-time {
     max-width: 300px;
     border-radius: 5px;
 }
+
+/* Overwrite display:none
+   of bootstrap tab panel */
+
+.tab-content > .tab-pane {
+    visibility: hidden;
+    display: inline;
+    position: absolute;
+}
+
+.tab-content > .active {
+    visibility: visible;
+    position: initial;
+}
