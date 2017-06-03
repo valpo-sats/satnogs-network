@@ -131,10 +131,19 @@
                     </span>
                   </a>
                 </td>
-                <td>{{ observation.satellite.name }}</td>
-                <td>{{ observation.transmitters.downlink_low|frq }}</td>
-                <td>{{ observation.transmitters.mode }}</td>
-                <td>{{ observation.start|date:"Y-m-d H:i:s" }}</br>{{ observation.end|date:"Y-m-d H:i:s" }}</td>
+                <td>
+                  <a href="#" data-toggle="modal" data-target="#SatelliteModal" data-id="{{ observation.satellite.norad_cat_id }}">
+                    {{ observation.satellite.name }}
+                  </a>
+                </td>
+                <td>{{ observation.transmitter.downlink_low|frq }}</td>
+                <td>{{ observation.transmitter.mode }}</td>
+                <td>
+                  <span class="datetime-date">{{ observation.start|date:"Y-m-d" }}</span>
+                  <span class="datetime-time">{{ observation.start|date:"H:i:s" }}</span><br>
+                  <span class="datetime-date">{{ observation.end|date:"Y-m-d" }}</span>
+                  <span class="datetime-time">{{ observation.end|date:"H:i:s" }}</span>
+                </td>
               </tr>
             {% endfor %}
           </tbody>
@@ -177,8 +186,11 @@
       </div>
     </div>
   </div>
+
+  {% include 'includes/satellite.html' %}
 {% endblock content %}
 
 {% block javascript %}
   <script src="{% static 'js/gridsquare.js' %}"></script>
+  <script src="{% static 'js/satellite.js' %}"></script>
 {% endblock javascript %}
