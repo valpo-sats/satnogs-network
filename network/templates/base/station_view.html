@@ -126,11 +126,11 @@
     <div class="col-md-4">
       {% for antenna in station.antenna.all %}
         <div class="gs-front-line">
-          <span class="label label-default">Antenna</span>
+          <span class="label label-default">{{ antenna.get_antenna_type_display }} {{ antenna.band }} Antenna</span>
         </div>
         <div class="panel panel-default">
           <div class="panel-body">
-            {{ antenna.band }} - {{ antenna.antenna_type }} - {{ antenna.frequency|frq }}
+            {{ antenna.frequency|frq }} - {{ antenna.frequency_max|frq }}
           </div>
         </div>
       {% empty %}
