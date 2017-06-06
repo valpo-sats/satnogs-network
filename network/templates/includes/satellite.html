@@ -18,23 +18,38 @@
                 <span class="satellite-names"></span>
               </div>
               <div class="satellite-info">
+                <span class="label label-default">NORAD ID</span>
                 <span class="satellite-id"></span>
               </div>
-              <ul class="list-unstyled">
-                <li>
-                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                  <a href="/observations/new/" id="new-obs-link">Schedule new Observation</a>
-                </li>
-                <li>
-                  <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-                  <a href="/observations/" id="old-obs-link">Past Observations</a>
-                </li>
-                <li>&nbsp;</li>
-                <li>
-                  <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
-                  <a href="https://db.satnogs.org/" target="_blank" id="db-link">SatNOGS DB Entry & Data</a>
-                </li>
-              </ul>
+              <div class="satellite-info">
+                <ul class="list-unstyled">
+                  <li>
+                    <span class="satellite-success"></span>
+                  </li>
+                  <li>
+                    <span class="label label-success satellite-verified" data-toggle="tooltip" data-placement="bottom" title="Successful observations"></span>
+                    <span class="label label-warning satellite-unknown" data-toggle="tooltip" data-placement="bottom" title="Unknown observations"></span>
+                    <span class="label label-danger satellite-empty" data-toggle="tooltip" data-placement="bottom" title="Empty observations"></span>
+                  </li>
+                </ul>
+              </div>
+              <div class="satellite-info">
+                <ul class="list-unstyled">
+                  <li>
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    <a href="/observations/new/" id="new-obs-link">Schedule new Observation</a>
+                  </li>
+                  <li>
+                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                    <a href="/observations/" id="old-obs-link">Past Observations</a>
+                  </li>
+                  <li>&nbsp;</li>
+                  <li>
+                    <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                    <a href="https://db.satnogs.org/" target="_blank" id="db-link">SatNOGS DB Entry & Data</a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
