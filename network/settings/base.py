@@ -216,6 +216,10 @@ CSP_IMG_SRC = (
     'https://*.satnogs.org',
     'https://*.google-analytics.com',
 )
+CSP_STYLE_SRC = (
+    "'self'",
+    "'unsafe-inline'",
+)
 
 
 # Database

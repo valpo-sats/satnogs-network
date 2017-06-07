@@ -170,6 +170,46 @@ class Satellite(models.Model):
         except:
             return False
 
+    @property
+    def data_count(self):
+        return Data.objects.filter(observation__satellite=self).count()
+
+    @property
+    def verified_count(self):
+        data = Data.objects.filter(observation__satellite=self)
+        return data.filter(vetted_status='verified').count()
+
+    @property
+    def empty_count(self):
+        data = Data.objects.filter(observation__satellite=self)
+        return data.filter(vetted_status='no_data').count()
+
+    @property
+    def unknown_count(self):
+        data = Data.objects.filter(observation__satellite=self)
+        return data.filter(vetted_status='unknown').count()
+
+    @property
+    def success_rate(self):
+        try:
+            return int(100 * (float(self.verified_count) / float(self.data_count)))
+        except:
+            return 0
+
+    @property
+    def empty_rate(self):
+        try:
+            return int(100 * (float(self.empty_count) / float(self.data_count)))
+        except:
+            return 0
+
+    @property
+    def unknown_rate(self):
+        try:
+            return int(100 * (float(self.unknown_count) / float(self.data_count)))
+        except:
+            return 0
+
     def __unicode__(self):
         return self.name
 
