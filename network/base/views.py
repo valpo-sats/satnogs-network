@@ -30,7 +30,7 @@ from network.base.helpers import calculate_polar_data, resolve_overlaps
 class StationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Station
-        fields = ('name', 'lat', 'lng')
+        fields = ('name', 'lat', 'lng', 'alt')
 
 
 class StationAllView(viewsets.ReadOnlyModelViewSet):
